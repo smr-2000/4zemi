@@ -1,0 +1,9 @@
+<h1>新規登録</h1>
+ 
+    <form action='{% url "addUser" %}' method='post' class='form'>
+        <!-- ユーザー登録フォームを表示 -->
+        {% csrf_token %}
+	<div><label>{{ userForm.name.label }}</label>{{ userForm.name }}</div>
+        {{ userForm }}
+        <button type='submit'>登録</button>
+        <a href='{% url "new_register" %}'>戻る</a>

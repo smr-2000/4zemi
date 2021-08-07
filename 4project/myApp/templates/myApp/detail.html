@@ -1,0 +1,26 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ユーザの詳細情報</title>
+    
+</head>
+<body>
+    <h1>ユーザの詳細情報です。</h1>
+    <!-- テーブル -->
+    <table>
+        <tbody>
+            <tr>
+                <!-- 5列分ユーザ情報を出力 -->
+                <td>名前：{{userinfoDetail.name}}           <br>
+                    パスワード：{{userinfoDetail.password}}   <br>
+                    メールアドレス：{{userinfoDetail.mail}}  <br>
+                    学校名：{{userinfoDetail.school_name}}    <br>
+                    学年：{{userinfoDetail.school_grade}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+ 
+    <a href="{% url 'showUsers' %}">ユーザ一覧へ</a>
+ 
+</body>
