@@ -10,6 +10,8 @@ from .models import login
 
 def new_register(request):
     return render(request, 'myApp/new_register.html', {})
+def topScreen(request):
+    return render(request, 'myApp/topScreen.html', {})
 
 #ユーザ情報を辞書に格納して、users.htmlに返す
 def showUsers(request):
