@@ -26,7 +26,6 @@ def showUsers(request):
 #URLから受け取ったidを元にユーザの詳細情報を取得、detail.htmlに返す
 def showDetail(request,id):
     userinfoDetail = get_object_or_404(login, pk=id)
-
     context = {
         'userinfoDetail':userinfoDetail,
     }
@@ -48,6 +47,7 @@ def addUser(request):
         userForm = UserForm(request.POST)
         if userForm.is_valid():
             userForm.save()
+        
         #登録後、全件データを抽出
         userinfo = login.objects.all()
         context = {
@@ -57,3 +57,12 @@ def addUser(request):
         }
     return render(request, 'myApp/users.html', context)
 
+def showEditUserForm(request, id):
+    userinfo = get_object_or_404(login, pk=id)
+    userForm = UserForm(instance=login)
+
+    context = {
+        'login':login,
+        'userForm':userForm,
+    }
+    return render(request, 'myApp/user_edit.html', context)

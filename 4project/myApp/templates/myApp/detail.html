@@ -10,8 +10,10 @@
     <table>
         <tbody>
             <tr>
-                <!-- 5列分ユーザ情報を出力 -->
-                <td>名前：{{userinfoDetail.name}}           <br>
+              <!-- 5列分ユーザ情報を出力 -->
+              <td>
+		プロフィール画像：<img src="{{ userinfoDetail.picture }}" width="25%" height="25%"><br>
+		名前：{{userinfoDetail.name}}           <br>
                     パスワード：{{userinfoDetail.password}}   <br>
                     メールアドレス：{{userinfoDetail.mail}}  <br>
                     学校名：{{userinfoDetail.school_name}}    <br>
