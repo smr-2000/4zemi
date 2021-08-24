@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.new_register, name='new_register'),
     path('topScreen', views.topScreen, name='topScreen'),
+    path('details_screen', views.details_screen, name='details_screen'),
     
 
     #ユーザの詳細情報を表示する処理を呼び出す
