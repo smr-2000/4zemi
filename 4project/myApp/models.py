@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 
 class login(models.Model):
-   picture = models.ImageField(upload_to='media/images/', default='media/images/initial.jpeg')
+   picture = models.ImageField(upload_to='images/', default='images/initial.jpeg')
    name = models.CharField(max_length=10) #自分の名前（本名)
    password = models.CharField(max_length=8) #パスワード
    mail = models.EmailField(max_length=240) #メールアドレス
