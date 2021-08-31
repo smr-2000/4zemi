@@ -13,6 +13,8 @@ urlpatterns = [
     path('<int:id>', views.showDetail, name='showDetail'),
     #ユーザの登録フォームを呼び出す
     path('create', views.showCreateUserForm, name='showCreateForm'),
+    #ユーザ登録完了
+    path('create_completion', views.create_completion, name='create_completion'),
     #ユーザ情報
     path('showUsers', views.showUsers, name='showUsers'),
     #ユーザ登録する処理を呼び出す

@@ -1,11 +1,93 @@
-<h1>新規登録</h1>
- 
-    <form action='{% url "addUser" %}' method='post' class='form'>
-      <!-- ユーザー登録フォームを表示 -->
+{% extends 'myApp/base.html' %}
+{% block title %}新規登録{% endblock %}
+{% block content %}
+
+<form action='{% url "addUser" %}' method='post' class='form' enctype="multipart/form-data">
+  <!-- ユーザー登録フォームを表示 -->
+  <h1>新規登録</h1>
+  <div class="create-frame">
+    <div class="create-box">
       <table>
-	{{ userForm.as_table }}
+	<!-- {{ userForm.as_table }} -->
+	<tr>
+	  <td>{{ userForm.name.label }}</td>
+	  <td>{{ userForm.name }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.password.label }}</td>
+	  <td>{{ userForm.password }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.mail.label }}</td>
+	  <td>{{ userForm.mail }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.birth.label }}</td>
+	  <td>{{ userForm.birth }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.school_name.label }}</td>
+	  <td>{{ userForm.school_name }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.school_grade.label }}</td>
+	  <td>{{ userForm.school_grade }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.sexuality.label }}</td>
+	  <td>{{ userForm.sexuality }}</td>
+	</tr>
       </table>
-      {% csrf_token %}
-      <button type='submit'>登録</button>
-      <a href='{% url "new_register" %}'>戻る</a>
-      </form>
+    </div>
+    <p>━━━━━ *は必須項目です。 ━━━━━</p>
+    <div class="create-box">
+      <table>
+	<tr>
+	  <td>{{ userForm.picture.label }}</td>
+	  <td>{{ userForm.picture }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.insta_ID.label }}</td>
+	  <td>{{ userForm.insta_ID }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.twitter_ID.label }}</td>
+	  <td>{{ userForm.twitter_ID }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.SNS_name1.label }}</td>
+	  <td>{{ userForm.SNS_name1 }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.SNS_ID1.label }}</td>
+	  <td>{{ userForm.SNS_ID1 }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.SNS_name2.label }}</td>
+	  <td>{{ userForm.SNS_name2 }}</td>
+	</tr>
+	<tr>
+	  <td>{{ userForm.SNS_ID2.label }}</td>
+	  <td>{{ userForm.SNS_ID2 }}</td>
+	</tr>
+	<tr>	  
+	  <td>例 : </td>
+	</tr>
+	<tr>
+	  <td>その他SNSの種類</td>
+	  <td>A3!</td>
+	</tr>
+	<tr>
+	  <td>その他SNSのID </td>
+	  <td>ABC123cd</td>
+	</tr>
+      </table>
+    </div>
+    {% csrf_token %}
+  </div>
+  <div class="center">
+    <button type='submit' class="btn">登録</button>
+    <a href='{% url "new_register" %}' class="btn">戻る</a>
+  </div>
+</form>
+{% endblock %}

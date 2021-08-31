@@ -1,28 +1,37 @@
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>ユーザの詳細情報</title>
-    
-</head>
-<body>
-    <h1>ユーザの詳細情報です。</h1>
-    <!-- テーブル -->
+{% extends 'myApp/base.html' %}
+{% block title %}詳細情報{% endblock %}
+{% block content %}
+<h1>ユーザの詳細情報</h1>
+<div class="detail-frame">
+  <div class="detail-box">
+    <img src="media/{{ userinfoDetail.picture }}" width="25%" height="25%" class="image">
+  </div>
+  <div class="detail-box">
     <table>
-        <tbody>
-            <tr>
-              <!-- 5列分ユーザ情報を出力 -->
-              <td>
-		プロフィール画像：<img src="media/{{ userinfoDetail.picture }}" width="25%" height="25%"><br>
-		名前：{{userinfoDetail.name}}           <br>
-                    パスワード：{{userinfoDetail.password}}   <br>
-                    メールアドレス：{{userinfoDetail.mail}}  <br>
-                    学校名：{{userinfoDetail.school_name}}    <br>
-                    学年：{{userinfoDetail.school_grade}}
-                </td>
-            </tr>
-        </tbody>
+      <tr>
+	<td>名前：</td>
+	<td>{{userinfoDetail.name}}</td>
+      </tr>
+      <tr>     
+	<td>パスワード：</td>
+	<td>{{userinfoDetail.password}}</td>
+      </tr>
+      <tr>
+	<td>メールアドレス：</td>
+	<td>{{userinfoDetail.mail}}</td>
+      </tr>
+      <tr>
+	<td>学校名：</td>
+	<td>{{userinfoDetail.school_name}}</td>
+      </tr>
+      <tr>
+	<td>学年：</td>
+	<td>{{userinfoDetail.school_grade}}</td>
+      </tr>
     </table>
- 
-    <a href="{% url 'showUsers' %}">ユーザ一覧へ</a>
- 
-</body>
+  </div>
+</div>
+<div class="center">
+  <a href="{% url 'showUsers' %}" class="btn">ユーザ一覧へ</a>
+</div>
+{% endblock %}
