@@ -21,5 +21,7 @@ urlpatterns = [
     path('add', views.addUser, name='addUser'),
     #ユーザ情報編集
     path('<int:id>/edit', views.showEditUserForm, name='showEditUserForm'),
+    #ログイン
+    path('login_user', views.login_user, name='login_user'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

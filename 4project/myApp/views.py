@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import UserForm
+from .forms import LoginForm
 
 #ページが存在すれば表示、しなければ404エラー
 from django.shortcuts import get_object_or_404
@@ -66,3 +67,6 @@ def showEditUserForm(request, id):
         'userForm':userForm,
     }
     return render(request, 'myApp/user_edit.html', context)
+
+def login_user(request):
+    return render(request, 'myApp/login_user.html', {})

@@ -1,0 +1,16 @@
+{% extends 'myApp/base.html' %}
+{% block title %}ログイン{% endblock %}
+{% block content %}
+<form method="POST" action="{% url 'topScreen' %}">
+  {% csrf_token %}
+  <label for="email">メールアドレス</label>
+  <input type="mail" id="email" name="email">
+  {{ form.mail.errors }}
+  <label for="password">パスワード</label>
+  <input type="password" id="password" name="password">
+  <button type = "submit"　class="btn">ログイン</button>
+</form>
+<div class="center">
+  <a href='{% url "new_register" %}' class="btn">戻る</a>
+</div>
+{% endblock %}

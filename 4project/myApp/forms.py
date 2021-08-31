@@ -1,5 +1,7 @@
 from django import forms
 from .models import login
+from django.contrib.auth.forms import AuthenticationForm
+from django.forms import ModelForm
 
 class UserForm(forms.ModelForm):
    class Meta:
@@ -37,3 +39,7 @@ class UserForm(forms.ModelForm):
           'SNS_ID2':'その他SNSのID',
        }
       
+class LoginForm(ModelForm):
+   class Meta:
+      model = login
+      fields = ['mail','password']
