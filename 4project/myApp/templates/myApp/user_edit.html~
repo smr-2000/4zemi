@@ -1,8 +1,0 @@
-<h1>登録内容編集</h1>
-<form action='{% url "showUsers" %}' method='post' class='form'>
-  <!-- ユーザー編集フォームを表示 -->
-  {% csrf_token %}
-  {% bootstrap_form userForm %}
-  <button type='submit' class='btn btn-outline-primary'>更新</button>
-  <a href='{% url "showUsers" %}' class='btn btn-outline-secondary'>戻る</a>
-</form>

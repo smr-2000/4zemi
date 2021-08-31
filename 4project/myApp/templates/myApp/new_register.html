@@ -1,12 +1,8 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>トップ</title>
-  </head>
-  <body>
+{% extends 'myApp/base.html' %}
+{% block title %}トップ画面{% endblock %}
+{% block content %}
+<h1>ログイン画面</h1>
     <a href="{% url 'showCreateForm' %}">新規登録</a>
     <a href="{% url 'showUsers' %}">ユーザ一覧<a>
-  </body>
-</html>
+{% endblock %}
 
