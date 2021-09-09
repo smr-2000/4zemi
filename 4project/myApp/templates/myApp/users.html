@@ -11,7 +11,7 @@
     </th>
     {% for user in userinfo %}
     <tr>
-      <td><a href="{% url 'showDetail' user.id %}">{{user.name}}</a></td>
+      <td><a href="{% url 'showDetail' user.id %}">{{ user.user.username }}</a></td>
     </tr>
     {% endfor %}
   </table>
