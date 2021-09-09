@@ -3,6 +3,11 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import path
+
+
+
 urlpatterns = [
     path('', views.new_register, name='new_register'),
     path('topScreen', views.topScreen, name='topScreen'),
@@ -19,9 +24,9 @@ urlpatterns = [
     path('showUsers', views.showUsers, name='showUsers'),
     #ユーザ登録する処理を呼び出す
     path('add', views.addUser, name='addUser'),
-    #ユーザ情報編集
-    path('<int:id>/edit', views.showEditUserForm, name='showEditUserForm'),
     #ログイン
-    path('login_user', views.login_user, name='login_user'),
+    path('login_user', views.Login, name='login_user'),
+    #ログアウト
+    path("logout",views.Logout,name="Logout"),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
