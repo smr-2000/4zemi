@@ -1,0 +1,3 @@
+<a href='{% url "personal" %}' class="btn">性格診断</a>
+<a href='{% url "new_register" %}' class="btn">戻る</a>
+<a href='{% url "topScreen" %}' class="btn">スキップ</a>

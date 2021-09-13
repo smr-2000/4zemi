@@ -12,8 +12,9 @@ urlpatterns = [
     path('', views.new_register, name='new_register'),
     path('topScreen', views.topScreen, name='topScreen'),
     path('details_screen', views.details_screen, name='details_screen'),
+    path('personal', views.personal, name='personal'),
+    path('select', views.select, name='select'),
     
-
     #ユーザの詳細情報を表示する処理を呼び出す
     path('<int:id>', views.showDetail, name='showDetail'),
     #ユーザの登録フォームを呼び出す

@@ -25,6 +25,14 @@ def details_screen(request):
 def create_completion(request):
     return render(request, 'myApp/create_completion.html', {})
 
+#診断
+def select(request):
+    return render(request, 'myApp/select.html', {})
+
+#性格診断
+def personal(request):
+    return render(request, 'myApp/personal.html', {})
+
 #ユーザ情報を辞書に格納して、users.htmlに返す
 def showUsers(request):
     userinfo = login.objects.all()
