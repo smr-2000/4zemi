@@ -32,5 +32,8 @@ urlpatterns = [
     #ユーザ情報更新フォーム
     path("<int:id>/user_update",views.UserUpdate, name='user_update'),
     #ユーザ情報更新
-    path('<int:id>/updateUser', views.updateUser, name='updateUser'), 
+    path('<int:id>/updateUser', views.updateUser, name='updateUser'),
+    
+    #趣味選択画面
+    path('selectHobby', views.selectHobby, name='selectHobby'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
