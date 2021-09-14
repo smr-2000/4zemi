@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'css/topScreenStyle.css' %}">
   </head>
   <body>
+    <p>{{ user.username }}さんようこそ！</p>
     <div class="area2">
       <div class="area1">
 	<input type="radio" name="tab_name" id="tab1" checked>
@@ -50,9 +51,9 @@
 	  <p>メッセージを表示</p>
 	</div>
 	<input type="radio" name="tab_name" id="tab12" >
-	<label class="tab_class" for="tab12">設定</label>
+	<label class="tab_class" for="tab12"><a href="{% url 'user_update' user.id|add:"-1" %}">設定</a></label>
 	<div class="content_class3">
-	  <p>設定</p>
+	 <p>設定</p>
 	</div>
 	<input type="radio" name="tab_name" id="tab13" >
 	<label class="tab_class" for="tab13">お知らせ</label>

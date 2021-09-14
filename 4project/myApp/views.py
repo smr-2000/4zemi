@@ -58,7 +58,6 @@ def showCreateUserForm(request):
         "AccountCreate":False,
         "account_form":UserForm(),
         "add_account_form":AddUserForm(),
-        "retry":False,
     }
     params["account_form"] = UserForm()
     params["add_account_form"] = AddUserForm()
@@ -154,4 +153,4 @@ def updateUser(request,id):
 
 
     
-    
+

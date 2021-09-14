@@ -34,3 +34,19 @@ class hobby(models.Model):
 
    def __str__(self):
         return self.hobby
+
+class UserDetail(models.Model):
+   #外部キー
+   login_user = models.ForeignKey(login,on_delete=models.CASCADE)
+   photo1 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   photo2 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   photo3 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   photo4 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   photo5 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   photo6 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   heart = models.BooleanField(default=False)
+   profile_text = models.TextField(null=True, blank=True)
+   
+   def __str__(self):
+        return self.login_user.username
+   
