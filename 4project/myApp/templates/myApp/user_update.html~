@@ -1,0 +1,109 @@
+{% extends 'myApp/base.html' %}
+{% block title %}新規登録{% endblock %}
+{% block content %}
+
+
+
+<form action='{% url "updateUser" userinfo.id %}' enctype="multipart/form-data" method="post" autocomplete="off">
+  {% csrf_token %}
+  <h1>ユーザー情報更新</h1>
+  <div class="create-frame">
+    <div class="create-box">
+      <table>
+	<!-- {{ userForm.as_table }} -->
+	
+	<tr>
+	  <td>氏名*</td>
+	  <td>{{ userUpdateForm.last_name.label }}{{ userUpdateForm.last_name }}</td>
+	  <td>{{ userUpdateForm.first_name.label }}{{ userUpdateForm.first_name }}</td>
+	  {{ userUpdateForm.last_name.errors }}
+	  {{ userUpdateForm.first_name.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.email.label }}</td>
+	  <td>{{ userUpdateForm.email }}</td>
+	  {{ userUpdateForm.email.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.birth.label }}</td>
+	  <td>{{ userUpdateForm.birth }}</td>
+	  {{ userUpdateForm.birth.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.school_name.label }}</td>
+	  <td>{{userUpdateForm.school_name}}</td>
+	  {{ userUpdateForm.school_name.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.school_grade.label }}</td>
+	  <td>{{ userUpdateForm.school_grade }}</td>
+	  {{ userUpdateForm.school_grade.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.sexuality.label }}</td>
+	  <td>{{ userUpdateForm.sexuality }}</td>
+	  {{ userUpdateForm.sexuality.errors }}
+	</tr>
+      </table>
+    </div>
+    <div class="create-box">
+      <table>
+	<tr>
+	  <td>{{ userUpdateForm.picture.label }}</td>
+	  <td>{{ userUpdateForm.picture }}</td>
+	  {{ userUpdateForm.picture.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.insta_ID.label }}</td>
+	  <td>{{ userUpdateForm.insta_ID }}</td>
+	  {{ userUpdateForm.insta_ID.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.twitter_ID.label }}</td>
+	  <td>{{ userUpdateForm.twitter_ID }}</td>
+	  {{ userUpdateForm.twitter_ID.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.SNS_name1.label }}</td>
+	  <td>{{ userUpdateForm.SNS_name1 }}</td>
+	  {{ userUpdateForm.SNS_name1.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.SNS_ID1.label }}</td>
+	  <td>{{ userUpdateForm.SNS_ID1 }}</td>
+	  {{ userUpdateForm.SNS_ID1.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.SNS_name2.label }}</td>
+	  <td>{{ userUpdateForm.SNS_name2 }}</td>
+	  {{ userUpdateForm.SNS_name2.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.SNS_ID2.label }}</td>
+	  <td>{{ userUpdateForm.SNS_ID2 }}</td>
+	  {{ userUpdateForm.SNS_ID2.errors }}
+	</tr>
+	<tr>	  
+	  <td>例 : </td>
+	</tr>
+	<tr>
+	  <td>その他SNSの種類</td>
+	  <td>A3!</td>
+	</tr>
+	<tr>
+	  <td>その他SNSのID </td>
+	  <td>ABC123cd</td>
+	</tr>
+      </table>
+    </div>
+  </div>
+
+
+  <div class="center">
+    <a href='{% url "showUsers" %}' class="btn">戻る</a>
+    <input class="btn" type="submit" value="登録">
+  </div>
+</form>
+
+
+{% endblock %}
