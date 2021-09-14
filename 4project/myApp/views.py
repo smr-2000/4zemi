@@ -111,7 +111,7 @@ def Login(request):
             if user.is_active:
                 #ログイン
                 login(request, user)
-                return render(request, 'myApp/topScreen.html')
+                return render(request, 'myApp/topScreen.html', {'user':user})
             else:
                 #アカウント利用不可
                 return HttpResponse("アカウントが有効ではありません")
@@ -132,7 +132,26 @@ def Logout(request):
 #ログイン後ホーム
 @login_required
 def topScreen(request):
-    params = {
-        "UserID":request.user,
-        }
-    return render(request, "myApp/topScreen.html", context=params)
+    return render(request, "myApp/topScreen.html")
+
+def UserUpdate(request, id):
+    userinfo = get_object_or_404(login, pk=id)
+    userUpdateForm = AddUserForm(instance=userinfo)
+    context = {
+        'userinfo':userinfo,
+        'userUpdateForm':userUpdateForm,
+    }
+    return render(request, 'myApp/user_update.html',context)
+
+def updateUser(request,id):
+    if request.method == 'POST':
+        userInfo = get_object_or_404(login,pk=id)
+        userUpdateForm = AddUserForm(request.POST, request.FILES, instance=userInfo)
+        if userUpdateForm.is_valid():
+            userUpdateForm.save()
+ 
+    return render(request, 'myApp/new_register.html')
+
+
+    
+    
