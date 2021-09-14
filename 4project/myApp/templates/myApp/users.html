@@ -12,6 +12,7 @@
     {% for user in userinfo %}
     <tr>
       <td><a href="{% url 'showDetail' user.id %}">{{ user.user.username }}</a></td>
+      <td><a href="{% url 'user_update' user.id %}">編集</a></td>
     </tr>
     {% endfor %}
   </table>

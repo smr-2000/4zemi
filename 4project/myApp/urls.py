@@ -29,5 +29,8 @@ urlpatterns = [
     path('login_user', views.Login, name='login_user'),
     #ログアウト
     path("logout",views.Logout,name="Logout"),
-    
+    #ユーザ情報更新フォーム
+    path("<int:id>/user_update",views.UserUpdate, name='user_update'),
+    #ユーザ情報更新
+    path('<int:id>/updateUser', views.updateUser, name='updateUser'), 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
