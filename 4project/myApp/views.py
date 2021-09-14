@@ -33,6 +33,10 @@ def select(request):
 def personal(request):
     return render(request, 'myApp/personal.html', {})
 
+#趣味診断
+def selectHobby(request):
+    return render(request, 'myApp/selectHobby.html', {})
+
 #ユーザ情報を辞書に格納して、users.htmlに返す
 def showUsers(request):
     userinfo = login.objects.all()
