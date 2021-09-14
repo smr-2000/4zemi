@@ -33,6 +33,10 @@ def select(request):
 def personal(request):
     return render(request, 'myApp/personal.html', {})
 
+#趣味診断
+def selectHobby(request):
+    return render(request, 'myApp/selectHobby.html', {})
+
 #ユーザ情報を辞書に格納して、users.htmlに返す
 def showUsers(request):
     userinfo = login.objects.all()
@@ -43,6 +47,30 @@ def showUsers(request):
     }
     return render(request, 'myApp/users.html', context)
 
+
+#URLから受け取ったidを元にユーザの詳細情報を取得、selectHobby.htmlに返す
+def showDetail(request,id):
+    userinfoDetail = get_object_or_404(login, pk=id)
+    context = {
+        'userinfoDetail':userinfoDetail,
+    }
+    return render(request, 'myApp/selectHobby.html', context)
+
+def showCreateUserForm(request):
+    #フォームを変数にセット
+    params = {
+        "AccountCreate":False,
+        "account_form":UserForm(),
+        "add_account_form":AddUserForm(),
+        "retry":False,
+    }
+    params["account_form"] = UserForm()
+    params["add_account_form"] = AddUserForm()
+    params["AccountCreate"] = False
+    return render(request, "myApp/selectHobby.html", context=params)
+
+
+
 #URLから受け取ったidを元にユーザの詳細情報を取得、detail.htmlに返す
 def showDetail(request,id):
     userinfoDetail = get_object_or_404(login, pk=id)
@@ -50,7 +78,6 @@ def showDetail(request,id):
         'userinfoDetail':userinfoDetail,
     }
     return render(request, 'myApp/detail.html', context)
-
 
 def showCreateUserForm(request):
     #フォームを変数にセット

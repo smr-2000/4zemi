@@ -29,5 +29,7 @@ urlpatterns = [
     path('login_user', views.Login, name='login_user'),
     #ログアウト
     path("logout",views.Logout,name="Logout"),
+    #趣味選択画面
+    path('selectHobby', views.selectHobby, name='selectHobby'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
