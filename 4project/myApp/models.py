@@ -26,13 +26,28 @@ class login(models.Model):
 
 
 class hobby(models.Model):
-
-     hobby1=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')])
-     hobby2=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')])
-     hobby3=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')])
+   hobby1=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')])
+   hobby2=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')])
+   hobby3=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')])
 
    def publish(self):
       self.save()
 
    def __str__(self):
-        return self.hobby
+      return self.hobby
+
+class UserDetail(models.Model):
+   #外部キー
+   login_user = models.ForeignKey(login,on_delete=models.CASCADE)
+   photo1 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   photo2 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   photo3 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   photo4 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   photo5 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   photo6 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
+   heart = models.BooleanField(default=False)
+   profile_text = models.TextField(null=True, blank=True)
+   
+   def __str__(self):
+        return self.login_user.username
+   
