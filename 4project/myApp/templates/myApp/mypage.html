@@ -1,0 +1,30 @@
+{% extends 'myApp/base.html' %}
+{% block title %}マイページ{% endblock %}
+{% block content %}
+<h1>マイページ</h1>
+<div class="detail-frame">
+  <img src="/media/{{ userinfo.picture }}" width="25%" height="25%" class="image">
+  <p> {{ userinfo.user.username }}</p>
+  
+  <div class="Mypage-box">
+    <img src="/media/{{ userinfoMypage.photo1 }}" width="25%" height="25%" class="Mypage_img"><img src="/media/{{ userinfoMypage.photo2 }}" width="25%" height="25%" class="Mypage_img"><img src="/media/{{ userinfoMypage.photo3 }}" width="25%" height="25%" class="Mypage_img">
+  </div>
+  <div class="Mypage-box">
+    <img src="/media/{{ userinfoMypage.photo4 }}" width="25%" height="25%" class="Mypage_img"><img src="/media/{{ userinfoMypage.photo5 }}" width="25%" height="25%" class="Mypage_img"><img src="/media/{{ userinfoMypage.photo6 }}" width="25%" height="25%" class="Mypage_img">
+  </div>
+  <p>学年：{{ userinfo.school_grade }}年生</p> 
+  <p>性別：{{ userinfo.sexuality }}</p>
+  
+  <p>{{ userinfoMypage.profile_text }}</p>
+
+  <p>{{ userinfo.insta_ID }}</p>
+  <p>{{ userinfo.twitter_ID }}</p>
+  <p>{{ SNS_name1 }}</p>
+  <p>{{ SNS_ID1 }}</p>
+  <p>{{ SNS_name2 }}</p>
+  <p>{{ SNS_ID2 }}</p>
+</div>
+<div class="center">
+  <a href="{% url 'showUsers' %}" class="btn">ユーザ一覧へ</a>
+</div>
+{% endblock %}

@@ -49,5 +49,5 @@ class UserDetail(models.Model):
    profile_text = models.TextField(null=True, blank=True)
    
    def __str__(self):
-        return self.login_user.username
+        return self.login_user.user.username
    
