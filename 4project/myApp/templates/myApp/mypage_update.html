@@ -1,0 +1,57 @@
+{% extends 'myApp/base.html' %}
+{% block title %}マイページ更新{% endblock %}
+{% block content %}
+
+
+<form action='{% url "updateMypage" userinfoMypage.id %}' enctype="multipart/form-data" method="post" autocomplete="off">
+  {% csrf_token %}
+  <h1>マイページ更新</h1>
+  <div class="create-frame">
+    <div class="create-box">
+      <table>
+	<tr>
+	  <td>{{ user_detail_form.photo1.label }}</td>
+	  <td>{{ user_detail_form.photo1 }}</td>
+	  {{ user_detail_form.photo1.errors }}
+	</tr>
+	<tr>
+	  <td>{{ user_detail_form.photo2.label }}</td>
+	  <td>{{ user_detail_form.photo2 }}</td>
+	  {{ user_detail_form.photo2.errors }}
+	</tr>
+	<tr>
+	  <td>{{ user_detail_form.photo3.label }}</td>
+	  <td>{{ user_detail_form.photo3 }}</td>
+	  {{ user_detail_form.photo3.errors }}
+	</tr>
+	<tr>
+	  <td>{{ user_detail_form.photo4.label }}</td>
+	  <td>{{ user_detail_form.photo4 }}</td>
+	  {{ user_detail_form.photo4.errors }}
+	</tr>
+	<tr>
+	  <td>{{ user_detail_form.photo5.label }}</td>
+	  <td>{{ user_detail_form.photo5 }}</td>
+	  {{ user_detail_form.photo5.errors }}
+	</tr>
+	<tr>
+	  <td>{{ user_detail_form.photo6.label }}</td>
+	  <td>{{ user_detail_form.photo6 }}</td>
+	  {{ user_detail_form.photo6.errors }}
+	</tr>
+	<tr>
+	  <td>{{ user_detail_form.profile_text.label }}</td>
+	  <td>{{ user_detail_form.profile_text }}</td>
+	  {{ user_detail_form.profile_text.errors }}
+	</tr>
+      </table>
+    </div>
+  </div>
+  <div class="center">
+    <a href='{% url "showUsers" %}' class="btn">戻る</a>
+    <input class="btn" type="submit" value="更新">
+  </div>
+</form>
+
+
+{% endblock %}

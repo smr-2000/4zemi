@@ -68,3 +68,15 @@ h1 {
     padding:20px;
     vertical-align: middle;
 }
+
+
+/* Mypage */
+.Mypage-box {
+     display: inline-block;
+}
+.Mypage_img {
+    width:150px;
+    height:180px;
+    object-fit:cover;
+}
+    
