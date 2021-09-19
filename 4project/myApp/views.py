@@ -5,6 +5,7 @@ from .forms import UserForm
 from .forms import LoginForm
 from .forms import AddUserForm
 from .forms import UserDetailForm
+from .forms import SelectHobby
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -37,7 +38,11 @@ def personal(request):
 
 #趣味診断
 def selectHobby(request):
-    return render(request, 'myApp/selectHobby.html', {})
+    favorite_hobby = SelectHobby()
+    context = {
+        'favorite_hobby':favorite_hobby,
+        }
+    return render(request, 'myApp/selectHobby.html', context)
 
 #ユーザ情報を辞書に格納して、users.htmlに返す
 def showUsers(request):
