@@ -27,8 +27,8 @@ class login(models.Model):
 
 class hobby(models.Model):
    hobby1=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')])
-   hobby2=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')])
-   hobby3=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')])
+   hobby2=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')], null=True, blank=True)
+   hobby3=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')], null=True, blank=True)
 
    def publish(self):
       self.save()

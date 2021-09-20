@@ -1,6 +1,7 @@
 from django import forms
 from .models import login
 from .models import UserDetail
+from .models import hobby
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -83,3 +84,17 @@ class UserDetailForm(forms.ModelForm):
          'profile_text':'プロフィール',
       }
          
+class SelectHobby(forms.ModelForm):
+   class Meta():
+      model = hobby
+
+      fields = (
+         'hobby1',
+         'hobby2',
+         'hobby3',
+      )
+      labels = {
+         'hobby1':'1番好きな趣味*',
+         'hobby2':'2番目に好きな趣味',
+         'hobby3':'3番目に好きな趣味',
+      }
