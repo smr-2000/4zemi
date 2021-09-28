@@ -263,8 +263,8 @@ def addSelectHobby(request,id):
 
 def showUpdateSelectHobby(request,id):
     userinfoHobby = get_object_or_404(hobby, pk=id)
-    favorite_hobby = SelectHobby(instance=userinfoHobby)
-
+    favorite_hobby = SelectHobby(instance=userinfoHobby)       
+    
     context = {
         'userinfoHobby':userinfoHobby,
         'favorite_hobby':favorite_hobby,
