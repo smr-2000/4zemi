@@ -24,12 +24,12 @@ h1 {
     border: solid;
     padding: 50px;
     margin: auto;
-    width:750px;
+    width:700px;
     text-align: center;
 }
 .create-box {
     display: inline-block;
-    width: 700px;
+    width: 630px;
     padding:20px;
     vertical-align: middle;
 }
