@@ -15,7 +15,7 @@
   <p>学年：{{ userinfo.school_grade }}年生</p> 
   <p>性別：{{ userinfo.sexuality }}</p>
   
-  <p>{{ userinfoMypage.profile_text }}</p>
+  <p>{{ userinfoMypage.profile_text | linebreaksbr }}</p>
 
   <p>{{ userinfo.insta_ID }}</p>
   <p>{{ userinfo.twitter_ID }}</p>
@@ -25,6 +25,6 @@
   <p>{{ SNS_ID2 }}</p>
 </div>
 <div class="center">
-  <a href="{% url 'showUsers' %}" class="btn">ユーザ一覧へ</a>
+  <a href="{% url 'topScreen' userinfo.id %}" class="btn">ホーム</a>
 </div>
 {% endblock %}
