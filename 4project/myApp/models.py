@@ -26,15 +26,13 @@ class login(models.Model):
 
 
 class hobby(models.Model):
-   hobby1=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')])
-   hobby2=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')], null=True, blank=True)
-   hobby3=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書')], null=True, blank=True)
-
-   def publish(self):
-      self.save()
-
+   login_user = models.ForeignKey(login, on_delete=models.CASCADE)
+   hobby1=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書'),('旅行','旅行'),('カメラ','カメラ'),('映画鑑賞','映画鑑賞')])
+   hobby2=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書'),('旅行','旅行'),('カメラ','カメラ'),('映画鑑賞','映画鑑賞')], null=True, blank=True)
+   hobby3=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書'),('旅行','旅行'),('カメラ','カメラ'),('映画鑑賞','映画鑑賞')], null=True, blank=True)
+   
    def __str__(self):
-      return self.hobby
+      return self.login_user.user.username
 
 class UserDetail(models.Model):
    #外部キー

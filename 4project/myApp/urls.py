@@ -43,7 +43,14 @@ urlpatterns = [
     path('<int:id>/updateMypage', views.updateMypage, name='updateMypage'),
     #マイページ
     path('<int:id>/Mypage', views.showMypage, name='Mypage'),
-    #趣味選択画面
-    path('selectHobby', views.selectHobby, name='selectHobby'),
-    
+
+    #趣味選択フォームを呼び出す
+    path('<int:id>/show_selectHobby', views.showSelectHobby, name='show_selectHobby'),
+    #趣味選択
+    path('<int:id>/add_selectHobby', views.addSelectHobby, name='add_selectHobby'),
+    #趣味選択を編集するフォームを呼び出す
+    path('<int:id>/selectHobby_update', views.showUpdateSelectHobby, name='selectHobby_update'),
+    #趣味選択の更新
+    path('<int:id>/updateSelectHobby', views.updateSelectHobby, name='updateSelectHobby'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

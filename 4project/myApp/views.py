@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from .models import login
 from .models import UserDetail
+from .models import hobby
 
 # Create your views here.
 
@@ -35,14 +36,6 @@ def select(request):
 #性格診断
 def personal(request):
     return render(request, 'myApp/personal.html', {})
-
-#趣味診断
-def selectHobby(request):
-    favorite_hobby = SelectHobby()
-    context = {
-        'favorite_hobby':favorite_hobby,
-        }
-    return render(request, 'myApp/selectHobby.html', context)
 
 #ユーザ情報を辞書に格納して、users.htmlに返す
 def showUsers(request):
@@ -235,3 +228,61 @@ def updateMypage(request,id):
     }
     
     return render(request, 'myApp/mypage.html', context)
+
+#趣味診断
+def showSelectHobby(request,id):
+    userinfo = get_object_or_404(login, pk=id)
+
+    params = {
+        "userinfo":userinfo,
+        "favorite_hobby":SelectHobby(),
+    }
+    params["favorite_hobby"] = SelectHobby()
+    return render(request, 'myApp/selectHobby.html', context=params)
+
+
+def addSelectHobby(request,id):
+    userinfo = get_object_or_404(login, pk=id)
+    params = {
+        "userinfo":userinfo,
+        "favorite_hobby":SelectHobby(),
+    }
+    if request.method == 'POST':
+        selectHobbyForm = SelectHobby(request.POST, request.FILES)      
+        if selectHobbyForm.is_valid():
+            selectHobbyPost = selectHobbyForm.save(commit=False)
+            selectHobbyPost.login_user = userinfo
+            selectHobbyPost.save()
+            
+        else:
+            print(selectHobbyForm.errors)
+            return render(request, 'myApp/selectHobby.html', context=params)
+    
+    return render(request, 'myApp/personal.html')
+
+
+def showUpdateSelectHobby(request,id):
+    userinfoHobby = get_object_or_404(hobby, pk=id)
+    favorite_hobby = SelectHobby(instance=userinfoHobby)
+
+    context = {
+        'userinfoHobby':userinfoHobby,
+        'favorite_hobby':favorite_hobby,
+    }
+    return render(request, 'myApp/update_selectHobby.html', context)
+
+
+def updateSelectHobby(request, id):
+    if request.method == 'POST':
+        userinfoHobby = get_object_or_404(hobby, pk=id)
+        favorite_hobby = SelectHobby(request.POST, request.FILES, instance=userinfoHobby)
+        if favorite_hobby.is_valid():
+            favorite_hobby.save()
+
+    userinfo = get_object_or_404(login, pk=id)
+    context = {
+        'userinfo':userinfo,
+        'favorite_hobby':favorite_hobby,
+    }
+    
+    return render(request, 'myApp/update_selectHobby.html', context)

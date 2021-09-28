@@ -67,6 +67,8 @@
     </p>
     <p>アカウント情報更新 <a href="{% url 'user_adddetail' user.id|add:"-1" %}">こちら</a></p>
     <p>マイページ<a href="{% url 'Mypage' user.id|add:"-1" %}">こちら</a></p>
-     <p>マイページ更新<a href="{% url 'Mypage_update' user.id|add:"-1" %}">こちら</a></p>
+    <p>マイページ更新<a href="{% url 'Mypage_update' user.id|add:"-1" %}">こちら</a></p>
+    <p>趣味選択<a href="{% url 'show_selectHobby' user.id|add:"-1" %}">こちら</a></p>
+    <p>趣味再選択<a href="{% url 'selectHobby_update' user.id|add:"-1" %}">こちら</a></p>
   </body>
 </html>
