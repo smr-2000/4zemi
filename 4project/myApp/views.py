@@ -192,7 +192,7 @@ def addUserDetail(request ,id):
         if  userDetailForm.is_valid():
             userDetailPost = userDetailForm.save(commit=False)
             userDetailPost.login_user = userinfo
-            userDetailPost.save()
+cd            userDetailPost.save()
 
         else:
             #フォームが有効でない場合
