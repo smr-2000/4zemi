@@ -1,0 +1,16 @@
+{% extends 'myApp/base.html' %}
+{% block title %}マイページ{% endblock %}
+{% block content %}
+<h1>マイページ</h1>
+<div class="detail-frame">
+  <p> {{ userinfo.user.username }}</p>
+  <div class="detail-box">
+    <img src="media/{{ userinfoMypage.photo1 }}" width="25%" height="25%" class="image">
+    <img src="media/{{ userinfo.picture }}" width="25%" height="25%" class="image">
+  </div>
+  <p>{{ userinfoMypage.profile_text }}</p>
+</div>
+<div class="center">
+  <a href="{% url 'showUsers' %}" class="btn">ユーザ一覧へ</a>
+</div>
+{% endblock %}

@@ -10,7 +10,7 @@ from django.urls import path
 
 urlpatterns = [
     path('', views.new_register, name='new_register'),
-    path('<int:id>/topScreen', views.topScreen, name='topScreen'),
+    path('topScreen', views.topScreen, name='topScreen'),
     path('details_screen', views.details_screen, name='details_screen'),
     path('personal', views.personal, name='personal'),
     path('select', views.select, name='select'),
@@ -45,9 +45,5 @@ urlpatterns = [
     path('<int:id>/Mypage', views.showMypage, name='Mypage'),
     #趣味選択画面
     path('selectHobby', views.selectHobby, name='selectHobby'),
-    #退会確認
-    path('<int:id>/userCheckDelete', views.UserCheckDelete, name='userCheckDelete'),
-    #退会
-    path('<int:id>/userDelete', views.UserDelete, name='userDelete'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
