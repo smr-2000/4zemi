@@ -65,10 +65,13 @@
     <p> ログアウトは
  <a href="{% url 'Logout' %}">こちら</a>
     </p>
-    <p>アカウント情報更新 <a href="{% url 'user_adddetail' user.id|add:"-1" %}">こちら</a></p>
     <p>マイページ<a href="{% url 'Mypage' user.id|add:"-1" %}">こちら</a></p>
     <p>マイページ更新<a href="{% url 'Mypage_update' user.id|add:"-1" %}">こちら</a></p>
+<<<<<<< HEAD
     <p>趣味選択<a href="{% url 'show_selectHobby' user.id|add:"-1" %}">こちら</a></p>
     <p>趣味再選択<a href="{% url 'selectHobby_update' user.id|add:"-1" %}">こちら</a></p>
+=======
+    <p>退会<a href="{% url 'userCheckDelete' user.id|add:"-1" %}">こちら</a></p>
+>>>>>>> d49c6146ce993a7995ee867152434453008e1449
   </body>
 </html>

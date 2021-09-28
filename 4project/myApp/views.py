@@ -133,9 +133,12 @@ def Logout(request):
     return HttpResponseRedirect(reverse('myApp/login_user'))
 
 #ログイン後ホーム
-@login_required
-def topScreen(request):
-    return render(request, "myApp/topScreen.html")
+def topScreen(request, id):
+    userinfo = get_object_or_404(login, pk=id)
+    context = {
+        "user":userinfo.user,
+    }
+    return render(request, "myApp/topScreen.html",  context)
 
 def UserUpdate(request, id):
     userinfo = get_object_or_404(login, pk=id)
@@ -154,7 +157,6 @@ def updateUser(request,id):
             userUpdateForm.save()
  
     return render(request, 'myApp/new_register.html')
-
 
 def showUserDetail(request, id):
     userinfo = get_object_or_404(login, pk=id)
@@ -183,26 +185,47 @@ def addUserDetail(request ,id):
         if  userDetailForm.is_valid():
             userDetailPost = userDetailForm.save(commit=False)
             userDetailPost.login_user = userinfo
-            userDetailPost.save()
-
+cd            userDetailPost.save()
 
         else:
             #フォームが有効でない場合
             print(userDetailForm.errors)
             return render(request, 'myApp/user_adddetail.html', context=params)
-        
-    return render(request, 'myApp/create_completion.html')
+
+
+    userdetail = UserDetail.objects.filter(login_user=userinfo)
+    userinfoMypage = userdetail[0]
+    mypagetext = {
+            'userinfo':userinfo,
+            'userinfoMypage':userinfoMypage
+    }
+    return render(request, 'myApp/mypage.html', context=mypagetext)
+
 
 def showMypage(request,id):
     userinfo = get_object_or_404(login, pk=id)
-    userinfoMypage = get_object_or_404(UserDetail, pk=id)
-    
-    context = {
-        'userinfo':userinfo,
-        'userinfoMypage':userinfoMypage
-    }
-    return render(request, 'myApp/mypage.html', context)
-    
+    userdetail = UserDetail.objects.filter(login_user=userinfo)
+
+    if userdetail.exists():
+        userinfoMypage = userdetail[0]
+        
+        context = {
+            'userinfo':userinfo,
+            'userinfoMypage':userinfoMypage
+        }
+        return render(request, 'myApp/mypage.html', context)
+
+    else:
+        params = {
+        "userinfo":userinfo,
+        "account_form":UserForm(),
+        "add_account_form":AddUserForm(),
+        "user_detail_form":UserDetailForm(),
+        }
+        params["account_form"] = UserForm()
+        params["add_account_form"] = AddUserForm()
+        params["user_detail_form"] = UserDetailForm()
+        return render(request, "myApp/user_adddetail.html", context=params)
 
 def MypageUpdate(request, id):
     userinfoMypage = get_object_or_404(UserDetail, pk=id)
@@ -212,6 +235,7 @@ def MypageUpdate(request, id):
         'user_detail_form':user_detail_form,
     }
     return render(request, 'myApp/mypage_update.html',context)
+
 
 def updateMypage(request,id):
     if request.method == 'POST':
@@ -229,6 +253,7 @@ def updateMypage(request,id):
     
     return render(request, 'myApp/mypage.html', context)
 
+<<<<<<< HEAD
 #趣味診断
 def showSelectHobby(request,id):
     userinfo = get_object_or_404(login, pk=id)
@@ -286,3 +311,19 @@ def updateSelectHobby(request, id):
     }
     
     return render(request, 'myApp/update_selectHobby.html', context)
+=======
+
+def UserCheckDelete(request, id):
+    userinfo = get_object_or_404(login,pk=id)
+    context = {
+        'userinfo':userinfo
+    }
+    return render(request, 'myApp/user_delete.html', context)
+    
+def UserDelete(request, id):
+    userinfo = get_object_or_404(login,pk=id)
+    userinfo.delete()
+    userinfo.user.delete()
+    return render(request, 'myApp/new_register.html')
+    
+>>>>>>> d49c6146ce993a7995ee867152434453008e1449

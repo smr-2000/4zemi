@@ -12,6 +12,7 @@ class login(models.Model):
   
    birth = models.CharField(max_length=8) #生年月日
    school_name = models.CharField(max_length=50) #大学名
+   school_major = models.CharField(max_length=1, choices=[('1','文系（教育、美術、言語、文学、音楽、心理学）'),('2', '社会・法学系（国際、法律、政治、社会学）'),('3','会計学・ビジネス・経済学・財政学・マーケティング・貿易'), ('4','科学（農業、コンピュータ・サイエンス、数学、物理学、統計学）'),('5','保険・医療（医学、看護、薬学、公衆衛生）'),('6','工学・建築'),('7','その他')]) #専攻
    school_grade = models.CharField(max_length=1, choices=[('1','1年生'),('2', '2年生'),('3','3年生'), ('4','4年生'),('5','大学院生')]) #学年
    sexuality = models.CharField(max_length=5, choices=[('男','男'),('女', '女'),('その他','その他')])#性別
    insta_ID = models.CharField(max_length=50, null=True, blank=True) #インスタのアカウント名
@@ -36,7 +37,7 @@ class hobby(models.Model):
 
 class UserDetail(models.Model):
    #外部キー
-   login_user = models.ForeignKey(login,on_delete=models.CASCADE)
+   login_user = models.OneToOneField(login,on_delete=models.CASCADE)
    photo1 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
    photo2 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
    photo3 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
