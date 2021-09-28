@@ -65,8 +65,8 @@
     <p> ログアウトは
  <a href="{% url 'Logout' %}">こちら</a>
     </p>
-    <p>アカウント情報更新 <a href="{% url 'user_adddetail' user.id|add:"-1" %}">こちら</a></p>
     <p>マイページ<a href="{% url 'Mypage' user.id|add:"-1" %}">こちら</a></p>
-     <p>マイページ更新<a href="{% url 'Mypage_update' user.id|add:"-1" %}">こちら</a></p>
+    <p>マイページ更新<a href="{% url 'Mypage_update' user.id|add:"-1" %}">こちら</a></p>
+    <p>退会<a href="{% url 'userCheckDelete' user.id|add:"-1" %}">こちら</a></p>
   </body>
 </html>
