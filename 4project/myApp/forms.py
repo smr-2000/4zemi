@@ -2,6 +2,8 @@ from django import forms
 from .models import login
 from .models import UserDetail
 from .models import hobby
+from .models import personal
+from .models import question
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -100,3 +102,50 @@ class SelectHobby(forms.ModelForm):
          'hobby2':'2番目に好きな趣味',
          'hobby3':'3番目に好きな趣味',
       }
+
+class personalForm(forms.ModelForm):
+   class Meta:
+      model = question
+      fields = (
+         'q1','q2','q3','q4','q5','q6','q7','q8','q9','q10'
+         )
+      data=[
+         ('0', '0'),('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'),
+      ]
+      data2=[
+         ('0', '0'), ('1', '1'),('2', '2'),('3', '3'), ('4', '4'),
+      ]
+      data3=[
+         ('0', '0'),('1', '1'), ('2', '2'),('3', '3'), ('4', '4'),
+      ]
+      data4=[
+         ('0', '0'),('1', '1'), ('2', '2'),('3', '3'), ('4', '4'),
+      ]
+      data5=[
+         ('0', '0'),('1', '1'), ('2', '2'),('3', '3'), ('4', '4'),
+      ]
+      data6=[
+         ('0', '0'),('1', '1'), ('2', '2'),('3', '3'), ('4', '4'),
+      ]
+      data7=[
+         ('0', '0'),('1', '1'), ('2', '2'),('3', '3'), ('4', '4'),
+      ]
+      data8=[
+         ('0', '0'),('1', '1'), ('2', '2'),('3', '3'), ('4', '4'),
+      ]
+      data9=[
+         ('0', '0'),('1', '1'), ('2', '2'),('3', '3'), ('4', '4'),
+      ]
+      data10=[
+         ('0', '0'),('1', '1'), ('2', '2'),('3', '3'), ('4', '4'),
+      ]
+      choice = forms.ChoiceField(label='初対面の人に会うのが好きで、初対面でも相手との会話を楽しむことができる',choices=data, widget=forms.RadioSelect())
+      choice2 = forms.ChoiceField(label='他人に思いやりがあり、それを行動に移してみんなに差別なく親切にできている',choices=data2, widget=forms.RadioSelect())
+      choice3 = forms.ChoiceField(label='事をきっちりこなし、手際良く効率よく行っている',choices=data2, widget=forms.RadioSelect())
+      choice4 = forms.ChoiceField(label='いつも心配事が多く、不安になりやすい',choices=data2, widget=forms.RadioSelect())
+      choice5 = forms.ChoiceField(label='新しいことを知ることが好きで、クリエイティビティが高く好奇心や探究心が強い',choices=data2, widget=forms.RadioSelect())
+      choice6 = forms.ChoiceField(label='恥ずかしがり屋で物静かなタイプ',choices=data2, widget=forms.RadioSelect())
+      choice7 = forms.ChoiceField(label='思ったことをすぐに口に出し、他人の感情に流されず冷静な判断をする',choices=data2, widget=forms.RadioSelect())
+      choice8 = forms.ChoiceField(label='後先考えずに行動して、ぎりぎりまで物事に手をつけない衝動的部分がある',choices=data2, widget=forms.RadioSelect())
+      choice9 = forms.ChoiceField(label='大体リラックスして落ち着いている',choices=data2, widget=forms.RadioSelect())
+      choice10 = forms.ChoiceField(label='物事を現実的に考え、常識破りなことはしない、割と保守的な考え方である',choices=data2, widget=forms.RadioSelect())

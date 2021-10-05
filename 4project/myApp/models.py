@@ -51,3 +51,36 @@ class UserDetail(models.Model):
    def __str__(self):
         return self.login_user.user.username
    
+
+class question(models.Model):
+   
+   user = models.OneToOneField(login, on_delete=models.CASCADE)
+   q1 = models.IntegerField(null=False,blank=False)
+   q2 = models.IntegerField(null=False,blank=False)
+   q3 = models.IntegerField(null=False,blank=False)
+   q4 = models.IntegerField(null=False,blank=False)
+   q5 = models.IntegerField(null=False,blank=False)
+   q6 = models.IntegerField(null=False,blank=False)
+   q7 = models.IntegerField(null=False,blank=False)
+   q8 = models.IntegerField(null=False,blank=False)
+   q9 = models.IntegerField(null=False,blank=False)
+   q10 = models.IntegerField(null=False,blank=False)
+   def __str__(self):
+        return self.user.user.username
+   def save(self, force_insert=False, force_update=False):
+        self.save()
+
+class personal(models.Model):
+   user = models.OneToOneField(login, on_delete=models.CASCADE)
+   diplomacy = models.IntegerField(null=False,blank=False);
+   cooperation = models.IntegerField(null=False,blank=False);
+   honesty = models.IntegerField(null=False,blank=False);
+   nerve = models.IntegerField(null=False,blank=False);
+   openness = models.IntegerField(null=False,blank=False);
+   
+   def __str__(self):
+        return self.user.user.username
+     
+   def save(self):
+      self.save()
+   
