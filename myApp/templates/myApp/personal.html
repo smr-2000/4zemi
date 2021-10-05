@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="uft-8">
+
+</head>
+<body>
+  <h1>{{title}}</h1>
+  <form action="{% url 'personal' userinfo.id %}" method="post"> 
+    {% csrf_token %}
+    <table>
+      <p>初対面の人に会うのが好きで、初対面でも相手との会話を楽しむことができる</p>
+      {{ form.q1}}
+      <p>他人に思いやりがあり、それを行動に移してみんなに差別なく親切にできている</p>
+      {{ form.q2}}
+      <p>物事をきっちりこなし、手際良く効率よく行っている</p>
+      {{form.q3}}
+      <p>いつも心配事が多く、不安になりやすい</p>
+      {{form.q4}}
+      <P>新しいことを知ることが好きで、クリエイティビティが高く好奇心や探究心が強い</p>
+      {{form.q5}}
+      <p>恥ずかしがり屋で物静かなタイプ</p>
+      {{form.q6}}
+      <p>思ったことをすぐに口に出し、他人の感情に流されず冷静な判断をする</P>
+      {{form.q7}}
+      <p>後先考えずに行動して、ぎりぎりまで物事に手をつけない衝動的部分がある</p>
+      {{form.q8}}
+      <p>大体リラックスして落ち着いている</p>
+      {{form.q9}}
+      <p>物事を現実的に考え、常識破りなことはしない、割と保守的な考え方である</p>
+      {{form.q10}}
+      <tr><td></tr><td>
+	<input type="submit" class="btm btn-primary my-2" value="送信">
+    </table>
+  </form>
+  <a href='{% url "personal2" userinfo.id  %}' class="btn">保存</a>
+
+      
+<script>
+  function MyFunction1(){
+  let ans = [];
+  let diplomacy = 0;// 外向性
+  let cooperation = 0;//協調性
+  let honesty = 0;//誠実性
+  let nerve = 0;//神経症的傾向
+  let open = 0;//開放性
+  for(let h=1;h<11;h++){
+      let q = "q" + h ;
+      for (let i = 0; i<5; i++) {
+	  if(document.getElementsByName(q).item(i).checked) {
+	      ans[h] = parseInt(document.getElementsByName(q).item(i).value);
+	  }
+      }
+  }
+      diplomacy = 4 - ans[6] + ans[1];
+      cooperation = 4 - ans[7] + ans[2];
+      honesty = 4 - ans[8] + ans[3];
+      nerve = 4 - ans[9] + ans[4];
+      open= 4 - ans[10] + ans[5];
+
+      console.log(diplomacy);
+      console.log(cooperation);
+      console.log(honesty);
+      console.log(nerve);
+      console.log(open);
+}
+  
+</script>
+</body>
+</html>
+
+
