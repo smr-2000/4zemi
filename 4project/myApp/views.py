@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from .models import login
 from .models import UserDetail
+from .models import hobby
 
 # Create your views here.
 
@@ -35,14 +36,6 @@ def select(request):
 #性格診断
 def personal(request):
     return render(request, 'myApp/personal.html', {})
-
-#趣味診断
-def selectHobby(request):
-    favorite_hobby = SelectHobby()
-    context = {
-        'favorite_hobby':favorite_hobby,
-        }
-    return render(request, 'myApp/selectHobby.html', context)
 
 #ユーザ情報を辞書に格納して、users.htmlに返す
 def showUsers(request):
@@ -140,9 +133,12 @@ def Logout(request):
     return HttpResponseRedirect(reverse('myApp/login_user'))
 
 #ログイン後ホーム
-@login_required
-def topScreen(request):
-    return render(request, "myApp/topScreen.html")
+def topScreen(request, id):
+    userinfo = get_object_or_404(login, pk=id)
+    context = {
+        "user":userinfo.user,
+    }
+    return render(request, "myApp/topScreen.html",  context)
 
 def UserUpdate(request, id):
     userinfo = get_object_or_404(login, pk=id)
@@ -161,7 +157,6 @@ def updateUser(request,id):
             userUpdateForm.save()
  
     return render(request, 'myApp/new_register.html')
-
 
 def showUserDetail(request, id):
     userinfo = get_object_or_404(login, pk=id)
@@ -192,24 +187,45 @@ def addUserDetail(request ,id):
             userDetailPost.login_user = userinfo
             userDetailPost.save()
 
-
         else:
             #フォームが有効でない場合
             print(userDetailForm.errors)
             return render(request, 'myApp/user_adddetail.html', context=params)
-        
-    return render(request, 'myApp/create_completion.html')
+
+
+    userdetail = UserDetail.objects.filter(login_user=userinfo)
+    userinfoMypage = userdetail[0]
+    mypagetext = {
+            'userinfo':userinfo,
+            'userinfoMypage':userinfoMypage
+    }
+    return render(request, 'myApp/mypage.html', context=mypagetext)
+
 
 def showMypage(request,id):
     userinfo = get_object_or_404(login, pk=id)
-    userinfoMypage = get_object_or_404(UserDetail, pk=id)
-    
-    context = {
-        'userinfo':userinfo,
-        'userinfoMypage':userinfoMypage
-    }
-    return render(request, 'myApp/mypage.html', context)
-    
+    userdetail = UserDetail.objects.filter(login_user=userinfo)
+
+    if userdetail.exists():
+        userinfoMypage = userdetail[0]
+        
+        context = {
+            'userinfo':userinfo,
+            'userinfoMypage':userinfoMypage
+        }
+        return render(request, 'myApp/mypage.html', context)
+
+    else:
+        params = {
+        "userinfo":userinfo,
+        "account_form":UserForm(),
+        "add_account_form":AddUserForm(),
+        "user_detail_form":UserDetailForm(),
+        }
+        params["account_form"] = UserForm()
+        params["add_account_form"] = AddUserForm()
+        params["user_detail_form"] = UserDetailForm()
+        return render(request, "myApp/user_adddetail.html", context=params)
 
 def MypageUpdate(request, id):
     userinfoMypage = get_object_or_404(UserDetail, pk=id)
@@ -219,6 +235,7 @@ def MypageUpdate(request, id):
         'user_detail_form':user_detail_form,
     }
     return render(request, 'myApp/mypage_update.html',context)
+
 
 def updateMypage(request,id):
     if request.method == 'POST':
@@ -235,3 +252,83 @@ def updateMypage(request,id):
     }
     
     return render(request, 'myApp/mypage.html', context)
+
+
+def UserCheckDelete(request, id):
+    userinfo = get_object_or_404(login,pk=id)
+    context = {
+        'userinfo':userinfo
+    }
+    return render(request, 'myApp/user_delete.html', context)
+    
+def UserDelete(request, id):
+    userinfo = get_object_or_404(login,pk=id)
+    userinfo.delete()
+    userinfo.user.delete()
+    return render(request, 'myApp/new_register.html')
+    
+
+#趣味診断
+def showSelectHobby(request,id):
+    userinfo = get_object_or_404(login, pk=id)
+
+    params = {
+        "userinfo":userinfo,
+        "favorite_hobby":SelectHobby(),
+    }
+    params["favorite_hobby"] = SelectHobby()
+    return render(request, 'myApp/selectHobby.html', context=params)
+
+
+def addSelectHobby(request,id):
+    userinfo = get_object_or_404(login, pk=id)
+    params = {
+        "userinfo":userinfo,
+        "favorite_hobby":SelectHobby(),
+    }
+    if request.method == "POST":
+        selectHobbyForm = SelectHobby(request.POST, request.FILES)      
+        if selectHobbyForm.is_valid():
+            selectHobbyPost = selectHobbyForm.save(commit=False)
+            selectHobbyPost.login_user = userinfo
+            selectHobbyPost.save()
+            
+        else:
+            print(params["favorite_hobby"].errors)
+            return render(request, 'myApp/selectHobby.html', context=params)
+
+    userhobby = hobby.objects.filter(login_user=userinfo)
+    userselectHobby = userhobby[0]
+
+    mypagetext = {
+        'userinfo':userinfo,
+        'userselectHobby':userselectHobby,
+    }
+        
+    return render(request, 'myApp/new_register.html', context=mypagetext)
+
+
+def showUpdateSelectHobby(request,id):
+    userinfoHobby = get_object_or_404(hobby, pk=id)
+    favorite_hobby = SelectHobby(instance=userinfoHobby)
+  
+    context = {
+        'userinfoHobby':userinfoHobby,
+        'favorite_hobby':favorite_hobby,
+    }
+    return render(request, 'myApp/update_selectHobby.html', context)
+   
+
+def updateSelectHobby(request, id):
+    if request.method == "POST":
+        userinfoHobby = get_object_or_404(hobby, pk=id)
+        favorite_hobby = SelectHobby(request.POST, request.FILES, instance=userinfoHobby)
+        if favorite_hobby.is_valid():
+            favorite_hobby.save()
+
+    userinfoHobby = get_object_or_404(hobby, pk=id)
+    context = {
+        'userinfoHobby':userinfoHobby,
+    }
+    
+    return render(request, 'myApp/new_register.html', context)
