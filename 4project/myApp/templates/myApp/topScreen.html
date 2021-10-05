@@ -24,6 +24,11 @@
 	<label class="tab_class" for="tab3">大学</label>
 	<div class="content_class">
 	  <p>大学順で表示</p>
+	  {% for member in userinfo %}
+	  <tr>
+      <td><a href="{% url 'showDetail' user.id %}">{{ member.user.username }}</a></td>
+    </tr>
+    {% endfor %}
 	</div>
 	<input type="radio" name="tab_name" id="tab4" >
 	<label class="tab_class" for="tab4">地区</label>
@@ -69,6 +74,9 @@
     <p>マイページ更新<a href="{% url 'Mypage_update' user.id|add:"-1" %}">こちら</a></p>
     <p>趣味選択<a href="{% url 'show_selectHobby' user.id|add:"-1" %}">こちら</a></p>
     <p>趣味再選択<a href="{% url 'selectHobby_update' user.id|add:"-1" %}">こちら</a></p>
+     <p>
+      性格診断は
+      <a href="{% url 'select' user.id|add:"-1" %}">こちら</a></p>
     <p>退会<a href="{% url 'userCheckDelete' user.id|add:"-1" %}">こちら</a></p>
   </body>
 </html>

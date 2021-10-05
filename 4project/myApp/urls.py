@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
+from django.conf.urls import url
 
 
 
@@ -12,8 +13,10 @@ urlpatterns = [
     path('', views.new_register, name='new_register'),
     path('<int:id>/topScreen', views.topScreen, name='topScreen'),
     path('details_screen', views.details_screen, name='details_screen'),
-    path('personal', views.personal, name='personal'),
-    path('select', views.select, name='select'),
+     #性格診断
+    path('<int:id>/personal', views.personal_view, name='personal'),
+    path('<int:id>personal2', views.personal2, name='personal2'),
+    path('<int:id>/select', views.select, name='select'),
     
     #ユーザの詳細情報を表示する処理を呼び出す
     path('<int:id>', views.showDetail, name='showDetail'),

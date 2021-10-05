@@ -6,6 +6,7 @@ from .forms import LoginForm
 from .forms import AddUserForm
 from .forms import UserDetailForm
 from .forms import SelectHobby
+from .forms import personalForm
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -17,6 +18,8 @@ from django.shortcuts import get_object_or_404
 from .models import login
 from .models import UserDetail
 from .models import hobby
+from .models import personal
+from .models import question
 
 # Create your views here.
 
@@ -30,12 +33,47 @@ def create_completion(request):
     return render(request, 'myApp/create_completion.html', {})
 
 #診断
-def select(request):
-    return render(request, 'myApp/select.html', {})
+def select(request,id):
+    userinfo = get_object_or_404(login, pk=id)
+    return render(request, 'myApp/select.html', {'userinfo':userinfo})
 
 #性格診断
-def personal(request):
-    return render(request, 'myApp/personal.html', {})
+def personal_view(request,id):
+    userinfo = get_object_or_404(login, pk=id)
+    if request.method == 'POST':
+        pForm = personalForm(request.POST)
+        if pForm.is_valid():
+            personalPost = pForm.save(commit=False)
+            personalPost.user = userinfo
+            personalPost.save()
+    params = {
+        'title': '性格診断',
+        'form':personalForm(),
+        'result':None,
+        'userinfo':userinfo
+    }
+    return render(request, 'myApp/personal.html', params)
+        
+def personal2(request,id):
+    userinfo = get_object_or_404(login, pk=id)
+    q = question.objects.filter(user=userinfo)
+    d = 4 - q[0].q6 + q[0].q1
+    c = 4 - q[0].q7 + q[0].q2
+    h = 4 - q[0].q8 + q[0].q3
+    n = 4 - q[0].q9 + q[0].q4
+    o = 4 - q[0].q10 + q[0].q5
+    per = personal.objects.create(diplomacy=d,cooperation=c,honesty=h,nerve=n,openness=o)
+    per.save()
+    context = {
+        'userinfo':userinfo,
+        'q':q,
+        'd':d,
+        'c':c,
+        'h':h,
+        'n':n,
+        'o':o
+        }
+    return render(request, 'myApp/personal2.html', context)
 
 #ユーザ情報を辞書に格納して、users.htmlに返す
 def showUsers(request):
@@ -109,12 +147,18 @@ def Login(request):
         Pass = request.POST.get('password')
 
         user = authenticate(username=ID, password=Pass)
+        userinfo = login.objects.all()
+       
+        context = {
+            'user':user,
+            'userinfo':userinfo,
+        }
 
         if user:
             if user.is_active:
                 #ログイン
                 login(request, user)
-                return render(request, 'myApp/topScreen.html', {'user':user})
+                return render(request, 'myApp/topScreen.html', context)
             else:
                 #アカウント利用不可
                 return HttpResponse("アカウントが有効ではありません")
