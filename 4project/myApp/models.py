@@ -67,7 +67,7 @@ class question(models.Model):
    q10 = models.IntegerField(null=False,blank=False)
    def __str__(self):
         return self.user.user.username
-   def save(self, force_insert=False, force_update=False):
+   def publish(self):
         self.save()
 
 class personal(models.Model):
@@ -81,6 +81,6 @@ class personal(models.Model):
    def __str__(self):
         return self.user.user.username
      
-   def save(self):
+   def publish(self):
       self.save()
    
