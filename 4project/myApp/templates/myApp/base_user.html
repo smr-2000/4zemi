@@ -1,0 +1,63 @@
+{% load static %}
+<html>
+  <head>
+    <title>{% block title %}base{% endblock %}</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/topScreenStyle.css' %}">
+  </head>
+  
+  <body>
+    <header>
+      <!-- メニューバー -->
+      
+      <div class="hamburger-menu">
+        <input type="checkbox" id="menu-btn-check">
+        <label for="menu-btn-check" class="menu-btn"><span></span></label>
+        <div class="menu-content">
+          <ul>
+            <li>
+              <a href="{% url 'Mypage' user.id|add:"-1" %}">マイページ</a>
+            </li>
+            <li>
+              <a href="{% url 'Mypage_update' user.id|add:"-1" %}">マイページ更新</a>
+            </li>
+            <li>
+              <a href="{% url 'show_selectHobby' user.id|add:"-1" %}">趣味選択</a>
+            </li>
+	    <li>
+	      <a href="{% url 'selectHobby_update' user.id|add:"-1" %}">趣味再選択</a>
+	    </li>
+	    <li>
+	      <a href="{% url 'select' user.id|add:"-1" %}">性格診断</a>
+	    </li>
+	    <li>
+	      <a href="{% url 'userCheckDelete' user.id|add:"-1" %}">退会</a>
+	    </li>
+	    
+          </ul>
+        </div>
+      </div>
+
+      <div class="header-title-box">
+	<h1 class="header-title"><a href="{% url 'new_register' %}">アプリケーション</a></h1>
+      </div>
+      <nav class="header_nav">
+	<ul class="header-ul">
+	  <li class="header-li"><a href="{% url 'Mypage' user.id|add:"-1" %}">マイページ</a></li>
+	  <li class="header-li"><a href="{% url 'Logout' %}">ログアウト</a></li>
+	</ul>	
+      </nav>     
+    </header>
+    
+    <div class="page-body">
+      <div class="content container">
+	<div class="row">
+          {% block content %}
+          {% endblock %}
+	</div>
+      </div>
+    </div>
+  </body>
+</html>

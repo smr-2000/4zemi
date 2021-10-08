@@ -3,7 +3,7 @@
 {% block content %}
 
 
-<form action='{% url "updateUser" userinfo.id %}' enctype="multipart/form-data" method="post" autocomplete="off">
+<form action="{% url 'updateUser' userinfo.id %}" enctype="multipart/form-data" method="post" autocomplete="off">
   {% csrf_token %}
   <h1>ユーザー情報更新</h1>
   <div class="create-frame">
@@ -32,6 +32,11 @@
 	  <td>{{ userUpdateForm.school_name.label }}</td>
 	  <td>{{userUpdateForm.school_name}}</td>
 	  {{ userUpdateForm.school_name.errors }}
+	</tr>
+	<tr>
+	  <td>{{ userUpdateForm.school_major.label }}</td>
+	  <td colspan="2">{{ userUpdateForm.school_major }}</td>
+	  {{ userUpdateForm.school_major.errors }}
 	</tr>
 	<tr>
 	  <td>{{ userUpdateForm.school_grade.label }}</td>

@@ -147,11 +147,16 @@ def Login(request):
         Pass = request.POST.get('password')
 
         user = authenticate(username=ID, password=Pass)
-        userinfo = login.objects.all()
+
+        userinfo = get_object_or_404(login, pk=user.id-1)
+        alluser = login.objects.all()
+        userschool = login.objects.filter(school_name=userinfo.school_name)
        
         context = {
-            'user':user,
             'userinfo':userinfo,
+            'user':user,
+            'alluser':alluser,
+            'userschool':userschool,
         }
 
         if user:
@@ -171,16 +176,20 @@ def Login(request):
 
 
 #ログアウト
-@login_required
 def Logout(request):
     logout(request)
-    return HttpResponseRedirect(reverse('myApp/login_user'))
+    return render(request, 'myApp/login_user.html')
 
 #ログイン後ホーム
 def topScreen(request, id):
     userinfo = get_object_or_404(login, pk=id)
+    alluser = login.objects.all()
+    userschool = login.objects.filter(school_name=userinfo.school_name)
     context = {
-        "user":userinfo.user,
+        'userinfo':userinfo,
+        'user':userinfo.user,
+        'alluser':alluser,
+        'userschool':userschool,
     }
     return render(request, "myApp/topScreen.html",  context)
 
@@ -193,14 +202,31 @@ def UserUpdate(request, id):
     }
     return render(request, 'myApp/user_update.html',context)
 
-def updateUser(request,id):
+def updateUser(request, id):
     if request.method == 'POST':
-        userInfo = get_object_or_404(login,pk=id)
-        userUpdateForm = AddUserForm(request.POST, request.FILES, instance=userInfo)
+        userinfo = get_object_or_404(login,pk=id)
+        userUpdateForm = AddUserForm(request.POST, request.FILES, instance=userinfo)
+
+        context = {
+            'userinfo':userinfo,
+            'userUpdateForm':userUpdateForm,
+        }
+        
         if userUpdateForm.is_valid():
             userUpdateForm.save()
- 
-    return render(request, 'myApp/new_register.html')
+        else:
+            print(userUpdateForm.errors)
+            return(request, 'myApp/user_update.html', context)
+            
+    
+    alluser = login.objects.all()
+    userschool = login.objects.filter(school_name=userinfo.school_name)
+    params = {
+        "user":userinfo.user,
+        'alluser':alluser,
+        'userschool':userschool,
+    }
+    return render(request, "myApp/topScreen.html",  context=params)
 
 def showUserDetail(request, id):
     userinfo = get_object_or_404(login, pk=id)
