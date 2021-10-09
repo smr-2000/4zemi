@@ -1,0 +1,22 @@
+{% load static %}
+<html>
+  <head>
+    <title>{% block title %}base{% endblock %}</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/topScreenStyle.css' %}">
+  </head>
+  
+  <body>
+    <div class="page-header">
+      <h1><a href="{% url 'new_register' %}">アプリケーション</a></h1>
+    </div>
+    <div class="content container">
+      <div class="row">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </body>
+</html>

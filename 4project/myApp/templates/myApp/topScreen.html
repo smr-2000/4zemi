@@ -1,82 +1,87 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="jp">
-  <head>
-    <meta charset="UTF-8">
-    <title>Top Screen</title>
-    <link rel="stylesheet" href="{% static 'css/topScreenStyle.css' %}">
-  </head>
-  <body>
-    <p>{{ user.username }}さんようこそ！</p>
-    <div class="area2">
-      <div class="area1">
-	<input type="radio" name="tab_name" id="tab1" checked>
-	<label class="tab_class" for="tab1">趣味</label>
-	<div class="content_class">
-	  <p>趣味順で表示</p>
-	</div>
-	<input type="radio" name="tab_name" id="tab2" >
-	<label class="tab_class" for="tab2">性格</label>
-	<div class="content_class">
-	  <p>性格順で表示</p>
-	</div>
-	<input type="radio" name="tab_name" id="tab3" >
-	<label class="tab_class" for="tab3">大学</label>
-	<div class="content_class">
-	  <p>大学順で表示</p>
-	  {% for member in userinfo %}
-	  <tr>
-      <td><a href="{% url 'showDetail' user.id %}">{{ member.user.username }}</a></td>
-    </tr>
-    {% endfor %}
-	</div>
-	<input type="radio" name="tab_name" id="tab4" >
-	<label class="tab_class" for="tab4">地区</label>
-	<div class="content_class">
-	  <p>地区順で表示</p>
-	</div>
-	<input type="radio" name="tab_name" id="tab5" >
-	<label class="tab_class" for="tab5">お気に入り</label>
-	<div class="content_class">
-	  <p>お気に入りを表示</p>
-	</div>
-      </div>
-      
-      <div class="area3">
-	<input type="radio" name="tab_name" id="tab10" checked>
-	<label class="tab_class" for="tab10">友達探し</label>
-	<div class="content_class3">
-	  <p>
-	    <button class="detailsScreen" type="button" onClick="location.href='http://127.0.0.1:8000/details_screen'">詳細へ画面遷移</button>
-	  </p>
-	</div>
-	<input type="radio" name="tab_name" id="tab11" >
-	<label class="tab_class" for="tab11">メッセージ</label>
-	<div class="content_class3">
-	  <p>メッセージを表示</p>
-	</div>
-	<input type="radio" name="tab_name" id="tab12" >
-	<label class="tab_class" for="tab12"><a href="{% url 'user_update' user.id|add:"-1" %}">設定</a></label>
-	<div class="content_class3">
-	 <p>設定</p>
-	</div>
-	<input type="radio" name="tab_name" id="tab13" >
-	<label class="tab_class" for="tab13">お知らせ</label>
-	<div class="content_class3">
-	  <p>お知らせを表示</p>
-	</div>
-      </div>
+{% extends 'myApp/base_user.html' %}
+{% block title %}ホーム{% endblock %}
+{% block content %}
+
+<p>{{ user.username }}さんようこそ！</p>
+
+<div class="area2">
+  <div class="area1">
+    <input type="radio" name="tab_name" id="tab1" checked>
+    <label class="tab_class" for="tab1">趣味</label>
+    <div class="content_class">
+      <p>趣味順で表示</p>
     </div>
-    <p> ログアウトは
- <a href="{% url 'Logout' %}">こちら</a>
-    </p>
-    <p>マイページ<a href="{% url 'Mypage' user.id|add:"-1" %}">こちら</a></p>
-    <p>マイページ更新<a href="{% url 'Mypage_update' user.id|add:"-1" %}">こちら</a></p>
-    <p>趣味選択<a href="{% url 'show_selectHobby' user.id|add:"-1" %}">こちら</a></p>
-    <p>趣味再選択<a href="{% url 'selectHobby_update' user.id|add:"-1" %}">こちら</a></p>
-     <p>
-      性格診断は
-      <a href="{% url 'select' user.id|add:"-1" %}">こちら</a></p>
-    <p>退会<a href="{% url 'userCheckDelete' user.id|add:"-1" %}">こちら</a></p>
-  </body>
-</html>
+    <input type="radio" name="tab_name" id="tab2" >
+    <label class="tab_class" for="tab2">性格</label>
+    <div class="content_class">
+      <p>性格順で表示</p>
+    </div>
+    <input type="radio" name="tab_name" id="tab3" >
+    <label class="tab_class" for="tab3">大学</label>
+    <div class="content_class">
+      <p>大学順で表示</p>
+      
+      {% for user in userschool %}
+      <tr>
+	<td>
+	  <a href="{% url 'Mypage' user.id %}">{{ user.user.username }}</a>
+	  <div class="detail-box">
+	    <img src="/media/{{ user.picture }}" width="25%" height="25%" class="image">
+	  </div>
+	</td>
+      </tr>
+      {% endfor %}
+
+      
+    </div>
+    <input type="radio" name="tab_name" id="tab4" >
+    <label class="tab_class" for="tab4">地区</label>
+    <div class="content_class">
+      <p>地区順で表示</p>
+    </div>
+    <input type="radio" name="tab_name" id="tab5" >
+    <label class="tab_class" for="tab5">お気に入り</label>
+    <div class="content_class">
+      <p>お気に入りを表示</p>
+    </div>
+  </div>
+  
+  <div class="area3">
+    <input type="radio" name="tab_name" id="tab10" checked>
+    <label class="tab_class" for="tab10">友達探し</label>
+    <div class="content_class3">
+      <p>
+	<button class="detailsScreen" type="button" onClick="location.href='http://127.0.0.1:8000/details_screen'">詳細へ画面遷移</button>
+      </p>
+    </div>
+    <input type="radio" name="tab_name" id="tab11" >
+    <label class="tab_class" for="tab11">メッセージ</label>
+    <div class="content_class3">
+      <p>メッセージを表示</p>
+    </div>
+    <input type="radio" name="tab_name" id="tab12" >
+    <label class="tab_class" for="tab12"><a href="{% url 'user_update' user.id|add:"-1" %}">設定</a></label>
+    <div class="content_class3">
+      <p>設定</p>
+    </div>
+    <input type="radio" name="tab_name" id="tab13" >
+    <label class="tab_class" for="tab13">お知らせ</label>
+    <div class="content_class3">
+      <p>お知らせを表示</p>
+    </div>
+  </div>
+</div>
+
+<p> ログアウトは
+  <a href="{% url 'Logout' %}">こちら</a>
+</p>
+<p>マイページ<a href="{% url 'Mypage' user.id|add:"-1" %}">こちら</a></p>
+<p>マイページ更新<a href="{% url 'Mypage_update' user.id|add:"-1" %}">こちら</a></p>
+<p>趣味選択<a href="{% url 'show_selectHobby' user.id|add:"-1" %}">こちら</a></p>
+<p>趣味再選択<a href="{% url 'selectHobby_update' user.id|add:"-1" %}">こちら</a></p>
+<p>
+  性格診断は
+  <a href="{% url 'select' user.id|add:"-1" %}">こちら</a></p>
+<p>退会<a href="{% url 'userCheckDelete' user.id|add:"-1" %}">こちら</a></p>
+
+{% endblock %}
