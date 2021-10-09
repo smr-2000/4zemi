@@ -45,7 +45,6 @@ def personal_view(request,id):
         if pForm.is_valid():
             personalPost = pForm.save(commit=False)
             personalPost.user = userinfo
-            personalPost.save()
     params = {
         'title': '性格診断',
         'form':personalForm(),
@@ -62,17 +61,13 @@ def personal2(request,id):
     h = 4 - q[0].q8 + q[0].q3
     n = 4 - q[0].q9 + q[0].q4
     o = 4 - q[0].q10 + q[0].q5
-    per = personal.objects.create(diplomacy=d,cooperation=c,honesty=h,nerve=n,openness=o)
-    per.save()
+    if(personal.objects.filter(user=userinfo).exists()):
+        personal.objects.filter(user=userinfo).delete()
+    per = personal.objects.create(user=userinfo,diplomacy=d,cooperation=c,honesty=h,nerve=n,openness=o)
     context = {
-        'userinfo':userinfo,
-        'q':q,
-        'd':d,
-        'c':c,
-        'h':h,
-        'n':n,
-        'o':o
+         'userinfo':userinfo
         }
+    
     return render(request, 'myApp/personal2.html', context)
 
 #ユーザ情報を辞書に格納して、users.htmlに返す

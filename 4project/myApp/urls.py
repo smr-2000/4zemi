@@ -15,7 +15,7 @@ urlpatterns = [
     path('details_screen', views.details_screen, name='details_screen'),
      #性格診断
     path('<int:id>/personal', views.personal_view, name='personal'),
-    path('<int:id>personal2', views.personal2, name='personal2'),
+    path('<int:id>/personal2', views.personal2, name='personal2'),
     path('<int:id>/select', views.select, name='select'),
     
     #ユーザの詳細情報を表示する処理を呼び出す
