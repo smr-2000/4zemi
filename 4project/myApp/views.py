@@ -20,14 +20,28 @@ from .models import UserDetail
 from .models import hobby
 from .models import personal
 from .models import question
+import random
 
 # Create your views here.
 
 def new_register(request):
     return render(request, 'myApp/new_register.html', {})
 
-def details_screen(request):
-    return render(request, 'myApp/details-screen.html', {})
+def details_screen(request, id):
+    userinfo = get_object_or_404(login, pk=id)
+    userdetail = UserDetail.objects.filter(login_user=userinfo)
+
+    if userdetail.exists():
+        userinfoMypage = userdetail[0]
+        
+        context = {
+            'userinfo':userinfo,
+            'userinfoMypage':userinfoMypage
+        }
+        return render(request, 'myApp/details-screen.html', context)
+    else:
+       return HttpResponse("詳細ページが設定されていません")
+
 
 def create_completion(request):
     return render(request, 'myApp/create_completion.html', {})
@@ -143,21 +157,25 @@ def Login(request):
 
         user = authenticate(username=ID, password=Pass)
 
-        userinfo = get_object_or_404(login, pk=user.id-1)
-        alluser = login.objects.all()
-        userschool = login.objects.filter(school_name=userinfo.school_name)
-       
-        context = {
-            'userinfo':userinfo,
-            'user':user,
-            'alluser':alluser,
-            'userschool':userschool,
-        }
 
         if user:
             if user.is_active:
                 #ログイン
                 login(request, user)
+                userinfo = get_object_or_404(login, pk=user.id-1)
+                alluser = login.objects.all()
+                user_exclude = login.objects.exclude(id=userinfo.id)
+        
+                userschool = user_exclude.filter(school_name=userinfo.school_name)
+                userschool_random = userschool.order_by('?')[:10]
+       
+                context = {
+                    'userinfo':userinfo,
+                    'user':user,
+                    'alluser':alluser,
+                    'userschool_random':userschool_random,
+                }
+
                 return render(request, 'myApp/topScreen.html', context)
             else:
                 #アカウント利用不可
@@ -293,16 +311,24 @@ def showMypage(request,id):
         return render(request, "myApp/user_adddetail.html", context=params)
 
 def MypageUpdate(request, id):
-    userinfoMypage = get_object_or_404(UserDetail, pk=id)
-    user_detail_form = UserDetailForm(instance=userinfoMypage)
-    context = {
-        'userinfoMypage':userinfoMypage,
-        'user_detail_form':user_detail_form,
-    }
-    return render(request, 'myApp/mypage_update.html',context)
+    userinfo = get_object_or_404(login, pk=id)
+    userdetail = UserDetail.objects.filter(login_user=userinfo)
+
+    if userdetail.exists():
+        #userinfoMypage = get_object_or_404(UserDetail, pk=id)
+        userinfoMypage = userdetail[0]
+        user_detail_form = UserDetailForm(instance=userinfoMypage)
+        context = {
+            'userinfoMypage':userinfoMypage,
+            'user_detail_form':user_detail_form,
+        }
+        return render(request, 'myApp/mypage_update.html',context)
+    else:
+        return HttpResponse("詳細ページが設定されていません")
 
 
 def updateMypage(request,id):
+    
     if request.method == 'POST':
         userinfoMypage = get_object_or_404(UserDetail,pk=id)
         user_detail_form = UserDetailForm(request.POST, request.FILES, instance=userinfoMypage)
