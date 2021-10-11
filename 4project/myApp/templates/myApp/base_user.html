@@ -41,23 +41,16 @@
       </div>
 
       <div class="header-title-box">
-	<h1 class="header-title"><a href="{% url 'new_register' %}">アプリケーション</a></h1>
+	<h1 class="header-title"><a href="#" id="page-top">アプリケーション</a></h1>
       </div>
       <nav class="header_nav">
 	<ul class="header-ul">
-	  <li class="header-li"><a href="{% url 'Mypage' user.id|add:"-1" %}">マイページ</a></li>
+	  <li>{{ user.username }}</li>
 	  <li class="header-li"><a href="{% url 'Logout' %}">ログアウト</a></li>
 	</ul>	
       </nav>     
-    </header>
-    
-    <div class="page-body">
-      <div class="content container">
-	<div class="row">
+    </header>     
           {% block content %}
           {% endblock %}
-	</div>
-      </div>
-    </div>
   </body>
 </html>

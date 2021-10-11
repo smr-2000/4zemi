@@ -1,3 +1,10 @@
+body{
+    margin: 0px;
+    padding-left: 0px;
+    padding-top: 100px; 
+    line-height: normal;
+}
+
 a {	
    text-decoration: none;
    color: #4b4b4b;
@@ -13,10 +20,7 @@ header {
     display: flex;
     align-items: center;
 }
-.page-body {
-    padding-top:120px;
-    background-color:#red;
-}
+
 .header-title-box {
 
 }
@@ -123,98 +127,110 @@ nav {
 
 
 
-/* ホーム */
 
-.area1 { /* 横タブ */
-    width: 80vw;
-    position: fixed;
-    padding-left: 13.9vw;
+/* Mypageへ */
+.My-content {
+    padding: 20px;
+    width: 800px;
+    margin-left: auto;
     margin-right: auto;
-    flex-wrap: wrap;
-    display: flex;
+    margin-bottom: 30px;
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.3);
+}
+.My-box {
+    display: inline-block;
+    width: 150px;
+    padding-left: 30px;
+}
+.My-box-btn {
+    display: inline-block;
+    width: 200px;
+    padding-left: 30px;
 }
 
-.area3 { /* 縦タブ */
-    width: 70vw;
-    margin-left: 0px;
-    padding-top: 50px;
-    margin-right: 0px;
-    flex-wrap: wrap;
-    display: flex;
-    flex-direction: column; /* 縦に */
+.btn-user,a.btn-user {
+  color: #fff;
+  background-color: #add8e6;
+  font-weight: 700;
+  line-height: 1.5;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  border-radius: 25vh;
+  text-decoration: none;
 }
-p.content_class{
-    padding-left: 30vw;  
-}
-p.content_class3{
-    padding-top: 0px;  
-}
-
-.tab_class {
-    width: calc(100%/5);
-    height: 50px;
-    background-color: darkgrey;
-    line-height: 50px;
-    font-size: 15px;
-    text-align: center;
-    display: block;
-    float: left;
-    order: -1;
-}
-
-input[name="tab_name"] {
-    display: none;
-}
-
-input:checked + .tab_class {
-    background-color: cadetblue;
-    color: aliceblue;
-}
-
-.content_class {
-    display: none;
-    width: 100%;
-}
-.content_class3 {
-    display: none;
-    width: 100%;
-    padding-left: 10px;
-}
-
-.detailsScreen{
+.btn-user:hover,a.btn-user:hover {
     color: #fff;
-    border-radius: 5px;
-    background-color: #4676D7;
-    padding: 8px 16px;
-    font-size: 16px;
+    opacity: 0.75;
 }
 
-.tab-switch:checked + .tab_class + .content_class {
-    width:  100px/* calc(100% - 150px);  ボタン幅 */
-    height: 100%;
-    padding: 15px;
-    /*border-left: 1px solid Gray;*/
-    display: block;
+.friend-content {
 }
 
-input:checked + .tab_class + .content_class {
-    display: inline;
-    padding-left: 100px;
+/*タブ切り替え全体のスタイル*/
+.tabs {
+  margin-top: 50px;
+  padding-bottom: 40px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
 }
 
-input:checked + .tab_class + .content_class3 { /* 縦タブの文字表示 */
-    display: block;
-    padding-left: 200px;
-    padding-top: auto;
+/*タブのスタイル*/
+.tab_item {
+  width: calc(100%/4);
+  border-bottom: 3px solid  #ffb3b3;
+  background-color: #d9d9d9;
+  line-height: 50px;
+  font-size: 16px;
+  text-align: center;
+  color: #565656;
+  display: block;
+  float: left;
+  text-align: center;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+.tab_item:hover {
+  opacity: 0.75;
 }
 
-body{
-    margin: 0px;
-    padding-left: 0px;
-    padding-top: 0px;
-    /* font-family: arial, sans-serif; 
-    font-size: 10pt; */
-    line-height: normal;
+/*ラジオボタンを全て消す*/
+input[name="tab_item"] {
+  display: none;
+}
+
+/*タブ切り替えの中身のスタイル*/
+.tab_content {
+  display: none;
+  padding: 40px 40px 0;
+  clear: both;
+  overflow: hidden;
+}
+
+
+/*選択されているタブのコンテンツのみを表示*/
+#tab1:checked ~ #tab1_content,
+#tab2:checked ~ #tab2_content,
+#tab3:checked ~ #tab3_content,
+#tab4:checked ~ #tab4_content {
+  display: block;
+}
+
+/*選択されているタブのスタイルを変える*/
+.tabs input:checked + .tab_item {
+  background-color: #ffb3b3;
+  color: #fff;
+}
+
+/* 大学 */
+.detail-box {
+
+}
+.icon-image {
+     width:150px;
+    height:150px;
+    object-fit:cover;
+    border-radius:50%;
 }
 
 

@@ -1,4 +1,10 @@
 /* 共通 */
+body{
+    margin: 0px;
+    padding-left: 0px;
+    padding-top: 100px; 
+    line-height: normal;
+}
 h1 {
      text-align: center;
 }
@@ -18,6 +24,42 @@ h1 {
     background: #b0c4de;
     border-bottom: 2px solid #8d9eb3;
 }
+a {	
+   text-decoration: none;
+   color: #4b4b4b;
+}
+
+/* ヘッダー */
+header {
+    width: 100%;
+    padding: 10px 4% 10px;
+    background-color: #ffb3b3;
+    position: fixed;
+    top: 0;
+    display: flex;
+    align-items: center;
+}
+
+.header-title-box {
+
+}
+.header-title {
+}
+.header-ul {
+   list-style: none;
+   margin: 0;
+   display: flex;
+}
+.header-li {
+   margin: 0 0 0 15px;
+   font-size: 14px;
+}
+nav {
+   margin: 0 0 0 auto;
+}
+
+
+
 
 /* create.html */
 .create-frame {
@@ -80,3 +122,116 @@ h1 {
     object-fit:cover;
 }
     
+
+
+
+/* いいね */
+
+.Heart-Inner-Box-Item-LikesIcon-fa-heart{
+ font-size: 30px;
+}
+.Heart-Inner-Box-Item-LikesIcon-fa-heart.heart{
+ animation: heartAnimation 0.2s;
+ color: #e2264d;
+}
+.HeartAnimation {
+  display: inline-block;
+  background-position: right;
+  -webkit-animation-name: heartBlast;
+  animation-name: heartBlast;
+  -webkit-animation-duration: 0.8s;
+  animation-duration: 0.8s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-timing-function: steps(28);
+  animation-timing-function: steps(28);
+}
+
+@-moz-keyframes heartAnimation {
+  0% {
+/* アイコンサイズをもとのより小さくする */
+    transform: scale(0.5);
+  }
+  10% {
+    transform: scale(0.7);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1.5);
+  }
+  100% {
+/* もとのサイズに戻す */
+    transform: scale(1);
+  }
+}
+@-webkit-keyframes heartAnimation {
+  0% {
+/* アイコンサイズをもとのより小さくする */
+    transform: scale(0.5);
+  }
+  10% {
+    transform: scale(0.7);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1.5);
+  }
+  100% {
+/* もとのサイズに戻す */
+    transform: scale(1);
+  }
+}
+@-o-keyframes heartAnimation {
+  0% {
+/* アイコンサイズをもとのより小さくする */
+    transform: scale(0.5);
+  }
+  10% {
+    transform: scale(0.7);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1.5);
+  }
+  100% {
+/* もとのサイズに戻す */
+    transform: scale(1);
+  }
+}
+@keyframes heartAnimation {
+  0% {
+/* アイコンサイズをもとのより小さくする */
+    transform: scale(0.5);
+  }
+  10% {
+    transform: scale(0.7);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1.5);
+  }
+  100% {
+/* もとのサイズに戻す */
+    transform: scale(1);
+  }
+}

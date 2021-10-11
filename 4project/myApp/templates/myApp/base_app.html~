@@ -1,0 +1,27 @@
+{% load static %}
+<html>
+  <head>
+    <title>{% block title %}base{% endblock %}</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/topScreenStyle.css' %}">
+  </head>
+  
+  <body>
+    <header>
+      <div class="header-title-box">
+	<h1 class="header-title"><a href="{% url 'new_register' %}">アプリケーション</a></h1>
+      </div>
+      <nav class="header_nav">
+	<ul class="header-ul">
+	  <li>{{ user.username }}</li>
+	  <li class="header-li"><a href="{% url 'Mypage' user.id|add:"-1" %}">マイページ</a></li>
+	  <li class="header-li"><a href="{% url 'Logout' %}">ログアウト</a></li>
+	</ul>	
+      </nav>     
+    </header>     
+          {% block content %}
+          {% endblock %}
+  </body>
+</html>

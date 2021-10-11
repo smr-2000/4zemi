@@ -2,86 +2,168 @@
 {% block title %}ホーム{% endblock %}
 {% block content %}
 
-<p>{{ user.username }}さんようこそ！</p>
 
-<div class="area2">
-  <div class="area1">
-    <input type="radio" name="tab_name" id="tab1" checked>
-    <label class="tab_class" for="tab1">趣味</label>
-    <div class="content_class">
-      <p>趣味順で表示</p>
-    </div>
-    <input type="radio" name="tab_name" id="tab2" >
-    <label class="tab_class" for="tab2">性格</label>
-    <div class="content_class">
-      <p>性格順で表示</p>
-    </div>
-    <input type="radio" name="tab_name" id="tab3" >
-    <label class="tab_class" for="tab3">大学</label>
-    <div class="content_class">
-      <p>大学順で表示</p>
-      
-      {% for user in userschool %}
-      <tr>
-	<td>
-	  <a href="{% url 'Mypage' user.id %}">{{ user.user.username }}</a>
-	  <div class="detail-box">
-	    <img src="/media/{{ user.picture }}" width="25%" height="25%" class="image">
+<div class="friend-content">
+  <div class="tabs">
+    <input id="tab1" type="radio" name="tab_item" checked>
+    <label class="tab_item" for="tab1">趣味</label>
+    
+    <input id="tab2" type="radio" name="tab_item">
+    <label class="tab_item" for="tab2">性格</label>
+    
+    <input id="tab3" type="radio" name="tab_item">
+    <label class="tab_item" for="tab3">大学</label>
+
+    <input id="tab4" type="radio" name="tab_item">
+    <label class="tab_item" for="tab4">専攻</label>
+    
+    <div class="tab_content" id="tab1_content">
+      <div class="tab_content_description">
+	<p class="c-txtsp">
+	  趣味表示
+	  
+	  <div class="My-content">
+	    <img src="/media/{{ userinfo.picture }}" width="25%" height="25%" class="icon-image">
+
+	    <div class="My-box">
+	      <p>{{ user.username }}</p>
+	    </div>
+
+	    <div class="My-box">
+	      <p id="hobby"></p>
+	      <script>
+		if({{ userinfo.school_grade }}==5) {
+		document.getElementById("hobby").innerHTML = "学年 : 大学院生";
+		} else {
+		document.getElementById("hobby").innerHTML = "学年 : {{ userinfo.school_grade }}年生";
+		}
+	      </script>      
+	      <p>性別 : {{ userinfo.sexuality }}</p>
+	    </div>
+	    
+	    <div class="My-box-btn">
+	      <a href="{% url 'Mypage' user.id|add:"-1" %}" class="btn-user">マイページ</a>
+	    </div>
+	    
 	  </div>
-	</td>
-      </tr>
-      {% endfor %}
+	  <hr>
+	</p>
+      </div>
+    </div>
+    
+    <div class="tab_content" id="tab2_content">
+      <div class="tab_content_description">
+	<p class="c-txtsp">
+	  性格表示
+	  <div class="My-content">
+	    <img src="/media/{{ userinfo.picture }}" width="25%" height="25%" class="icon-image">
+	    <div class="My-box">
+	      <p>{{ user.username }}</p>
+	    </div>
+	    <div class="My-box">
+	      <p id="personality"></p>
+	      <script>
+		if({{ userinfo.school_grade }}==5) {
+		document.getElementById("personality").innerHTML = "学年 : 大学院生";
+		} else {
+		document.getElementById("personality").innerHTML = "学年 : {{ userinfo.school_grade }}年生";
+		}
+	      </script>      
+	      <p>性別 : {{ userinfo.sexuality }}</p>
+	    </div>
+	    <div class="My-box-btn">
+	      <a href="{% url 'Mypage' user.id|add:"-1" %}" class="btn-user">マイページ</a>
+	    </div>
+	  </div>
+	  <hr>
+	</p>
+      </div>
+    </div>
+    
+    <div class="tab_content" id="tab3_content">
+      <div class="tab_content_description">
+	<p class="c-txtsp">
+	  <div class="My-content">
+	    <img src="/media/{{ userinfo.picture }}" width="25%" height="25%" class="icon-image">
+	    <div class="My-box">
+	      <p>{{ user.username }}</p>
+	    </div>
+	    <div class="My-box">
+	      <p id="schoolgrade"></p>
+	      <script>
+		if({{ userinfo.school_grade }}==5) {
+		document.getElementById("schoolgrade").innerHTML = "学年 : 大学院生";
+		} else {
+		document.getElementById("schoolgrade").innerHTML = "学年 : {{ userinfo.school_grade }}年生";
+		}
+	      </script>      
+	      <p>性別 : {{ userinfo.sexuality }}</p>
+	    </div>
+	    <div class="My-box-btn">
+	      <a href="{% url 'Mypage' user.id|add:"-1" %}" class="btn-user">マイページ</a>
+	    </div>
+	  </div>
+	  <hr>
+	  {% for user in userschool_random %}
+	  <div class="My-content">
+	    <img src="/media/{{ user.picture }}" width="25%" height="25%" class="icon-image">
 
-      
+	    <div class="My-box">
+	      <p>{{ user.user.username }}</p>
+	    </div>
+
+	    <div class="My-box">
+	      <p id="{{ user.user.username }}"></p>
+	      <script>
+		if({{ user.school_grade }}==5) {
+		document.getElementById("{{ user.user.username }}").innerHTML = "学年 : 大学院生";
+		} else {
+		document.getElementById("{{ user.user.username }}").innerHTML = "学年 : {{ user.school_grade }}年生";
+		}
+	      </script>      
+	      <p>性別 : {{ user.sexuality }}</p>
+	    </div>
+	    <div class="My-box-btn">
+	      <a href="{% url 'details_screen' user.id %}" class="btn-user">詳細</a>
+	    </div>
+	  </div>
+	  {% endfor %}
+	</p>
+      </div>
     </div>
-    <input type="radio" name="tab_name" id="tab4" >
-    <label class="tab_class" for="tab4">地区</label>
-    <div class="content_class">
-      <p>地区順で表示</p>
+    
+    <div class="tab_content" id="tab4_content">
+      <div class="tab_content_description">
+	<p class="c-txtsp">
+	  専攻表示
+	  
+	  <div class="My-content">
+	    <img src="/media/{{ userinfo.picture }}" width="25%" height="25%" class="icon-image">
+	    <div class="My-box">
+	      <p>{{ user.username }}</p>
+	    </div>
+	    <div class="My-box">
+	      <p id="major"></p>
+	      <script>
+		if({{ userinfo.school_grade }}==5) {
+		document.getElementById("major").innerHTML = "学年 : 大学院生";
+		} else {
+		document.getElementById("major").innerHTML = "学年 : {{ userinfo.school_grade }}年生";
+		}
+	      </script>      
+	      <p>性別 : {{ userinfo.sexuality }}</p>
+	    </div>
+	    <div class="My-box-btn">
+	      <a href="{% url 'Mypage' user.id|add:"-1" %}" class="btn-user">マイページ</a>
+	    </div>
+	  </div>
+	  
+	  <hr>
+	</p>
+      </div>
     </div>
-    <input type="radio" name="tab_name" id="tab5" >
-    <label class="tab_class" for="tab5">お気に入り</label>
-    <div class="content_class">
-      <p>お気に入りを表示</p>
-    </div>
-  </div>
-  
-  <div class="area3">
-    <input type="radio" name="tab_name" id="tab10" checked>
-    <label class="tab_class" for="tab10">友達探し</label>
-    <div class="content_class3">
-      <p>
-	<button class="detailsScreen" type="button" onClick="location.href='http://127.0.0.1:8000/details_screen'">詳細へ画面遷移</button>
-      </p>
-    </div>
-    <input type="radio" name="tab_name" id="tab11" >
-    <label class="tab_class" for="tab11">メッセージ</label>
-    <div class="content_class3">
-      <p>メッセージを表示</p>
-    </div>
-    <input type="radio" name="tab_name" id="tab12" >
-    <label class="tab_class" for="tab12"><a href="{% url 'user_update' user.id|add:"-1" %}">設定</a></label>
-    <div class="content_class3">
-      <p>設定</p>
-    </div>
-    <input type="radio" name="tab_name" id="tab13" >
-    <label class="tab_class" for="tab13">お知らせ</label>
-    <div class="content_class3">
-      <p>お知らせを表示</p>
-    </div>
+
   </div>
 </div>
-
-<p> ログアウトは
-  <a href="{% url 'Logout' %}">こちら</a>
-</p>
-<p>マイページ<a href="{% url 'Mypage' user.id|add:"-1" %}">こちら</a></p>
-<p>マイページ更新<a href="{% url 'Mypage_update' user.id|add:"-1" %}">こちら</a></p>
-<p>趣味選択<a href="{% url 'show_selectHobby' user.id|add:"-1" %}">こちら</a></p>
-<p>趣味再選択<a href="{% url 'selectHobby_update' user.id|add:"-1" %}">こちら</a></p>
-<p>
-  性格診断は
-  <a href="{% url 'select' user.id|add:"-1" %}">こちら</a></p>
-<p>退会<a href="{% url 'userCheckDelete' user.id|add:"-1" %}">こちら</a></p>
 
 {% endblock %}
