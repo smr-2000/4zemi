@@ -24,8 +24,10 @@ import random
 
 # Create your views here.
 
+
 def new_register(request):
     return render(request, 'myApp/new_register.html', {})
+
 
 def details_screen(request, id):
     userinfo = get_object_or_404(login, pk=id)
@@ -157,7 +159,6 @@ def Login(request):
 
         user = authenticate(username=ID, password=Pass)
 
-
         if user:
             if user.is_active:
                 #ログイン
@@ -168,12 +169,16 @@ def Login(request):
         
                 userschool = user_exclude.filter(school_name=userinfo.school_name)
                 userschool_random = userschool.order_by('?')[:10]
+
+                usermajor = user_exclude.filter(school_major=userinfo.school_major)
+                usermajor_random = usermajor.order_by('?')[:10]
        
                 context = {
                     'userinfo':userinfo,
                     'user':user,
                     'alluser':alluser,
                     'userschool_random':userschool_random,
+                    'usermajor_random':usermajor_random,
                 }
 
                 return render(request, 'myApp/topScreen.html', context)
