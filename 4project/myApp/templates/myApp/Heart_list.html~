@@ -1,0 +1,4 @@
+{% extends 'myApp/base_user.html' %}
+{% load static %} 
+{% block title %}いいね一覧{% endblock %}
+{% block content %}

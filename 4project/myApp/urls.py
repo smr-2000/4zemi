@@ -13,6 +13,10 @@ urlpatterns = [
     path('', views.new_register, name='new_register'),
     path('<int:id>/topScreen', views.topScreen, name='topScreen'),
     path('<int:id>/details_screen', views.details_screen, name='details_screen'),
+    #いいね
+    path('<int:id>/Heart_add', views.Heart_add, name='Heart_add'),
+    #いいね一覧
+    path('<int:id>/Heart_list', views.Heart_list, name='Heart_list'),
      #性格診断
     path('<int:id>/personal', views.personal_view, name='personal'),
     path('<int:id>/personal2', views.personal2, name='personal2'),

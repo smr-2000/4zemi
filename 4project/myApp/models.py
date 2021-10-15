@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User  
+from django.contrib.auth.models import User
+
 
 class login(models.Model):
 
@@ -38,7 +39,7 @@ class hobby(models.Model):
 
 class UserDetail(models.Model):
    #外部キー
-   login_user = models.OneToOneField(login,on_delete=models.CASCADE)
+   login_user = models.OneToOneField(login, on_delete=models.CASCADE)
    photo1 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
    photo2 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
    photo3 = models.ImageField(upload_to='photos/', default='photos/photo_initial.jpeg')
@@ -72,11 +73,11 @@ class question(models.Model):
 
 class personal(models.Model):
    user = models.OneToOneField(login, on_delete=models.CASCADE)
-   diplomacy = models.IntegerField(null=False,blank=False);
-   cooperation = models.IntegerField(null=False,blank=False);
-   honesty = models.IntegerField(null=False,blank=False);
-   nerve = models.IntegerField(null=False,blank=False);
-   openness = models.IntegerField(null=False,blank=False);
+   diplomacy = models.IntegerField(null=False,blank=False)
+   cooperation = models.IntegerField(null=False,blank=False)
+   honesty = models.IntegerField(null=False,blank=False)
+   nerve = models.IntegerField(null=False,blank=False)
+   openness = models.IntegerField(null=False,blank=False)
    
    def __str__(self):
         return self.user.user.username
@@ -84,3 +85,10 @@ class personal(models.Model):
    def publish(self):
       self.save()
    
+
+class Heart(models.Model):
+   login_user = models.ForeignKey(login,on_delete=models.CASCADE, related_name='login_user')
+   heart_user = models.ForeignKey(login,on_delete=models.CASCADE, related_name='heart_user')
+
+   def __str__(self):
+        return self.login_user.user.username

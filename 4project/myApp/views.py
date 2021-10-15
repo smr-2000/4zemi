@@ -7,6 +7,7 @@ from .forms import AddUserForm
 from .forms import UserDetailForm
 from .forms import SelectHobby
 from .forms import personalForm
+from .forms import HeartForm
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -20,10 +21,12 @@ from .models import UserDetail
 from .models import hobby
 from .models import personal
 from .models import question
+from .models import Heart
 import random
 
 # Create your views here.
-
+user_username = "ユーザーネーム"
+user_pass = "パスワード"
 
 def new_register(request):
     return render(request, 'myApp/new_register.html', {})
@@ -33,17 +36,85 @@ def details_screen(request, id):
     userinfo = get_object_or_404(login, pk=id)
     userdetail = UserDetail.objects.filter(login_user=userinfo)
 
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     if userdetail.exists():
         userinfoMypage = userdetail[0]
         
         context = {
             'userinfo':userinfo,
-            'userinfoMypage':userinfoMypage
+            'userinfoMypage':userinfoMypage,
+            'user_username':user_username,
+            'user':user,
         }
         return render(request, 'myApp/details-screen.html', context)
     else:
        return HttpResponse("詳細ページが設定されていません")
 
+
+def Heart_add(request, id):
+    userinfo_hearted = get_object_or_404(login, pk=id)
+    userdetail_hearted = UserDetail.objects.filter(login_user=userinfo_hearted)
+    
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
+    userinfo = get_object_or_404(login, pk=user.id-1)
+    userdetail = UserDetail.objects.filter(login_user=userinfo)
+
+    #データベース追加
+    heart_add = Heart.objects.create(login_user=userinfo, heart_user=userinfo_hearted)
+    heart_add.save()
+
+   
+    if userdetail.exists():
+        userinfoMypage = userdetail_hearted[0]
+        
+        context = {
+            'userinfo':userinfo_hearted,
+            'userinfoMypage':userinfoMypage,
+            'user_username':user_username,
+            'user':user,
+        }
+        return render(request, 'myApp/details-screen.html', context)
+
+    else:
+       return HttpResponse("詳細ページが設定されていません")
+
+def Heart_list(request, id):
+    userinfo = get_object_or_404(login, pk=id)
+    userdetail = Heart.objects.filter(login_user=userinfo)
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
+    context = {
+        'userinfo':userinfo,
+        'userdetail':userdetail,
+        'user':user,
+    }
+
+    return render(request, 'myApp/Heart_list.html', context)
+    
 
 def create_completion(request):
     return render(request, 'myApp/create_completion.html', {})
@@ -159,6 +230,14 @@ def Login(request):
 
         user = authenticate(username=ID, password=Pass)
 
+        request.session['userpass'] = Pass
+        global user_pass
+        user_pass = request.session['userpass']
+
+        request.session['user_user_name'] = ID
+        global user_username
+        user_username = request.session['user_user_name']
+
         if user:
             if user.is_active:
                 #ログイン
@@ -196,19 +275,41 @@ def Login(request):
 #ログアウト
 def Logout(request):
     logout(request)
+    request.session.clear()
     return render(request, 'myApp/login_user.html')
 
 #ログイン後ホーム
 def topScreen(request, id):
     userinfo = get_object_or_404(login, pk=id)
+
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
+    
     alluser = login.objects.all()
-    userschool = login.objects.filter(school_name=userinfo.school_name)
+    user_exclude = login.objects.exclude(id=userinfo.id)
+    
+    userschool = user_exclude.filter(school_name=userinfo.school_name)
+    userschool_random = userschool.order_by('?')[:10]
+    
+    usermajor = user_exclude.filter(school_major=userinfo.school_major)
+    usermajor_random = usermajor.order_by('?')[:10]
+    
     context = {
         'userinfo':userinfo,
-        'user':userinfo.user,
+        'user':user,
         'alluser':alluser,
-        'userschool':userschool,
+        'userschool_random':userschool_random,
+        'usermajor_random':usermajor_random,
     }
+    
     return render(request, "myApp/topScreen.html",  context)
 
 def UserUpdate(request, id):
@@ -236,14 +337,34 @@ def updateUser(request, id):
             print(userUpdateForm.errors)
             return(request, 'myApp/user_update.html', context)
             
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     
     alluser = login.objects.all()
-    userschool = login.objects.filter(school_name=userinfo.school_name)
+    user_exclude = login.objects.exclude(id=userinfo.id)
+    
+    userschool = user_exclude.filter(school_name=userinfo.school_name)
+    userschool_random = userschool.order_by('?')[:10]
+    
+    usermajor = user_exclude.filter(school_major=userinfo.school_major)
+    usermajor_random = usermajor.order_by('?')[:10]
+    
     params = {
-        "user":userinfo.user,
+        'userinfo':userinfo,
+        'user':user,
         'alluser':alluser,
-        'userschool':userschool,
+        'userschool_random':userschool_random,
+        'usermajor_random':usermajor_random,
     }
+
     return render(request, "myApp/topScreen.html",  context=params)
 
 def showUserDetail(request, id):
@@ -294,12 +415,22 @@ def showMypage(request,id):
     userinfo = get_object_or_404(login, pk=id)
     userdetail = UserDetail.objects.filter(login_user=userinfo)
 
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)   
+
     if userdetail.exists():
         userinfoMypage = userdetail[0]
         
         context = {
             'userinfo':userinfo,
-            'userinfoMypage':userinfoMypage
+            'userinfoMypage':userinfoMypage,
+            'user':user,
         }
         return render(request, 'myApp/mypage.html', context)
 
@@ -428,3 +559,4 @@ def updateSelectHobby(request, id):
     }
     
     return render(request, 'myApp/new_register.html', context)
+

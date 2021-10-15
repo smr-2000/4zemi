@@ -113,12 +113,12 @@
 	    </div>
 
 	    <div class="My-box">
-	      <p id="{{ user.user.username }}"></p>
+	      <p id="{{ user.user.username }}school"></p>
 	      <script>
 		if({{ user.school_grade }}==5) {
-		document.getElementById("{{ user.user.username }}").innerHTML = "学年 : 大学院生";
+		document.getElementById("{{ user.user.username }}school").innerHTML = "学年 : 大学院生";
 		} else {
-		document.getElementById("{{ user.user.username }}").innerHTML = "学年 : {{ user.school_grade }}年生";
+		document.getElementById("{{ user.user.username }}school").innerHTML = "学年 : {{ user.school_grade }}年生";
 		}
 	      </script>      
 	      <p>性別 : {{ user.sexuality }}</p>
@@ -135,8 +135,6 @@
     <div class="tab_content" id="tab4_content">
       <div class="tab_content_description">
 	<p class="c-txtsp">
-	  専攻表示
-	  
 	  <div class="My-content">
 	    <img src="/media/{{ userinfo.picture }}" width="25%" height="25%" class="icon-image">
 	    <div class="My-box">
@@ -169,12 +167,12 @@
 	    </div>
 
 	    <div class="My-box">
-	      <p id="{{ user.user.username }}"></p>
+	      <p id="{{ user.user.username }}major"></p>
 	      <script>
 		if({{ user.school_grade }}==5) {
-		document.getElementById("{{ user.user.username }}").innerHTML = "学年 : 大学院生";
+		document.getElementById("{{ user.user.username }}major").innerHTML = "学年 : 大学院生";
 		} else {
-		document.getElementById("{{ user.user.username }}").innerHTML = "学年 : {{ user.school_grade }}年生";
+		document.getElementById("{{ user.user.username }}major").innerHTML = "学年 : {{ user.school_grade }}年生";
 		}
 	      </script>      
 	      <p>性別 : {{ user.sexuality }}</p>

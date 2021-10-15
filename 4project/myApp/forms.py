@@ -4,6 +4,7 @@ from .models import UserDetail
 from .models import hobby
 from .models import personal
 from .models import question
+from .models import Heart
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -149,3 +150,15 @@ class personalForm(forms.ModelForm):
       choice8 = forms.ChoiceField(label='後先考えずに行動して、ぎりぎりまで物事に手をつけない衝動的部分がある',choices=data2, widget=forms.RadioSelect())
       choice9 = forms.ChoiceField(label='大体リラックスして落ち着いている',choices=data2, widget=forms.RadioSelect())
       choice10 = forms.ChoiceField(label='物事を現実的に考え、常識破りなことはしない、割と保守的な考え方である',choices=data2, widget=forms.RadioSelect())
+
+
+
+class HeartForm(forms.ModelForm):
+   class Meta():
+      model = Heart
+      fields = (
+         'heart_user',
+      )
+      labels = {
+         'heart_user':'いいね',
+      }
