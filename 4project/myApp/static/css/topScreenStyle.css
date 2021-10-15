@@ -10,6 +10,27 @@ a {
    color: #4b4b4b;
 }
 
+h1 {
+     text-align: center;
+}
+.center {
+     text-align: center;
+}
+.btn {
+    margin: 30px 8px;;
+    color: #000;
+    background-color: #b0c4de;
+    border-bottom: 5px solid #8d9eb3;
+}
+
+.btn:hover {
+    margin-top: 33px;
+    color: #000;
+    background: #b0c4de;
+    border-bottom: 2px solid #8d9eb3;
+}
+
+
 /* ヘッダー */
 header {
     width: 100%;
@@ -145,7 +166,7 @@ nav {
 .My-box-btn {
     display: inline-block;
     width: 200px;
-    padding-left: 30px;
+    padding-left: 30px 0;
 }
 
 .btn-user,a.btn-user {
@@ -235,3 +256,169 @@ input[name="tab_item"] {
 
 
 
+
+/* Mypage */
+.detail-frame {
+    padding: 20px;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.3);
+}
+.image {
+    width:200px;
+    height:200px;
+    object-fit:cover;
+    border-radius:50%;
+}
+.mp-box {
+    display:inline-block;
+    width:200px;
+    margin:30px;
+}
+/*画像6枚*/
+.Mypage-frame {
+    margin: auto;
+    text-align: center;
+}
+.Mypage-box {
+     display: inline-block;
+}
+.Mypage_img {
+    width:150px;
+    height:180px;
+    object-fit:cover;
+}
+/*編集ボタン*/
+.My-box-btn {
+    display: inline-block;
+    width:200px;
+    margin:30px 0;
+}
+.btn-user,a.btn-user {
+  color: #fff;
+  background-color: #add8e6;
+  font-weight: 700;
+  line-height: 1.5;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  border-radius: 25vh;
+  text-decoration: none;
+}
+.btn-user:hover,a.btn-user:hover {
+    color: #fff;
+    opacity: 0.75;
+}
+
+
+/* いいね */
+
+.Heart-Inner-Box-Item-LikesIcon-fa-heart{
+ font-size: 30px;
+}
+.Heart-Inner-Box-Item-LikesIcon-fa-heart.heart{
+ animation: heartAnimation 0.2s;
+ color: #e2264d;
+}
+.HeartAnimation {
+  display: inline-block;
+  background-position: right;
+  -webkit-animation-name: heartBlast;
+  animation-name: heartBlast;
+  -webkit-animation-duration: 0.8s;
+  animation-duration: 0.8s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-timing-function: steps(28);
+  animation-timing-function: steps(28);
+}
+
+@-moz-keyframes heartAnimation {
+  0% {
+/* アイコンサイズをもとのより小さくする */
+    transform: scale(0.5);
+  }
+  10% {
+    transform: scale(0.7);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1.5);
+  }
+  100% {
+/* もとのサイズに戻す */
+    transform: scale(1);
+  }
+}
+@-webkit-keyframes heartAnimation {
+  0% {
+/* アイコンサイズをもとのより小さくする */
+    transform: scale(0.5);
+  }
+  10% {
+    transform: scale(0.7);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1.5);
+  }
+  100% {
+/* もとのサイズに戻す */
+    transform: scale(1);
+  }
+}
+@-o-keyframes heartAnimation {
+  0% {
+/* アイコンサイズをもとのより小さくする */
+    transform: scale(0.5);
+  }
+  10% {
+    transform: scale(0.7);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1.5);
+  }
+  100% {
+/* もとのサイズに戻す */
+    transform: scale(1);
+  }
+}
+@keyframes heartAnimation {
+  0% {
+/* アイコンサイズをもとのより小さくする */
+    transform: scale(0.5);
+  }
+  10% {
+    transform: scale(0.7);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1.5);
+  }
+  100% {
+/* もとのサイズに戻す */
+    transform: scale(1);
+  }
+}

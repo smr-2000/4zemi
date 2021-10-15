@@ -1,0 +1,10 @@
+{% extends 'myApp/base_user.html' %}
+{% load static %} 
+{% block title %}いいね一覧{% endblock %}
+{% block content %}
+<h1>いいね一覧</h1>
+{% for heart in userdetail %}
+  <li>{{ heart.heart_user }}</li>
+  <li><img src="/media/{{ heart.heart_user.picture }}" width="25%" height="25%" class="icon-image"></li>
+{% endfor %}
+{% endblock %}

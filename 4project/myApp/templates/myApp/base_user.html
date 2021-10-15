@@ -4,6 +4,7 @@
     <title>{% block title %}base{% endblock %}</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
     <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{% static 'css/topScreenStyle.css' %}">
   </head>
@@ -18,8 +19,14 @@
         <div class="menu-content">
           <ul>
             <li>
-              <a href="{% url 'Mypage' user.id|add:"-1" %}">マイページ</a>
+              <a href="{% url 'showDetail' user.id|add:"-1" %}">設定</a>
             </li>
+	    <li>
+	      <a href="{% url 'user_update' user.id|add:"-1" %}">設定編集</a>
+	    </li>
+	    <li>
+	      <a href="{% url 'Heart_list' user.id|add:"-1" %}">いいね一覧</a>
+	    </li>
             <li>
               <a href="{% url 'Mypage_update' user.id|add:"-1" %}">マイページ更新</a>
             </li>
@@ -41,7 +48,7 @@
       </div>
 
       <div class="header-title-box">
-	<h1 class="header-title"><a href="#" id="page-top">アプリケーション</a></h1>
+	<h1 class="header-title"><a href="{% url 'topScreen' user.id|add:"-1" %}" id="page-top">アプリケーション</a></h1>
       </div>
       <nav class="header_nav">
 	<ul class="header-ul">

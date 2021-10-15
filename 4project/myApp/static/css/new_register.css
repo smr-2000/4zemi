@@ -98,12 +98,21 @@ nav {
     object-fit:cover;
     border-radius:50%;
 }
+/*
 .detail-frame {
     border: solid;
     padding: 50px;
     margin: auto;
-    width:700px;
+    width:1000px;
     text-align: center;
+}*/
+.detail-frame {
+    padding: 20px;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.3);
 }
 .detail-box {
     display: inline-block;
@@ -113,6 +122,16 @@ nav {
 
 
 /* Mypage */
+.mp-box {
+    display:inline-block;
+    width:200px;
+    margin:30px;
+}
+/*画像6枚*/
+.Mypage-frame {
+    margin: auto;
+    text-align: center;
+}
 .Mypage-box {
      display: inline-block;
 }
@@ -121,8 +140,26 @@ nav {
     height:180px;
     object-fit:cover;
 }
-    
-
+/*編集ボタン*/
+.My-box-btn {
+    display: inline-block;
+    width:200px;
+    margin:30px 0;
+}
+.btn-user,a.btn-user {
+  color: #fff;
+  background-color: #add8e6;
+  font-weight: 700;
+  line-height: 1.5;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  border-radius: 25vh;
+  text-decoration: none;
+}
+.btn-user:hover,a.btn-user:hover {
+    color: #fff;
+    opacity: 0.75;
+}
 
 
 /* いいね */
