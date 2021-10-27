@@ -22,14 +22,8 @@
               <a href="{% url 'showDetail' user.id|add:"-1" %}">設定</a>
             </li>
 	    <li>
-	      <a href="{% url 'user_update' user.id|add:"-1" %}">設定編集</a>
-	    </li>
-	    <li>
 	      <a href="{% url 'Heart_list' user.id|add:"-1" %}">いいね一覧</a>
 	    </li>
-            <li>
-              <a href="{% url 'Mypage_update' user.id|add:"-1" %}">マイページ更新</a>
-            </li>
             <li>
               <a href="{% url 'show_selectHobby' user.id|add:"-1" %}">趣味選択</a>
             </li>

@@ -1,21 +1,48 @@
-{% extends 'myApp/base.html' %}
-{% block title %}ログイン{% endblock %}
-{% block content %}
-
-<form method="POST" action="{% url 'login_user' %}">
-  {% csrf_token %}
-  <label for="userid">ユーザー名</label>
-  <input type="text" name="userid">
+{% load static %}
+<html>
+  <head>
+    <title>ログイン</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/login_user.css' %}">
+  </head>
   
-  <label for="password">パスワード</label>
-  <input type="password" name="password">
+  <body>
 
-  <div class="center">
-  <a href='{% url "new_register" %}' class="btn">戻る</a>
-  <input type="submit" class="btn" value="Login">
-  </div>
-  <p class="message">アカウントをお持ちですか？：
-   <a href="{% url 'showCreateForm' %}">新規登録</a>
-   </p>
-</form>
-{% endblock %}
+    <div class="login_title">
+      <!--<p>title</p>-->
+      <image src="/media/appimg/TH11.png" class="login_img">
+    </div>
+
+    <div class="login_form">
+      <div class="login_action">
+	<form method="POST" action="{% url 'login_user' %}">
+	  {% csrf_token %}
+	  <p class="login_login">
+	    ログイン
+	  </p>
+	  <div class="login_userid">
+	    <label for="userid">ユーザー名</label>
+	    <input type="text" name="userid">
+	  </div>
+
+	  <div class="login_pass">
+	    <label for="password">パスワード</label>
+	    <input type="password" name="password">
+	  </div>
+
+	  
+	  <div class="center">
+	    <a href='{% url "new_register" %}' class="btn">戻る</a>
+	    <input type="submit" class="btn" value="Login">
+	  </div>
+	  <p class="message">アカウントをお持ちでない方：
+	    <a href="{% url 'showCreateForm' %}">新規登録</a>
+	  </p>
+	</form>
+      </div>
+    </div>
+  </body>
+</html>
+

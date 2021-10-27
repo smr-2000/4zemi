@@ -89,6 +89,7 @@ class personal(models.Model):
 class Heart(models.Model):
    login_user = models.ForeignKey(login,on_delete=models.CASCADE, related_name='login_user')
    heart_user = models.ForeignKey(login,on_delete=models.CASCADE, related_name='heart_user')
+   heart_check = models.BooleanField(default=False)
 
    def __str__(self):
         return self.login_user.user.username

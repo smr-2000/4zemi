@@ -1,37 +1,79 @@
-{% extends 'myApp/base.html' %}
-{% block title %}詳細情報{% endblock %}
+{% extends 'myApp/base_user.html' %}
+{% block title %}設定{% endblock %}
 {% block content %}
-<h1>ユーザの詳細情報</h1>
-<div class="detail-frame">
-  <div class="detail-box">
-    <img src="/media/{{ userinfoDetail.picture }}" width="25%" height="25%" class="image">
-  </div>
-  <div class="detail-box">
-    <table>
-      <tr>
-	<td>ユーザー名：</td>
-	<td>{{userinfoDetail.user.username}}</td>
-      </tr>
-      <tr>
-	<td>メールアドレス：</td>
-	<td>{{userinfoDetail.user.email}}</td>
-      </tr>
-      <tr>     
-	<td>名前：</td>
-	<td>{{userinfoDetail.last_name}}{{userinfoDetail.first_name}}</td>
-      </tr>
-      <tr>
-	<td>学校名：</td>
-	<td>{{userinfoDetail.school_name}}</td>
-      </tr>
-      <tr>
-	<td>学年：</td>
-	<td>{{userinfoDetail.school_grade}}</td>
-      </tr>
-    </table>
+<h1>設定</h1>
+<div class="userdetail-frame">
+  <div class="userdetail-center">
+    <div class="userdetail-name-box">
+      <img src="/media/{{ userinfoDetail.picture }}" width="25%" height="25%" class="image">
+    </div>
+    <div class="userdetail-name-box">
+      <p>{{ userinfoDetail.user.username }}</p>
+    </div>
+    <div class="userdetail-box">
+      <table>
+	<tr>     
+	  <td class="userdetail-tr">名前：</td>
+	  <td>{{ userinfoDetail.last_name }}{{ userinfoDetail.first_name }}</td>
+	</tr>
+	<tr>
+	  <td class="userdetail-tr">メールアドレス：</td>
+	  <td>{{ userinfoDetail.user.email }}</td>
+	</tr>
+	<tr>
+	  <td class="userdetail-tr">生年月日：</td>
+	  <td>{{ userinfoDetail.birth }}</td>
+	</tr>
+	<tr>
+	  <td class="userdetail-tr">大学：</td>
+	  <td>{{ userinfoDetail.school_name }}</td>
+	</tr>
+	<tr>
+	  <td class="userdetail-tr">専攻：</td>
+	  <td>{{ userinfoDetail.get_school_major_display }}</td>
+	</tr>
+	<tr>
+	  <td class="userdetail-tr">学年：</td>
+	  <td>{{ userinfoDetail.get_school_grade_display }}</td>
+	</tr>
+	<tr>
+	  <td class="userdetail-tr">性別：</td>
+	  <td>{{ userinfoDetail.sexuality }}</td>
+	</tr>
+	<tr>
+	  <td class="userdetail-tr">Instagram：</td>
+	  {% if userinfoDetail.insta_ID is not None %}
+	  <td>{{ userinfoDetail.insta_ID }}</td>
+	  {% else %}
+	  <td>未設定</td>
+	  {% endif %}
+	</tr>
+	<tr>
+	  <td class="userdetail-tr">Twitter：</td>
+	  {% if userinfoDetail.twitter_ID is not None %}
+	  <td>{{ userinfoDetail.twitter_ID }}</td>
+	   {% else %}
+	  <td>未設定</td>
+	  {% endif %}
+	</tr>
+	{% if userinfoDetail.SNS_name1 is not None %}
+	<tr>
+	  <td class="userdetail-tr">{{ userinfoDetail.SNS_name1 }}：</td>
+	  <td>{{ userinfoDetail.SNS_ID1 }}</td>
+	</tr>
+	{% endif %}
+	{% if userinfoDetail.SNS_name2 is not None %}
+	<tr>
+	  <td class="userdetail-tr">{{ userinfoDetail.SNS_name2 }}：</td>
+	  <td>{{ userinfoDetail.SNS_ID2 }}</td>
+	</tr>
+	{% endif %}
+      </table>
+    </div>
   </div>
 </div>
 <div class="center">
   <a href="javascript:history.back()" class="btn">戻る</a>
+  <a href="{% url 'user_update' user.id|add:"-1" %}" class="btn">編集</a>
 </div>
 {% endblock %}

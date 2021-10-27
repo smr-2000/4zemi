@@ -1,0 +1,12 @@
+/* ログイン画面 */
+.login_title {
+    width:50%;
+    height:400px;
+    float: left;
+    border:solid;
+}
+.login_form {
+    width:50%;
+    float: left;
+    border:solid;
+}

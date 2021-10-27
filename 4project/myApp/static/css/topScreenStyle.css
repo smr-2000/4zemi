@@ -162,6 +162,7 @@ nav {
     display: inline-block;
     width: 150px;
     padding-left: 30px;
+    vertical-align: middle;
 }
 .My-box-btn {
     display: inline-block;
@@ -421,4 +422,31 @@ input[name="tab_item"] {
 /* もとのサイズに戻す */
     transform: scale(1);
   }
+}
+
+/* detail.html */
+.userdetail-frame {
+    padding: 20px;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    text-align:center;
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.3);
+}
+.userdetail-center {
+    display: inline-block;
+    text-align:left;
+}
+.userdetail-name-box {
+    display: inline-block;
+    padding:20px;
+    vertical-align: middle;
+}
+.userdetail-box {
+    padding:20px;
+    vertical-align: middle;
+}
+.userdetail-tr {
+    padding:15px;
 }
