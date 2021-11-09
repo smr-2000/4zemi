@@ -7,8 +7,6 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 from django.conf.urls import url
 
-
-
 urlpatterns = [
     path('', views.new_register, name='new_register'),
     path('<int:id>/topScreen', views.topScreen, name='topScreen'),
