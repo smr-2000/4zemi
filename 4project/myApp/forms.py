@@ -99,7 +99,7 @@ class SelectHobby(forms.ModelForm):
          'hobby3',
       )
       labels = {
-         'hobby1':'1番好きな趣味*',
+         'hobby1':'1番好きな趣味',
          'hobby2':'2番目に好きな趣味',
          'hobby3':'3番目に好きな趣味',
       }

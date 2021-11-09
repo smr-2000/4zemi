@@ -1,0 +1,22 @@
+{% load static %}
+<html>
+  <head>
+    <title>{% block title %}base{% endlock %}</title>
+    <link rel="stylesheet" href="//maxcdn.boostrapcdn.com/boostrap/3.2.0/css/boostrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.boostrapcdn.com/boostrap/3.2.0/css/boostrap-theme.min.css">
+    <link href='//fonts.googleapis.com/css/family=Lobster$subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/new_register.css' %}">
+  </head>
+
+  <body>
+    <div class="page-header">
+      <h1><a href="{% url 'new_register' %}">アプリケーション</a></h1>
+    </div>
+    <div class="content container">
+      <div class="row">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </body>
+</html>

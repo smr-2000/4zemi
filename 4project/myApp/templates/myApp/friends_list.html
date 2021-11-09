@@ -1,0 +1,19 @@
+{% extends 'myApp/base_app.html' %}
+{% load static %} 
+{% block title %}友達一覧{% endblock %}
+{% block content %}
+<h1>友達一覧</h1>
+{% for alluser in friends_list %}
+      <tr>
+	<td>
+	  <a href="{% url 'Mypage' alluser.id %}">{{ alluser }}</a>
+	  <div class="detail-box">
+	    <img src="/media/{{ alluser.picture }}" width="25%" height="25%" class="image">
+	  </div>
+	  	
+	</td>
+	
+      </tr>
+      
+{% endfor %}
+{% endblock %}

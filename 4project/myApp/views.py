@@ -22,6 +22,8 @@ from .models import hobby
 from .models import personal
 from .models import question
 from .models import Heart
+from .models import Friend_request
+from .models import Friend_list
 import random
 
 # Create your views here.
@@ -32,7 +34,7 @@ def new_register(request):
     return render(request, 'myApp/new_register.html', {})
 
 
-def details_screen(request, id):
+def details_screen(request, id,user_id):
     userinfo = get_object_or_404(login, pk=id)
     userdetail = UserDetail.objects.filter(login_user=userinfo)
     
@@ -580,7 +582,6 @@ def showSelectHobby(request,id):
     params["favorite_hobby"] = SelectHobby()
     return render(request, 'myApp/selectHobby.html', context=params)
 
-
 def addSelectHobby(request,id):
     userinfo = get_object_or_404(login, pk=id)
     params = {
@@ -606,7 +607,7 @@ def addSelectHobby(request,id):
         'userselectHobby':userselectHobby,
     }
         
-    return render(request, 'myApp/new_register.html', context=mypagetext)
+    return render(request, 'myApp/select.html', context=mypagetext)
 
 
 def showUpdateSelectHobby(request,id):
@@ -621,16 +622,187 @@ def showUpdateSelectHobby(request,id):
    
 
 def updateSelectHobby(request, id):
+    
     if request.method == "POST":
+        userinfo = get_object_or_404(login, pk=id)
         userinfoHobby = get_object_or_404(hobby, pk=id)
         favorite_hobby = SelectHobby(request.POST, request.FILES, instance=userinfoHobby)
+
+        context = {
+            'userinfoHobby':userinfoHobby,
+            'favorite_hobby':favorite_hobby,
+        }
+        
         if favorite_hobby.is_valid():
             favorite_hobby.save()
 
+        else:
+            print(favorite_hobby.errors)
+            return(request, 'myApp/update_selectHobby.html', context)
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
+    userselecthobby = login
+
+    alluser = login.objects.all()
+    user_exclude = login.objects.exclude(id=userinfo.id)
+    
+    userschool = user_exclude.filter(school_name=userinfo.school_name)
+    userschool_random = userschool.order_by('?')[:10]
+    
+    usermajor = user_exclude.filter(school_major=userinfo.school_major)
+    usermajor_random = usermajor.order_by('?')[:10]
+
     userinfoHobby = get_object_or_404(hobby, pk=id)
-    context = {
-        'userinfoHobby':userinfoHobby,
+    
+    params = {
+        'userinfo':userinfo,
+        'user':user,
+        'alluser':alluser,
+        'userschool_random':userschool_random,
+        'usermajor_random':usermajor_random,
     }
     
-    return render(request, 'myApp/new_register.html', context)
+    return render(request, 'myApp/topScreen.html', context=params)
+
+def friend_request(request,id,user_id):
+    userinfo = get_object_or_404(login, pk=id)#申請される側
+    user_id = int(user_id) -1
+    if(Friend_request.objects.filter(user=userinfo).exists()):
+        req = Friend_request.objects.filter(user=userinfo)
+        req_list = req[0].friend_req.split(',')
+        if str(user_id) in req_list:
+            req_list.remove(str(user_id))
+        req_list.append(str(user_id))
+        req_list = ', '.join(map(str, req_list))
+        Friend_request.objects.filter(user=userinfo).delete()
+    else:
+        req_list = str(user_id)
+    Friend_request.objects.create(user=userinfo,friend_req=req_list)
+    context = {
+        'userinfo':userinfo,
+        'user_id':user_id,
+        're':req_list
+        }
+    return render(request, 'myApp/friend_request.html', context)
+ 
+def friend_req_list(request,id):
+    userinfo = get_object_or_404(login, pk=id)
+    if(Friend_request.objects.filter(user=userinfo).exists()):
+        req = Friend_request.objects.filter(user=userinfo)
+        req_list=req[0].friend_req.split(',')#フレンド申請一覧（配列型）
+        alluser = login.objects.all()#全部のユーザー
+        req_friend = []
+        i=0
+        for i in range(len(req_list)):
+            req_friend.append(get_object_or_404(login, pk=req_list[i]))
+        context = {
+        'req_friend':req_friend,
+        'userinfo':userinfo,
+        'alluser':alluser
+       
+        }
+        return render(request, 'myApp/friend_req_list.html',context)
+    else:
+        return HttpResponse("友達申請はありません")
+
+def friend_allow(request,id,allow_id):
+    userinfo = get_object_or_404(login, pk=id)#許可する側
+    userinfo2 = get_object_or_404(login, pk=allow_id)#許可される側
+    allow_id = allow_id
+    
+    #許可した側のフレンド申請から申請した側を削除する
+    req = Friend_request.objects.filter(user=userinfo)
+    if  len(req[0].friend_req) == 1:
+        Friend_request.objects.filter(user=userinfo).delete()
+    else:
+        req_list=req[0].friend_req.split(',')#許可する側フレンド申請一覧（配列型）
+        req_list.remove(allow_id)
+        req_list.remove(',')
+        req_list = ', '.join(map(str, req_list))
+        Friend_request.objects.filter(user=userinfo).delete()
+        Friend_request.objects.create(user=userinfo,friend_req=req_list)
+   
+    #双方の友達リストにお互いを追加する(許可する側)
+    if(Friend_list.objects.filter(user=userinfo).exists()):
+        list1 = Friend_list.objects.filter(user=userinfo)#許可する側の友達リスト
+        user_f_list = list1[0].friend_req.split(',')
+        user_f_list.append(','+str(allow_id))
+        add_f_list = ','.join(str(user_f_list))
+        Friend_list.objects.filter(user=userinfo).delete()
+    else:
+        add_f_list = str(allow_id)
+    Friend_list.objects.create(user=userinfo,friend_req=add_f_list)
+
+     #双方の友達リストにお互いを追加する(申請する側)
+    if(Friend_list.objects.filter(user=userinfo2).exists()):
+        list2 = Friend_list.objects.filter(user=userinfo2)#許可する側の友達リスト
+        user_f_list2 = list2[0].friend_req.split(',')
+        user_f_list2.append(id)
+        add_f_list2 = ','.join(','+str(user_f_list2))
+        Friend_list.objects.filter(user=userinfo2).delete()
+    else:
+        add_f_list2 = str(id)
+    Friend_list.objects.create(user=userinfo2,friend_req=add_f_list2)
+    
+    context = {
+        'userinfo':userinfo,
+        'allow_id':allow_id,
+        }
+
+    return render(request, 'myApp/friend_allow.html', context)
+
+def friends_list(request,id):
+    userinfo = get_object_or_404(login, pk=id)
+    if(Friend_list.objects.filter(user=userinfo).exists()):
+        req = Friend_list.objects.filter(user=userinfo)
+        req_list=req[0].friend_req.split(',')#フレンド申請一覧（配列型）
+        i=0
+        alluser = login.objects.all()#全部のユーザー
+        friends_list = []
+        for i in range(len(req_list)):
+            req_list[i] = int(req_list[i])
+            friends_list.append(get_object_or_404(login, pk=req_list[i]))
+  
+            context = {
+                're':req_list,
+                'userinfo':userinfo,
+                'alluser':alluser,
+                'friends_list':friends_list
+       
+            }
+            return render(request, 'myApp/friends_list.html',context)
+
+        else:
+            return HttpResponse("友達はありません")
+
+def friend_delete(request,id,allow_id):
+    userinfo = get_object_or_404(login, pk=id)#削除する側
+    userinfo2 = get_object_or_404(login, pk=allow_id)#削除する側
+    allow_id = allow_id
+    req = Friend_request.objects.filter(user=userinfo)
+    if  len(req[0].friend_req) == 1:
+        Friend_request.objects.filter(user=userinfo).delete()
+    else:
+        req_list=req[0].friend_req.split(',')#許可する側フレンド申請一覧（配列型）
+        req_list.remove(allow_id)
+        req_list.remove(',')
+        req_list = ', '.join(map(str, req_list))
+        Friend_request.objects.filter(user=userinfo).delete()
+        Friend_request.objects.create(user=userinfo,friend_req=req_list)
+    context = {
+        'userinfo':userinfo,
+        'allow_id':allow_id,
+        }
+
+    return render(request, 'myApp/friend_delete.html', context)
+
+
 

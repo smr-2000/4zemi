@@ -7,12 +7,10 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 from django.conf.urls import url
 
-
-
 urlpatterns = [
     path('', views.new_register, name='new_register'),
     path('<int:id>/topScreen', views.topScreen, name='topScreen'),
-    path('<int:id>/details_screen', views.details_screen, name='details_screen'),
+    path('<int:id>/<int:user_id>/details_screen', views.details_screen, name='details_screen'),
     #いいね
     path('<int:id>/Heart_add', views.Heart_add, name='Heart_add'),
     #いいね一覧
@@ -21,6 +19,13 @@ urlpatterns = [
     path('<int:id>/personal', views.personal_view, name='personal'),
     path('<int:id>/personal2', views.personal2, name='personal2'),
     path('<int:id>/select', views.select, name='select'),
+
+     #フレンド申請
+    path('<int:id>/<user_id>/friend_request', views.friend_request, name='friend_request'),
+    path('<int:id>/friend_req_list', views.friend_req_list, name='friend_req_list'),
+    path('<int:id>/friends_list', views.friends_list, name='friends_list'),
+    path('<int:id>/<int:allow_id>/friend_allow', views.friend_allow, name='friend_allow'),
+    path('<int:id>/<int:allow_id>/friend_delete', views.friend_delete, name='friend_delete'),
     
     #ユーザの詳細情報を表示する処理を呼び出す
     path('<int:id>', views.showDetail, name='showDetail'),
