@@ -1,9 +1,11 @@
-{% extends 'myApp/base.html' %}
-{% block title %}アプリケーション{% endblock %}
+{% extends 'myApp/base_app.html' %}
+{% block title %}新規登録{% endblock %}
 {% block content %}
-<h1>登録完了！</h1>
-<p>ログインをしてお楽しみください。</p>
-<div class="center">
-  <a href='{% url "new_register" %}' class="btn">ログイン</a>
+<div class="center-delete">
+  <h1>登録完了！</h1>
+  <p>ログインをしてお楽しみください。</p>
+  <div class="center">
+    <a href='{% url "login_user" %}' class="btn">ログイン</a>
+  </div>
 </div>
 {% endblock %}

@@ -357,9 +357,20 @@ def topScreen(request, id):
 def UserUpdate(request, id):
     userinfo = get_object_or_404(login, pk=id)
     userUpdateForm = AddUserForm(instance=userinfo)
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     context = {
         'userinfo':userinfo,
         'userUpdateForm':userUpdateForm,
+        'user':user,
     }
     return render(request, 'myApp/user_update.html',context)
 
@@ -492,6 +503,15 @@ def MypageUpdate(request, id):
     userinfo = get_object_or_404(login, pk=id)
     userdetail = UserDetail.objects.filter(login_user=userinfo)
 
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     if userdetail.exists():
         #userinfoMypage = get_object_or_404(UserDetail, pk=id)
         userinfoMypage = userdetail[0]
@@ -499,6 +519,7 @@ def MypageUpdate(request, id):
         context = {
             'userinfoMypage':userinfoMypage,
             'user_detail_form':user_detail_form,
+            'user':user,
         }
         return render(request, 'myApp/mypage_update.html',context)
     else:
@@ -525,8 +546,19 @@ def updateMypage(request,id):
 
 def UserCheckDelete(request, id):
     userinfo = get_object_or_404(login,pk=id)
+    
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     context = {
-        'userinfo':userinfo
+        'userinfo':userinfo,
+        'user':user,
     }
     return render(request, 'myApp/user_delete.html', context)
     

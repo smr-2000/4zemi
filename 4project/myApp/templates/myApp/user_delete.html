@@ -1,11 +1,13 @@
-{% extends 'myApp/base.html' %}
+{% extends 'myApp/base_user.html' %}
 {% block title %}退会{% endblock %}
 {% block content %}
 
 <form  method="post" action='{% url "userDelete" userinfo.id %}'>
   {% csrf_token %}
-  <p>あなたのアカウント「{{ userinfo.user.username }}」を、本当に削除してもよろしいですか？</p>
-  
-  <input type="submit" class="btn" value="退会">
+  <div class="center-delete">
+    <p>あなたのアカウント「{{ userinfo.user.username }}」を、本当に削除してもよろしいですか？</p>
+    
+    <input type="submit" class="btn" value="削除">
+  </div>
 </form>
 {% endblock %}
