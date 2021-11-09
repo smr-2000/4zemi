@@ -94,3 +94,23 @@ class Heart(models.Model):
 
    def __str__(self):
         return self.login_user.user.username
+
+class Friend_request(models.Model):
+    user = models.OneToOneField(login, on_delete=models.CASCADE)
+    friend_req = models.TextField(blank=True)
+    def __str__(self):
+        return self.user.user.username
+
+    def publish(self):
+       self.save()
+       
+class Friend_list(models.Model):
+    user = models.OneToOneField(login, on_delete=models.CASCADE)
+    friend_req = models.TextField(blank=True)
+    def __str__(self):
+        return self.user.user.username
+
+    def publish(self):
+       self.save()
+       
+   
