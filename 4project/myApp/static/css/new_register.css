@@ -273,6 +273,8 @@ nav {
   }
 }
 
+<<<<<<< HEAD
+=======
 /* selectHobby.html */
 
 .create-frame-hobby {
@@ -371,3 +373,4 @@ input[type="checkbox"]:checked + label img {
     color: #aaa;
     transform: none;
 }
+>>>>>>> bf6a0a23a2d63c729402bb81cbbeac08ec4e83ab

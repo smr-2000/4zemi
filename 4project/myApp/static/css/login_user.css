@@ -1,0 +1,65 @@
+.center {
+     text-align: center;
+}
+.btn {
+    margin: 10px 8px;
+    color: #000;
+    background-color: #ffb3b3;
+    border-bottom: 5px solid #d99898;
+}
+
+.btn:hover {
+    margin-top: 13px;
+    color: #000;
+    background: #ffb3b3;
+    border-bottom: 2px solid #d99898;
+}
+.message {
+    margin-top:20px;
+}
+/* ログイン画面 */
+.login_title {
+    width:50%;
+    height:100%;
+    float: left;
+    text-align:center;
+}
+.login_img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+	       
+}
+.login_form {
+    width:50%;
+    float: left;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color:#ffebeb;
+}
+.login_action {
+    border:solid #696969;
+    width:400px;
+    height:450px;
+    display: inline-block;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius:20px;
+    background-color:#fff;
+    
+}
+.login_login {
+    font-weight:bold;
+    margin:30px;
+    font-size:large;
+}
+.login_userid {
+    margin:10px;
+}
+.login_pass {
+    margin:10px;
+}

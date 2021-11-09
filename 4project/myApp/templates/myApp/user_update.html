@@ -1,4 +1,4 @@
-{% extends 'myApp/base.html' %}
+{% extends 'myApp/base_user.html' %}
 {% block title %}ユーザー情報更新{% endblock %}
 {% block content %}
 
@@ -104,7 +104,7 @@
 
 
   <div class="center">
-    <a href='{% url "showUsers" %}' class="btn">戻る</a>
+    <a href="javascript:history.back()" class="btn">戻る</a>
     <input class="btn" type="submit" value="更新">
   </div>
 </form>

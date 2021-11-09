@@ -4,7 +4,25 @@
 {% block content %}
 <h1>いいね一覧</h1>
 {% for heart in userdetail %}
-  <li>{{ heart.heart_user }}</li>
-  <li><img src="/media/{{ heart.heart_user.picture }}" width="25%" height="25%" class="icon-image"></li>
+<div class="My-content">
+  <img src="/media/{{ heart.heart_user.picture }}" width="25%" height="25%" class="icon-image">
+  <div class="My-box">
+    <p>{{ heart.heart_user }}</p>
+  </div>
+  <div class="My-box">
+    <p id="{{ heart.heart_user }}good"></p>
+    <script>
+      if({{ heart.heart_user.school_grade }}==5) {
+      document.getElementById("{{ heart.heart_user }}good").innerHTML = "学年 : 大学院生";
+      } else {
+      document.getElementById("{{ heart.heart_user }}good").innerHTML = "学年 : {{ heart.heart_user.school_grade }}年生";
+      }
+    </script>      
+    <p>性別 : {{ heart.heart_user.sexuality }}</p>
+  </div>
+  <div class="My-box-btn">
+    <a href="{% url 'Mypage' heart.heart_user.id %}" class="btn-user">詳細</a>
+  </div>
+</div>
 {% endfor %}
 {% endblock %}

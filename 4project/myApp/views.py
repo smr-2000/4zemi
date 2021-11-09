@@ -37,7 +37,7 @@ def new_register(request):
 def details_screen(request, id,user_id):
     userinfo = get_object_or_404(login, pk=id)
     userdetail = UserDetail.objects.filter(login_user=userinfo)
-
+    
     global user_pass
     user_pass = request.session['userpass']
 
@@ -46,8 +46,14 @@ def details_screen(request, id,user_id):
     
     user = authenticate(username=user_username, password=user_pass)
     login(request, user)
+
+    loginuserinfo = get_object_or_404(login, pk=user.id-1)
+    checkUser = Heart.objects.filter(login_user=loginuserinfo)
+    checkHeart = checkUser.filter(heart_user=userinfo)
+    heart_check = False
     
-    if userdetail.exists():
+    if checkHeart.exists() and checkHeart[0].heart_check==True:
+        heart_check = True
         userinfoMypage = userdetail[0]
         
         context = {
@@ -55,6 +61,19 @@ def details_screen(request, id,user_id):
             'userinfoMypage':userinfoMypage,
             'user_username':user_username,
             'user':user,
+            'heart_check':heart_check,
+        }
+        return render(request, 'myApp/details-screen.html', context)
+    
+    elif userdetail.exists():
+        userinfoMypage = userdetail[0]
+        
+        context = {
+            'userinfo':userinfo,
+            'userinfoMypage':userinfoMypage,
+            'user_username':user_username,
+            'user':user,
+            'heart_check':heart_check,
         }
         return render(request, 'myApp/details-screen.html', context)
     else:
@@ -77,10 +96,18 @@ def Heart_add(request, id):
     userinfo = get_object_or_404(login, pk=user.id-1)
     userdetail = UserDetail.objects.filter(login_user=userinfo)
 
-    #データベース追加
-    heart_add = Heart.objects.create(login_user=userinfo, heart_user=userinfo_hearted)
-    heart_add.save()
+    checkUser = Heart.objects.filter(login_user=userinfo)
+    checkHeart = checkUser.filter(heart_user=userinfo_hearted)
+    heart_check = False
 
+    #データベース追加
+    if checkHeart.exists():
+        return HttpResponse("いいね済みです")
+    else:
+        heart_add = Heart.objects.create(login_user=userinfo, heart_user=userinfo_hearted, heart_check=True)
+        heart_add.save()
+        heart_check = True
+    
    
     if userdetail.exists():
         userinfoMypage = userdetail_hearted[0]
@@ -90,6 +117,7 @@ def Heart_add(request, id):
             'userinfoMypage':userinfoMypage,
             'user_username':user_username,
             'user':user,
+            'heart_check':heart_check,
         }
         return render(request, 'myApp/details-screen.html', context)
 
@@ -171,9 +199,22 @@ def showUsers(request):
 
 #URLから受け取ったidを元にユーザの詳細情報を取得、detail.htmlに返す
 def showDetail(request,id):
-    userinfoDetail = get_object_or_404(login, pk=id)
+    userinfo = get_object_or_404(login, pk=id)
+    userdetail = Heart.objects.filter(login_user=userinfo)
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
     context = {
-        'userinfoDetail':userinfoDetail,
+        'userinfoDetail':userinfo,
+        'userdetail':userdetail,
+        'user':user,
     }
     return render(request, 'myApp/detail.html', context)
 
@@ -280,6 +321,7 @@ def Logout(request):
     request.session.clear()
     return render(request, 'myApp/login_user.html')
 
+
 #ログイン後ホーム
 def topScreen(request, id):
     userinfo = get_object_or_404(login, pk=id)
@@ -317,9 +359,20 @@ def topScreen(request, id):
 def UserUpdate(request, id):
     userinfo = get_object_or_404(login, pk=id)
     userUpdateForm = AddUserForm(instance=userinfo)
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     context = {
         'userinfo':userinfo,
         'userUpdateForm':userUpdateForm,
+        'user':user,
     }
     return render(request, 'myApp/user_update.html',context)
 
@@ -452,6 +505,15 @@ def MypageUpdate(request, id):
     userinfo = get_object_or_404(login, pk=id)
     userdetail = UserDetail.objects.filter(login_user=userinfo)
 
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     if userdetail.exists():
         #userinfoMypage = get_object_or_404(UserDetail, pk=id)
         userinfoMypage = userdetail[0]
@@ -459,6 +521,7 @@ def MypageUpdate(request, id):
         context = {
             'userinfoMypage':userinfoMypage,
             'user_detail_form':user_detail_form,
+            'user':user,
         }
         return render(request, 'myApp/mypage_update.html',context)
     else:
@@ -485,8 +548,19 @@ def updateMypage(request,id):
 
 def UserCheckDelete(request, id):
     userinfo = get_object_or_404(login,pk=id)
+    
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     context = {
-        'userinfo':userinfo
+        'userinfo':userinfo,
+        'user':user,
     }
     return render(request, 'myApp/user_delete.html', context)
     
