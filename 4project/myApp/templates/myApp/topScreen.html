@@ -76,30 +76,6 @@
 	    </div>
 	  </div>
 	  <hr>
-	  {% for user in personaluser %}
-	  <div class="My-content">
-	    <img src="/media/{{ user.picture }}" width="25%" height="25%" class="icon-image">
-
-	    <div class="My-box">
-	      <p>{{ user.user.username }}</p>
-	    </div>
-
-	    <div class="My-box">
-	      <p id="{{ user.user.username }}school"></p>
-	      <script>
-		if({{ user.school_grade }}==5) {
-		document.getElementById("{{ user.user.username }}school").innerHTML = "学年 : 大学院生";
-		} else {
-		document.getElementById("{{ user.user.username }}school").innerHTML = "学年 : {{ user.school_grade }}年生";
-		}
-	      </script>      
-	      <p>性別 : {{ user.sexuality }}</p>
-	    </div>
-	    <div class="My-box-btn">
-	      <a href="{% url 'details_screen' user.id %}" class="btn-user">詳細</a>
-	    </div>
-	  </div>
-	  {% endfor %}
 	</p>
       </div>
     </div>
