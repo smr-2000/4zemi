@@ -29,9 +29,11 @@ class login(models.Model):
 
 class hobby(models.Model):
    login_user = models.ForeignKey(login,on_delete=models.CASCADE)
-   hobby1=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書'),('旅行','旅行'),('カメラ','カメラ'),('映画鑑賞','映画鑑賞')])
-   hobby2=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書'),('旅行','旅行'),('カメラ','カメラ'),('映画鑑賞','映画鑑賞')], null=True, blank=True)
-   hobby3=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書'),('旅行','旅行'),('カメラ','カメラ'),('映画鑑賞','映画鑑賞')], null=True, blank=True)
+   hobby1=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書'),('旅行','旅行'),('カメラ','カメラ'),('ドラマ・映画鑑賞','ドラマ・映画鑑賞'),('アイドル','アイドル'),('アニメ','アニメ'),('漫画','漫画'),('料理','料理')])
+   
+   hobby2=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書'),('旅行','旅行'),('カメラ','カメラ'),('ドラマ・映画鑑賞','ドラマ・映画鑑賞'),('アイドル','アイドル'),('アニメ','アニメ'),('漫画','漫画'),('料理','料理')], null=True, blank=True)
+                           
+   hobby3=models.CharField(max_length=5, choices=[('スポーツ','スポーツ'),('読書','読書'),('旅行','旅行'),('カメラ','カメラ'),('ドラマ・映画鑑賞','ドラマ・映画鑑賞'),('アイドル','アイドル'),('アニメ','アニメ'),('漫画','漫画'),('料理','料理')], null=True, blank=True)
 
    def __str__(self):
       return self.login_user.user.username

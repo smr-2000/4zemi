@@ -506,7 +506,6 @@ def showSelectHobby(request,id):
     params["favorite_hobby"] = SelectHobby()
     return render(request, 'myApp/selectHobby.html', context=params)
 
-
 def addSelectHobby(request,id):
     userinfo = get_object_or_404(login, pk=id)
     params = {
@@ -532,7 +531,7 @@ def addSelectHobby(request,id):
         'userselectHobby':userselectHobby,
     }
         
-    return render(request, 'myApp/new_register.html', context=mypagetext)
+    return render(request, 'myApp/select.html', context=mypagetext)
 
 
 def showUpdateSelectHobby(request,id):
@@ -547,16 +546,53 @@ def showUpdateSelectHobby(request,id):
    
 
 def updateSelectHobby(request, id):
+    
     if request.method == "POST":
+        userinfo = get_object_or_404(login, pk=id)
         userinfoHobby = get_object_or_404(hobby, pk=id)
         favorite_hobby = SelectHobby(request.POST, request.FILES, instance=userinfoHobby)
+
+        context = {
+            'userinfoHobby':userinfoHobby,
+            'favorite_hobby':favorite_hobby,
+        }
+        
         if favorite_hobby.is_valid():
             favorite_hobby.save()
 
+        else:
+            print(favorite_hobby.errors)
+            return(request, 'myApp/update_selectHobby.html', context)
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
+    userselecthobby = login
+
+    alluser = login.objects.all()
+    user_exclude = login.objects.exclude(id=userinfo.id)
+    
+    userschool = user_exclude.filter(school_name=userinfo.school_name)
+    userschool_random = userschool.order_by('?')[:10]
+    
+    usermajor = user_exclude.filter(school_major=userinfo.school_major)
+    usermajor_random = usermajor.order_by('?')[:10]
+
     userinfoHobby = get_object_or_404(hobby, pk=id)
-    context = {
-        'userinfoHobby':userinfoHobby,
+    
+    params = {
+        'userinfo':userinfo,
+        'user':user,
+        'alluser':alluser,
+        'userschool_random':userschool_random,
+        'usermajor_random':usermajor_random,
     }
     
-    return render(request, 'myApp/new_register.html', context)
+    return render(request, 'myApp/topScreen.html', context=params)
 

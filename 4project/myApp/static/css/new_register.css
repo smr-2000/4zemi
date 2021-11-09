@@ -272,3 +272,102 @@ nav {
     transform: scale(1);
   }
 }
+
+/* selectHobby.html */
+
+.create-frame-hobby {
+    /* border: solid;
+    padding: 50px;
+    margin: auto;
+    width: 800px;
+    text-align: center; */
+
+    border: solid;
+    padding: 0px;
+    width: 760px;
+    height: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+}
+
+.create-box-hobby {
+    /* display: inline-block;
+    width: 700px;
+    padding:20px;
+    vertical-align: middle; */
+
+    display: inline-block;
+    padding:40px;
+    vertical-align: middle;
+}
+.create-box-hobby td {
+    padding:10px;
+}
+/*
+.selection-gorup {
+    display: flex;
+    flex-wrap: wrap;
+} */
+
+.selection-group {
+    list-style: none;
+}
+
+.selection-group li {
+    display: inline-block;
+    width: 180px;
+    padding-top: 60px;
+    height: 70px;
+    border-radius: 5px;
+    positoin: relative; 
+    margin: 10px; 
+}
+
+.image-hobby {
+    width: 180px;
+    height: 180px;
+    object-fit:cover;
+    border-radius: 50%;
+    text-align: center;
+} 
+
+.selection-group label {
+    display: inline-block; 
+    width: 200px;
+    height: 200px;
+    position: relative;
+ }
+
+.selection-group p {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+/* inputは隠す */
+input[type="checkbox"] {
+    display: none;
+} 
+
+input[type="checkbox"] + label img {
+    opacity:1;
+}
+
+input[type="checkbox"]:checked + label img {
+    border: solid 3px #444444;
+}
+/* マウスオーバーの時 */
+.selection-group label:hover {
+    cursor: pointer;
+} 
+
+.selectoin-group input[type="radio"]:checked + label ,
+.selection-group li:hover {
+    transform: scale(1.1);
+} 
+
+.selection-group li.locked {
+    opacity: 0.2;
+    color: #aaa;
+    transform: none;
+}
