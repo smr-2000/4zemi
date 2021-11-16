@@ -42,7 +42,8 @@
   <p>{{ SNS_ID2 }}</p>
 </div>
 <div class="center">
-  <a href="javascript:history.back()" class="btn">ホーム</a>
+  <!--<a href="javascript:history.back()" class="btn">ホーム</a>-->
+  <a href="{% url 'topScreen' user.id|add:"-1" %}" class="btn">ホーム</a>
   <a href="{% url 'friends_list' user.id|add:"-1" %}" class="btn" >友達一覧</a>
   <a href="{% url 'friend_req_list' user.id|add:"-1" %}" class="btn" >友達申請一覧</a>
 </div>

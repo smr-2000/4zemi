@@ -63,3 +63,36 @@
 .login_pass {
     margin:10px;
 }
+
+.new_register {
+    width:70%;
+    height:100%;
+    float: left;
+    text-align:center;
+}
+.new_register_form {
+    width:30%;
+    float: left;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color:#ffebeb;
+}
+.new_register_action {
+    border:solid #696969;
+    width:200px;
+    height:200px;
+    display: inline-block;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius:20px;
+    background-color:#fff;
+    
+}
+ul {
+    list-style: none;
+    padding-left: 0;
+}

@@ -495,6 +495,7 @@ def showMypage(request,id):
         "account_form":UserForm(),
         "add_account_form":AddUserForm(),
         "user_detail_form":UserDetailForm(),
+            'user':user,
         }
         params["account_form"] = UserForm()
         params["add_account_form"] = AddUserForm()

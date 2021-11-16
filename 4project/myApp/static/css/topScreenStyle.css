@@ -480,3 +480,11 @@ input[name="tab_item"] {
     text-align: center;
     margin-top: 30px;
 }
+
+/* 設定 */
+.detail-box-btn {
+    display: inline-block;
+    width: 200px;
+    text-align: right;
+    padding-left: 30px 0;
+}
