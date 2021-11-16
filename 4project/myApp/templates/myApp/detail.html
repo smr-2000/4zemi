@@ -10,6 +10,9 @@
     <div class="userdetail-name-box">
       <p>{{ userinfoDetail.user.username }}</p>
     </div>
+    <div class="detail-box-btn">
+    <a href="{% url 'user_update' user.id|add:"-1" %}" class="btn-user">編集</a>
+  </div>
     <div class="userdetail-box">
       <table>
 	<tr>     
@@ -74,6 +77,5 @@
 </div>
 <div class="center">
   <a href="javascript:history.back()" class="btn">戻る</a>
-  <a href="{% url 'user_update' user.id|add:"-1" %}" class="btn">編集</a>
 </div>
 {% endblock %}
