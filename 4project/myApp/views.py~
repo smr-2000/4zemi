@@ -775,7 +775,7 @@ def friends_list(request,id):
         'alluser':alluser
        
         }
-        return render(request, 'myApp/friend_req_list.html',context)
+        return render(request, 'myApp/friends_list.html',context)
     else:
         return HttpResponse("友達はありません")
 
@@ -801,6 +801,5 @@ def friend_delete(request,id,allow_id):
         }
 
     return render(request, 'myApp/friend_delete.html', context)
-
 
 

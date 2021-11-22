@@ -8,8 +8,7 @@
       <tr>
 	<td>
 	  <a href="{% url 'details_screen' alluser.id userinfo.id %}">{{ alluser }}</a>
-	<td><a href='{% url "friend_allow" userinfo.id  alluser.id %}' class="btn">許可</a></td>
-	<td><a href='{% url "friend_delete" userinfo.id  alluser.id %}' class="btn">削除</a></td>
+	
 	  <div class="detail-box">
 	    <img src="/media/{{ alluser.picture }}" width="25%" height="25%" class="image">
 	  </div>
