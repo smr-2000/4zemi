@@ -1,18 +1,31 @@
 {% extends 'myApp/base_user.html' %}
-{% block title %}マイページ{% endblock %}
+{% load static %} 
+{% block title %}詳細ページ{% endblock %}
 {% block content %}
-<h1>マイページ</h1>
+<h1>詳細</h1>
 <div class="detail-frame">
   
   <div class="mp-box">
     <img src="/media/{{ userinfo.picture }}" width="25%" height="25%" class="image">
   </div>
   <div class="mp-box">
-    <p> {{ userinfo.user.username }}</p>
+    <p>{{ userinfo.user.username }}</p>
   </div>
+
+  {% if heart_check %}
+  <p>いいね済み</p>
+  {% else %}
   <div class="My-box-btn">
-    <a href="{% url 'Mypage_update' userinfo.id %}" class="btn-user">マイページ更新</a>
+    <a href="{% url 'Heart_add' userinfo.id %}">
+      <div class="Heart-Inner-Box-Item-LikesIcon">
+	<i class="far fa-heart Heart-Inner-Box-LikesIcon-fa-heart"></i>
+      </div>
+ 
+      <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'js/details-screen.js' %}"></script>
+    </a>
   </div>
+  {% endif %}
   <div class="Mypage-frame">
     <div class="Mypage-box">
       <img src="/media/{{ userinfoMypage.photo1 }}" width="25%" height="25%" class="Mypage_img"><img src="/media/{{ userinfoMypage.photo2 }}" width="25%" height="25%" class="Mypage_img"><img src="/media/{{ userinfoMypage.photo3 }}" width="25%" height="25%" class="Mypage_img">
@@ -28,25 +41,12 @@
   <p>性別：{{ userinfo.sexuality }}</p>
 
   <hr>
-
-  <p>{{ userinfoMypage.profile_text | linebreaksbr }}</p>
-
-  <hr>
-  <p>SNSアカウント情報</p>
-  <p>友達のみに公開されます</p>
-  <p>{{ userinfo.insta_ID }}</p>
-  <p>{{ userinfo.twitter_ID }}</p>
-  <p>{{ userinfo.SNS_name1 }}</p>
-  <p>{{ userinfo.SNS_ID1 }}</p>
-  <p>{{ userinfo.SNS_name2 }}</p>
-  <p>{{ userinfo.SNS_ID2 }}</p>
+  
+  <p>{{ userinfoMypage.profile_text | linebreaksbr }}</p> 
 </div>
 <div class="center">
-  <!--<a href="javascript:history.back()" class="btn">ホーム</a>-->
-  <a href="{% url 'topScreen' user.id|add:"-1" %}" class="btn">ホーム</a>
-  <a href="{% url 'friends_list' user.id|add:"-1" %}" class="btn" >友達一覧</a>
-  <a href="{% url 'friend_req_list' user.id|add:"-1" %}" class="btn" >友達申請一覧</a>
+  <a href="javascript:history.back()" class="btn">ホーム</a>
+  <a href="{% url 'friend_request' userinfo.id user.id %}" class="btn" >友達申請</a>
 </div>
-
-
 {% endblock %}
+

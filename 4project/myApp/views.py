@@ -50,18 +50,50 @@ def details_screen(request, id,user_id):
     checkUser = Heart.objects.filter(login_user=loginuserinfo)
     checkHeart = checkUser.filter(heart_user=userinfo)
     heart_check = False
-    
+    friend = False
+    insta = ''
+    twitter = ''
+    SNS_name1 = ''
+    SNS_ID1 = ''
+    SNS_name2 = ''
+    SNS_ID2 = ''
+    comment = 'SNSアカウント情報は友達のみに公開されます'
+    req = Friend_list.objects.filter(user=userinfo)#友達のリスト
+    if(Friend_list.objects.filter(user=userinfo).exists()):
+        if len(str(req[0].friend_req)) == 1:
+            if req[0].friend_req == str(user_id):
+                friend = True
+            else:
+                friend = False
+        else:
+            req_list=req[0].friend_req.split(',')
+            friend = str(user_id) in req_list
+    if friend == True:
+        insta = userinfo.insta_ID
+        twitter = userinfo.twitter_ID
+        SNS_name1 = userinfo.SNS_name1
+        SNS_ID1 = userinfo.SNS_ID1
+        SNS_name2 = userinfo.SNS_name2
+        SNS_ID2 = SNS_ID2
+        comment = 'SNSアカウント情報'
     if checkHeart.exists() and checkHeart[0].heart_check==True:
         heart_check = True
         userinfoMypage = userdetail[0]
-        
         context = {
             'userinfo':userinfo,
             'userinfoMypage':userinfoMypage,
             'user_username':user_username,
             'user':user,
             'heart_check':heart_check,
-        }
+            'insta':insta,
+            'twitter':twitter,
+            'comment':comment,
+            'SNS_name1':SNS_name1,
+            'SNS_ID1':SNS_ID1,
+            'SNS_name2':SNS_name2,
+            'SNS_ID2':SNS_ID2,
+            
+            }
         return render(request, 'myApp/details-screen.html', context)
     
     elif userdetail.exists():
@@ -73,6 +105,13 @@ def details_screen(request, id,user_id):
             'user_username':user_username,
             'user':user,
             'heart_check':heart_check,
+            'insta':insta,
+            'twitter':twitter,
+            'comment':comment,
+            'SNS_name1':SNS_name1,
+            'SNS_ID1':SNS_ID1,
+            'SNS_name2':SNS_name2,
+            'SNS_ID2':SNS_ID2,
         }
         return render(request, 'myApp/details-screen.html', context)
     else:
