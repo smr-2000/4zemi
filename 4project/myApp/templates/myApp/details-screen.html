@@ -55,6 +55,7 @@
 <div class="center">
   <a href="javascript:history.back()" class="btn">ホーム</a>
   <a href="{% url 'friend_request' userinfo.id user.id %}" class="btn" >友達申請</a>
+  <a href="{% url 'message' userinfo.id user.id %}" class="btn" >メッセージ</a>
 </div>
 {% endblock %}
 
