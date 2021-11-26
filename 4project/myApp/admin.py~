@@ -7,7 +7,6 @@ from .models import question
 from .models import Heart
 from .models import Friend_request
 from .models import Friend_list
-from .models import Post
 
 admin.site.register(login)
 admin.site.register(hobby)
@@ -17,4 +16,3 @@ admin.site.register(question)
 admin.site.register(Heart)
 admin.site.register(Friend_request)
 admin.site.register(Friend_list)
-admin.site.register(Post)
