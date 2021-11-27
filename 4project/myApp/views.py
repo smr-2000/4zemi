@@ -8,6 +8,8 @@ from .forms import UserDetailForm
 from .forms import SelectHobby
 from .forms import personalForm
 from .forms import HeartForm
+from .forms import MessageForm
+from django.db.models import Q
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -24,6 +26,8 @@ from .models import question
 from .models import Heart
 from .models import Friend_request
 from .models import Friend_list
+from .models import Post
+from django.utils import timezone
 import random
 
 # Create your views here.
@@ -209,19 +213,12 @@ def personal_view(request,id):
     if request.method == 'POST':
         pForm = personalForm(request.POST)
         if pForm.is_valid():
+            if(question.objects.filter(user=userinfo).exists()):
+                question.objects.filter(user=userinfo).delete()
             personalPost = pForm.save(commit=False)
             personalPost.user = userinfo
-    params = {
-        'title': '性格診断',
-        'form':personalForm(),
-        'result':None,
-        'userinfo':userinfo,
-        'user':user,
-    }
-    return render(request, 'myApp/personal.html', params)
-        
-def personal2(request,id):
-    userinfo = get_object_or_404(login, pk=id)
+            personalPost.publish()
+
     q = question.objects.filter(user=userinfo)
     d = 4 - q[0].q6 + q[0].q1
     c = 4 - q[0].q7 + q[0].q2
@@ -231,11 +228,14 @@ def personal2(request,id):
     if(personal.objects.filter(user=userinfo).exists()):
         personal.objects.filter(user=userinfo).delete()
     per = personal.objects.create(user=userinfo,diplomacy=d,cooperation=c,honesty=h,nerve=n,openness=o)
-    context = {
-         'userinfo':userinfo
-        }
-    
-    return render(request, 'myApp/personal2.html', context)
+    params = {
+        'title': '性格診断',
+        'form':personalForm(),
+        'result':None,
+        'userinfo':userinfo,
+        'user':user,
+    }
+    return render(request, 'myApp/personal.html', params)
 
 #ユーザ情報を辞書に格納して、users.htmlに返す
 def showUsers(request):
@@ -743,7 +743,7 @@ def friend_request(request,id,user_id):
         if str(user_id) in req_list:
             req_list.remove(str(user_id))
         req_list.append(str(user_id))
-        req_list = ', '.join(map(str, req_list))
+        req_list = ','.join(map(str,req_list))
         Friend_request.objects.filter(user=userinfo).delete()
     else:
         req_list = str(user_id)
@@ -778,6 +778,7 @@ def friend_req_list(request,id):
             req_friend.append(get_object_or_404(login, pk=req_list[i]))
         context = {
         'req_friend':req_friend,
+        'req_list':req_list,
         'userinfo':userinfo,
             'alluser':alluser,
             'user':user,
@@ -788,28 +789,26 @@ def friend_req_list(request,id):
         return HttpResponse("友達申請はありません")
 
 def friend_allow(request,id,allow_id):
-    userinfo = get_object_or_404(login, pk=id)#許可する側
-    userinfo2 = get_object_or_404(login, pk=allow_id)#許可される側
+    userinfo = get_object_or_404(login, pk=id)#削除する側
+    userinfo2 = get_object_or_404(login, pk=allow_id)#削除する側
     allow_id = allow_id
-    
-    #許可した側のフレンド申請から申請した側を削除する
     req = Friend_request.objects.filter(user=userinfo)
+    req_list=[]
     if  len(req[0].friend_req) == 1:
         Friend_request.objects.filter(user=userinfo).delete()
     else:
         req_list=req[0].friend_req.split(',')#許可する側フレンド申請一覧（配列型）
-        req_list.remove(allow_id)
-        req_list.remove(',')
-        req_list = ', '.join(map(str, req_list))
+        req_list.remove(str(allow_id))
+        req_list = ','.join(map(str, req_list))
         Friend_request.objects.filter(user=userinfo).delete()
         Friend_request.objects.create(user=userinfo,friend_req=req_list)
-   
+
     #双方の友達リストにお互いを追加する(許可する側)
     if(Friend_list.objects.filter(user=userinfo).exists()):
         list1 = Friend_list.objects.filter(user=userinfo)#許可する側の友達リスト
-        user_f_list = list1[0].friend_req.split(',')
-        user_f_list.append(','+str(allow_id))
-        add_f_list = ','.join(str(user_f_list))
+        user_f_list = list1[0].friend_req.split(',')#ユーザーの友達リスト（配列型）
+        user_f_list.append(str(allow_id))
+        add_f_list = ','.join(map(str,user_f_list))
         Friend_list.objects.filter(user=userinfo).delete()
     else:
         add_f_list = str(allow_id)
@@ -820,7 +819,7 @@ def friend_allow(request,id,allow_id):
         list2 = Friend_list.objects.filter(user=userinfo2)#許可する側の友達リスト
         user_f_list2 = list2[0].friend_req.split(',')
         user_f_list2.append(id)
-        add_f_list2 = ','.join(','+str(user_f_list2))
+        add_f_list2 = ','.join(map(str,user_f_list2))
         Friend_list.objects.filter(user=userinfo2).delete()
     else:
         add_f_list2 = str(id)
@@ -829,6 +828,7 @@ def friend_allow(request,id,allow_id):
     context = {
         'userinfo':userinfo,
         'allow_id':allow_id,
+        'req_list':req_list,
         }
 
     return render(request, 'myApp/friend_allow.html', context)
@@ -863,9 +863,8 @@ def friend_delete(request,id,allow_id):
         req_list=[]
     else:
         req_list=req[0].friend_req.split(',')#許可する側フレンド申請一覧（配列型）
-        req_list.remove(allow_id)
-        req_list.remove(',')
-        req_list = ', '.join(map(str, req_list))
+        req_list.remove(str(allow_id))
+        req_list = ','.join(map(str, req_list))
         Friend_request.objects.filter(user=userinfo).delete()
         Friend_request.objects.create(user=userinfo,friend_req=req_list)
     context = {
@@ -876,4 +875,31 @@ def friend_delete(request,id,allow_id):
 
     return render(request, 'myApp/friend_delete.html', context)
 
+def message(request,id,user_id):
+    userinfo = get_object_or_404(login, pk=id)#ログインしているユーザー
+    userinfo2 = get_object_or_404(login, pk=user_id)#メッセージを送るユーザー
+    allMessage = Post.objects.filter(Q(sender=str(id),receiver=str(user_id))|Q(sender=str(user_id),receiver=str(id))).order_by('created_date')
+    post = Post.objects.all()
+    form = MessageForm()
+    if request.method == 'POST':
+        mForm = MessageForm(request.POST)
+        if mForm.is_valid():
+            messagePost = mForm.save(commit=False)
+            messagePost.user = userinfo
+            messagePost.sender = str(id)
+            messagePost.receiver = str(user_id)
+            messagePost.created_date = timezone.now()
+            messagePost.save()
+    context = {
+        'allMessage':allMessage,
+        'post':post,
+        'form':form,
+        'userinfo':userinfo,
+        'userinfo2':userinfo2
+       
+        }
+    
+    return render(request, 'myApp/message.html', context)
+
+    
 

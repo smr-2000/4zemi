@@ -5,11 +5,9 @@
 <h1>友達申請一覧</h1>
 
 {% for alluser in req_friend %}
-<p>{{ userinfo.id }} </p>
-<p>{{ alluser.id }}</p>
       <tr>
 	<td>
-	  <a href="{% url 'details_screen' userinfo.id alluser.id %}">{{ alluser }}</a>
+	  <a href="{% url 'details_screen' alluser.id userinfo.id %}">{{ alluser }}</a>
 	<td><a href='{% url "friend_allow" userinfo.id  alluser.id %}' class="btn">許可</a></td>
 	<td><a href='{% url "friend_delete" userinfo.id  alluser.id %}' class="btn">削除</a></td>
 	  <div class="detail-box">
