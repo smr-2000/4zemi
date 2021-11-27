@@ -116,8 +116,9 @@ class Friend_list(models.Model):
        self.save()
 
 class Post(models.Model):
-   sender = models.CharField(max_length=1)
-   receiver = models.CharField(max_length=1)
+   user = models.ForeignKey(login, on_delete=models.CASCADE)
+   sender = models.CharField(max_length=5)
+   receiver = models.CharField(max_length=5)
    title = models.CharField(max_length=200)
    text = models.TextField()
    created_date = models.DateTimeField(default=timezone.now)

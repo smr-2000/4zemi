@@ -5,7 +5,6 @@ from .models import hobby
 from .models import personal
 from .models import question
 from .models import Heart
-from .models import Post
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -163,17 +162,3 @@ class HeartForm(forms.ModelForm):
       labels = {
          'heart_user':'いいね',
       }
-
-class MessageForm(forms.ModelForm):
-   class Meta():
-      model = Post
-      fields = (
-         'title',
-         'text'
-         )
-      labels = {
-         'title':'title',
-         'text':'text'
-         }
-
-      

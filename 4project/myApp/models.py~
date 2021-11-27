@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 class login(models.Model):
@@ -113,5 +114,19 @@ class Friend_list(models.Model):
 
     def publish(self):
        self.save()
-       
+
+class Post(models.Model):
+   sender = models.CharField(max_length=1)
+   receiver = models.CharField(max_length=1)
+   title = models.CharField(max_length=200)
+   text = models.TextField()
+   created_date = models.DateTimeField(default=timezone.now)
+
+   def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+   def __str__(self):
+        return self.title
+
    

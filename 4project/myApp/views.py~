@@ -200,29 +200,12 @@ def personal_view(request,id):
     if request.method == 'POST':
         pForm = personalForm(request.POST)
         if pForm.is_valid():
+            if(question.objects.filter(user=userinfo).exists()):
+                question.objects.filter(user=userinfo).delete()
             personalPost = pForm.save(commit=False)
             personalPost.user = userinfo
-    params = {
-        'title': '性格診断',
-        'form':personalForm(),
-        'result':None,
-        'userinfo':userinfo
-    }
-    return render(request, 'myApp/personal.html', params)
-        
-def personal2(request,id):
-    userinfo = get_object_or_404(login, pk=id)
-    if request.method == 'POST':
-        pForm = personalForm(request.POST)
-        if pForm.is_valid():
-            personalPost = pForm.save(commit=False)
-            personalPost.user = userinfo
-    params = {
-        'title': '性格診断',
-        'form':personalForm(),
-        'result':None,
-        'userinfo':userinfo
-    }
+            personalPost.publish()
+
     q = question.objects.filter(user=userinfo)
     d = 4 - q[0].q6 + q[0].q1
     c = 4 - q[0].q7 + q[0].q2
@@ -232,11 +215,13 @@ def personal2(request,id):
     if(personal.objects.filter(user=userinfo).exists()):
         personal.objects.filter(user=userinfo).delete()
     per = personal.objects.create(user=userinfo,diplomacy=d,cooperation=c,honesty=h,nerve=n,openness=o)
-    context = {
-         'userinfo':userinfo
-        }
-    
-    return render(request, 'myApp/personal2.html', params)
+    params = {
+        'title': '性格診断',
+        'form':personalForm(),
+        'result':None,
+        'userinfo':userinfo
+    }
+    return render(request, 'myApp/personal.html', params)
 
 #ユーザ情報を辞書に格納して、users.htmlに返す
 def showUsers(request):
