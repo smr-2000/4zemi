@@ -1,2 +1,27 @@
+{% extends 'myApp/base_app.html' %}
+{% load static %} 
+{% block title %}メッセージ画面{% endblock %}
+{% block content %}
+{% for post in allMessage %}
+   <div>
+            <div>
+                {{ post.published_date }}
+            </div>
+            <h2>title:  {{ post.title }}</h2>
+	    <p>text:</p>
+            <p>{{ post.text|linebreaksbr }}</p>
+	    <p>message by {{ post.user }}/{{post.created_date}}</p>
+	    
+   </div>
+   {% endfor %}
+   <div>
+     <form action="{% url 'message' userinfo.id userinfo2.id %}" method="post"> 
+     {% csrf_token %}
+     {{ form.as_p }}
+     <input type="submit" class="btm btn-primary my-2" value="送信">
+     </form>
+   </div>
+   {% endblock %}
+  
 
 

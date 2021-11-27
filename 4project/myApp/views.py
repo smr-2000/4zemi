@@ -8,6 +8,8 @@ from .forms import UserDetailForm
 from .forms import SelectHobby
 from .forms import personalForm
 from .forms import HeartForm
+from .forms import MessageForm
+from django.db.models import Q
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -839,8 +841,30 @@ def friend_delete(request,id,allow_id):
     return render(request, 'myApp/friend_delete.html', context)
 
 def message(request,id,user_id):
+    userinfo = get_object_or_404(login, pk=id)#ログインしているユーザー
+    userinfo2 = get_object_or_404(login, pk=user_id)#メッセージを送るユーザー
+    allMessage = Post.objects.filter(Q(sender=str(id),receiver=str(user_id))|Q(sender=str(user_id),receiver=str(id))).order_by('created_date')
+    post = Post.objects.all()
+    form = MessageForm()
+    if request.method == 'POST':
+        mForm = MessageForm(request.POST)
+        if mForm.is_valid():
+            messagePost = mForm.save(commit=False)
+            messagePost.user = userinfo
+            messagePost.sender = str(id)
+            messagePost.receiver = str(user_id)
+            messagePost.created_date = timezone.now()
+            messagePost.save()
+    context = {
+        'allMessage':allMessage,
+        'post':post,
+        'form':form,
+        'userinfo':userinfo,
+        'userinfo2':userinfo2
+       
+        }
     
-    return render(request, 'myApp/message.html', {})
+    return render(request, 'myApp/message.html', context)
 
     
 
