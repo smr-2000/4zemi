@@ -33,7 +33,6 @@ user_pass = "パスワード"
 def new_register(request):
     return render(request, 'myApp/new_register.html', {})
 
-
 def details_screen(request, id,user_id):
     userinfo = get_object_or_404(login, pk=id)
     userdetail = UserDetail.objects.filter(login_user=userinfo)
@@ -51,18 +50,50 @@ def details_screen(request, id,user_id):
     checkUser = Heart.objects.filter(login_user=loginuserinfo)
     checkHeart = checkUser.filter(heart_user=userinfo)
     heart_check = False
-    
+    friend = False
+    insta = ''
+    twitter = ''
+    SNS_name1 = ''
+    SNS_ID1 = ''
+    SNS_name2 = ''
+    SNS_ID2 = ''
+    comment = 'SNSアカウント情報は友達のみに公開されます'
+    req = Friend_list.objects.filter(user=userinfo)#友達のリスト
+    if(Friend_list.objects.filter(user=userinfo).exists()):
+        if len(str(req[0].friend_req)) == 1:
+            if req[0].friend_req == str(user_id):
+                friend = True
+            else:
+                friend = False
+        else:
+            req_list=req[0].friend_req.split(',')
+            friend = str(user_id) in req_list
+    if friend == True:
+        insta = userinfo.insta_ID
+        twitter = userinfo.twitter_ID
+        SNS_name1 = userinfo.SNS_name1
+        SNS_ID1 = userinfo.SNS_ID1
+        SNS_name2 = userinfo.SNS_name2
+        SNS_ID2 = SNS_ID2
+        comment = 'SNSアカウント情報'
     if checkHeart.exists() and checkHeart[0].heart_check==True:
         heart_check = True
         userinfoMypage = userdetail[0]
-        
         context = {
             'userinfo':userinfo,
             'userinfoMypage':userinfoMypage,
             'user_username':user_username,
             'user':user,
             'heart_check':heart_check,
-        }
+            'insta':insta,
+            'twitter':twitter,
+            'comment':comment,
+            'SNS_name1':SNS_name1,
+            'SNS_ID1':SNS_ID1,
+            'SNS_name2':SNS_name2,
+            'SNS_ID2':SNS_ID2,
+            
+            }
         return render(request, 'myApp/details-screen.html', context)
     
     elif userdetail.exists():
@@ -74,6 +105,13 @@ def details_screen(request, id,user_id):
             'user_username':user_username,
             'user':user,
             'heart_check':heart_check,
+            'insta':insta,
+            'twitter':twitter,
+            'comment':comment,
+            'SNS_name1':SNS_name1,
+            'SNS_ID1':SNS_ID1,
+            'SNS_name2':SNS_name2,
+            'SNS_ID2':SNS_ID2,
         }
         return render(request, 'myApp/details-screen.html', context)
     else:
@@ -157,6 +195,17 @@ def select(request,id):
 #性格診断
 def personal_view(request,id):
     userinfo = get_object_or_404(login, pk=id)
+    
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
+    
     if request.method == 'POST':
         pForm = personalForm(request.POST)
         if pForm.is_valid():
@@ -166,7 +215,8 @@ def personal_view(request,id):
         'title': '性格診断',
         'form':personalForm(),
         'result':None,
-        'userinfo':userinfo
+        'userinfo':userinfo,
+        'user':user,
     }
     return render(request, 'myApp/personal.html', params)
         
@@ -676,6 +726,17 @@ def updateSelectHobby(request, id):
 def friend_request(request,id,user_id):
     userinfo = get_object_or_404(login, pk=id)#申請される側
     user_id = int(user_id) -1
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
+    
     if(Friend_request.objects.filter(user=userinfo).exists()):
         req = Friend_request.objects.filter(user=userinfo)
         req_list = req[0].friend_req.split(',')
@@ -690,12 +751,23 @@ def friend_request(request,id,user_id):
     context = {
         'userinfo':userinfo,
         'user_id':user_id,
-        're':req_list
+        're':req_list,
+        'user':user,
         }
     return render(request, 'myApp/friend_request.html', context)
  
 def friend_req_list(request,id):
     userinfo = get_object_or_404(login, pk=id)
+    
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     if(Friend_request.objects.filter(user=userinfo).exists()):
         req = Friend_request.objects.filter(user=userinfo)
         req_list=req[0].friend_req.split(',')#フレンド申請一覧（配列型）
@@ -707,7 +779,8 @@ def friend_req_list(request,id):
         context = {
         'req_friend':req_friend,
         'userinfo':userinfo,
-        'alluser':alluser
+            'alluser':alluser,
+            'user':user,
        
         }
         return render(request, 'myApp/friend_req_list.html',context)
@@ -765,24 +838,20 @@ def friends_list(request,id):
     if(Friend_list.objects.filter(user=userinfo).exists()):
         req = Friend_list.objects.filter(user=userinfo)
         req_list=req[0].friend_req.split(',')#フレンド申請一覧（配列型）
-        i=0
         alluser = login.objects.all()#全部のユーザー
-        friends_list = []
+        req_friend = []
+        i=0
         for i in range(len(req_list)):
-            req_list[i] = int(req_list[i])
-            friends_list.append(get_object_or_404(login, pk=req_list[i]))
-  
-            context = {
-                're':req_list,
-                'userinfo':userinfo,
-                'alluser':alluser,
-                'friends_list':friends_list
+            req_friend.append(get_object_or_404(login, pk=req_list[i]))
+        context = {
+        'req_friend':req_friend,
+        'userinfo':userinfo,
+        'alluser':alluser
        
-            }
-            return render(request, 'myApp/friends_list.html',context)
-
-        else:
-            return HttpResponse("友達はありません")
+        }
+        return render(request, 'myApp/friends_list.html',context)
+    else:
+        return HttpResponse("友達はありません")
 
 def friend_delete(request,id,allow_id):
     userinfo = get_object_or_404(login, pk=id)#削除する側
@@ -791,6 +860,7 @@ def friend_delete(request,id,allow_id):
     req = Friend_request.objects.filter(user=userinfo)
     if  len(req[0].friend_req) == 1:
         Friend_request.objects.filter(user=userinfo).delete()
+        req_list=[]
     else:
         req_list=req[0].friend_req.split(',')#許可する側フレンド申請一覧（配列型）
         req_list.remove(allow_id)
@@ -801,9 +871,9 @@ def friend_delete(request,id,allow_id):
     context = {
         'userinfo':userinfo,
         'allow_id':allow_id,
+        'req_list':req_list
         }
 
     return render(request, 'myApp/friend_delete.html', context)
-
 
 

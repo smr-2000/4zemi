@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="uft-8">
-
-</head>
+{% extends 'myApp/base_user.html' %}
+{% block title %}性格診断{% endblock %}
+{% block content %}
 <body>
   <h1>{{title}}</h1>
   <form action="{% url 'personal' userinfo.id %}" method="post"> 
@@ -66,7 +63,6 @@
 }
   
 </script>
-</body>
-</html>
+{% endblock %}
 
 

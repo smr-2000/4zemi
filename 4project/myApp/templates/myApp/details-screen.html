@@ -42,10 +42,18 @@
 
   <hr>
   
-  <p>{{ userinfoMypage.profile_text | linebreaksbr }}</p> 
+  <p>{{ userinfoMypage.profile_text | linebreaksbr }}</p>
+  <hr>
+  <p>{{ comment }}</p>
+  <p>{{ insta }}</p>
+  <p>{{ twitter }}</p>
+  <p>{{ SNS_name1 }}</p>
+  <p>{{ SNS_ID1 }}</p>
+  <p>{{ SNS_name2 }}</p>
+  <p>{{ SNS_ID2 }}</p>
 </div>
 <div class="center">
-  <a href="javascript:history.back()" class="btn">ホーム</a>
+  <a href="javascript:history.back()" class="btn">戻る</a>
   <a href="{% url 'friend_request' userinfo.id user.id %}" class="btn" >友達申請</a>
 </div>
 {% endblock %}

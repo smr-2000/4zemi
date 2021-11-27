@@ -17,7 +17,7 @@ h1 {
      text-align: center;
 }
 .btn {
-    margin: 30px 8px;;
+    margin: 30px 8px;
     color: #000;
     background-color: #b0c4de;
     border-bottom: 5px solid #8d9eb3;
@@ -487,4 +487,35 @@ input[name="tab_item"] {
     width: 200px;
     text-align: right;
     padding-left: 30px 0;
+}
+
+/* 友達申請 */
+.friend-box {
+    display: inline-block;
+    width:400px;
+    vertical-align: middle;
+    text-align: center;
+}
+.friend-box-btn {
+    padding-left: 30px 0;
+    text-align: center;
+    padding: 15px 0;
+}
+
+.friend-list {
+    padding: 15px 0;
+}
+.friend-btn-user,a.friend-btn-user {
+  color: #fff;
+  background-color: #b0c4de;
+  font-weight: 700;
+  line-height: 1.5;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  border-radius: 25vh;
+  text-decoration: none;
+}
+.friend-btn-user:hover,a.friend-btn-user:hover {
+    color: #fff;
+    opacity: 0.75;
 }
