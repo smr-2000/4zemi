@@ -1,27 +1,32 @@
-{% extends 'myApp/base_app.html' %}
+{% extends 'myApp/base_user.html' %}
 {% load static %} 
 {% block title %}メッセージ画面{% endblock %}
 {% block content %}
+<h1>メッセージ</h1>
 {% for post in allMessage %}
-   <div>
-            <div>
-                {{ post.published_date }}
-            </div>
-            <h2>title:  {{ post.title }}</h2>
-	    <p>text:</p>
-            <p>{{ post.text|linebreaksbr }}</p>
-	    <p>message by {{ post.user }}/{{post.created_date}}</p>
-	    
-   </div>
-   {% endfor %}
-   <div>
-     <form action="{% url 'message' userinfo.id userinfo2.id %}" method="post"> 
-     {% csrf_token %}
-     {{ form.as_p }}
-     <input type="submit" class="btm btn-primary my-2" value="送信">
-     </form>
-   </div>
-   {% endblock %}
-  
+<div class="userdetail-frame">
+  <div class="userdetail-center">
+    <div>
+      {{ post.published_date }}
+      <h2>title:  {{ post.title }}</h2>
+      <p>text:</p>
+      <p>{{ post.text|linebreaksbr }}</p>
+      <p>message by {{ post.user }}/{{post.created_date}}</p>
+      
+    </div>
+  </div>
+</div>
+{% endfor %}
+<div class="userdetail-frame">
+  <div class="userdetail-center">
+    <form action="{% url 'message' userinfo.id userinfo2.id %}" method="post"> 
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" class="btm btn-primary my-2" value="送信">
+    </form>
+  </div>
+</div>
+{% endblock %}
+
 
 
