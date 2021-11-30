@@ -20,7 +20,7 @@
       <div class="Heart-Inner-Box-Item-LikesIcon">
 	<i class="far fa-heart Heart-Inner-Box-LikesIcon-fa-heart"></i>
       </div>
- 
+      
       <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'js/details-screen.js' %}"></script>
     </a>
@@ -45,12 +45,37 @@
   <p>{{ userinfoMypage.profile_text | linebreaksbr }}</p>
   <hr>
   <p>{{ comment }}</p>
-  <p>{{ insta }}</p>
-  <p>{{ twitter }}</p>
-  <p>{{ SNS_name1 }}</p>
-  <p>{{ SNS_ID1 }}</p>
-  <p>{{ SNS_name2 }}</p>
-  <p>{{ SNS_ID2 }}</p>
+
+  <table>
+    <tr>
+      <td>Instagram：</td>
+      {% if insta is not None %}
+      <td>{{ insta }}</td>
+      {% else %}
+      <td>未設定</td>
+      {% endif %}
+    </tr>
+    <tr>
+      <td>Twitter：</td>
+      {% if twitter is not None %}
+      <td>{{ twitter }}</td>
+      {% else %}
+      <td>未設定</td>
+      {% endif %}
+    </tr>
+    {% if SNS_name1 is not None %}
+    <tr>
+      <td>{{ SNS_name1 }}：</td>
+      <td>{{ SNS_ID1 }}</td>
+    </tr>
+    {% endif %}
+    {% if SNS_name2 is not None %}
+    <tr>
+      <td>{{ SNS_name2 }}：</td>
+      <td>{{ SNS_ID2 }}</td>
+    </tr>
+    {% endif %}
+  </table>
 </div>
 <div class="center">
   <a href="javascript:history.back()" class="btn">戻る</a>
