@@ -62,10 +62,6 @@ urlpatterns = [
     path('<int:id>/show_selectHobby', views.showSelectHobby, name='show_selectHobby'),
     #趣味選択
     path('<int:id>/add_selectHobby', views.addSelectHobby, name='add_selectHobby'),
-    #趣味選択を編集するフォームを呼び出す
-    path('<int:id>/selectHobby_update', views.showUpdateSelectHobby, name='selectHobby_update'),
-    #趣味選択の更新
-    path('<int:id>/updateSelectHobby', views.updateSelectHobby, name='updateSelectHobby'),    
 
     #退会確認
     path('<int:id>/userCheckDelete', views.UserCheckDelete, name='userCheckDelete'),
