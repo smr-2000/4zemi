@@ -1,0 +1,11 @@
+{% extends 'myApp/base_app.html' %}
+{% load static %} 
+{% block title %}ivy{% endblock %}
+{% block content %}
+<div class="friend-top">
+  <p class="center">{{ etext }}</p>
+  <div class="center">
+    <a href="javascript:history.back()" class="btn">戻る</a>
+  </div>
+</div>
+{% endblock %}

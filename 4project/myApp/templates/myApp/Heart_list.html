@@ -10,18 +10,11 @@
     <p>{{ heart.heart_user }}</p>
   </div>
   <div class="My-box">
-    <p id="{{ heart.heart_user }}good"></p>
-    <script>
-      if({{ heart.heart_user.school_grade }}==5) {
-      document.getElementById("{{ heart.heart_user }}good").innerHTML = "学年 : 大学院生";
-      } else {
-      document.getElementById("{{ heart.heart_user }}good").innerHTML = "学年 : {{ heart.heart_user.school_grade }}年生";
-      }
-    </script>      
+    <p>学年：{{ heart.heart_user.get_school_grade_display }}</p>     
     <p>性別 : {{ heart.heart_user.sexuality }}</p>
   </div>
   <div class="My-box-btn">
-    <a href="{% url 'Mypage' heart.heart_user.id %}" class="btn-user">詳細</a>
+    <a href="{% url 'details_screen' heart.heart_user.id user.id|add:"-1" %}" class="btn-user">詳細</a>
   </div>
 </div>
 {% endfor %}

@@ -18,6 +18,9 @@
         <label for="menu-btn-check" class="menu-btn"><span></span></label>
         <div class="menu-content">
           <ul>
+	    <li>
+              <a href="{% url 'Mypage' user.id|add:"-1" %}">マイページ</a>
+            </li>
             <li>
               <a href="{% url 'showDetail' user.id|add:"-1" %}">設定</a>
             </li>

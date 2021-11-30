@@ -519,3 +519,6 @@ input[name="tab_item"] {
     color: #fff;
     opacity: 0.75;
 }
+.friend-top {
+    padding-top: 80px;
+}

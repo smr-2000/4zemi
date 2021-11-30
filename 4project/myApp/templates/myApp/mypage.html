@@ -24,7 +24,7 @@
 
   <hr>
   <p>プロフィール</p>
-  <p>学年：{{ userinfo.school_grade }}年生</p> 
+  <p>学年：{{ userinfo.get_school_grade_display }}</p> 
   <p>性別：{{ userinfo.sexuality }}</p>
 
   <hr>
@@ -34,12 +34,36 @@
   <hr>
   <p>SNSアカウント情報</p>
   <p>友達のみに公開されます</p>
-  <p>{{ userinfo.insta_ID }}</p>
-  <p>{{ userinfo.twitter_ID }}</p>
-  <p>{{ userinfo.SNS_name1 }}</p>
-  <p>{{ userinfo.SNS_ID1 }}</p>
-  <p>{{ userinfo.SNS_name2 }}</p>
-  <p>{{ userinfo.SNS_ID2 }}</p>
+  <table>
+    <tr>
+      <td>Instagram：</td>
+      {% if userinfo.insta_ID is not None %}
+      <td>{{ userinfo.insta_ID }}</td>
+      {% else %}
+      <td>未設定</td>
+      {% endif %}
+    </tr>
+    <tr>
+      <td>Twitter：</td>
+      {% if userinfo.twitter_ID is not None %}
+      <td>{{ userinfo.twitter_ID }}</td>
+      {% else %}
+      <td>未設定</td>
+      {% endif %}
+    </tr>
+    {% if userinfo.SNS_name1 is not None %}
+	<tr>
+	  <td>{{ userinfo.SNS_name1 }}：</td>
+	  <td>{{ userinfo.SNS_ID1 }}</td>
+	</tr>
+	{% endif %}
+	{% if userinfo.SNS_name2 is not None %}
+	<tr>
+	  <td>{{ userinfo.SNS_name2 }}：</td>
+	  <td>{{ userinfo.SNS_ID2 }}</td>
+	</tr>
+    {% endif %}
+  </table>
 </div>
 <div class="center">
   <!--<a href="javascript:history.back()" class="btn">ホーム</a>-->

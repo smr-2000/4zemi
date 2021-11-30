@@ -80,7 +80,7 @@ def details_screen(request, id,user_id):
         SNS_name2 = userinfo.SNS_name2
         SNS_ID2 = SNS_ID2
         comment = 'SNSアカウント情報'
-    if checkHeart.exists() and checkHeart[0].heart_check==True:
+    if userdetail.exists() and checkHeart.exists() and checkHeart[0].heart_check==True:
         heart_check = True
         userinfoMypage = userdetail[0]
         context = {
@@ -119,8 +119,11 @@ def details_screen(request, id,user_id):
         }
         return render(request, 'myApp/details-screen.html', context)
     else:
-       return HttpResponse("詳細ページが設定されていません")
-
+        context = {
+            'etext':"詳細ページが設定されていません",
+            'user':user,
+            }
+        return render(request, 'myApp/e-text.html', context)
 
 def Heart_add(request, id):
     userinfo_hearted = get_object_or_404(login, pk=id)
@@ -164,7 +167,11 @@ def Heart_add(request, id):
         return render(request, 'myApp/details-screen.html', context)
 
     else:
-       return HttpResponse("詳細ページが設定されていません")
+        context = {
+            'etext':"詳細ページが設定されていません",
+            'user':user,
+            }
+        return render(request, 'myApp/e-text.html', context)
 
 def Heart_list(request, id):
     userinfo = get_object_or_404(login, pk=id)
@@ -356,10 +363,16 @@ def Login(request):
                 return render(request, 'myApp/topScreen.html', context)
             else:
                 #アカウント利用不可
-                return HttpResponse("アカウントが有効ではありません")
+                context = {
+                    'etext':"アカウントが有効ではありません",
+                }
+                return render(request, 'myApp/e-text-login.html', context)
         #ユーザー認証失敗
         else:
-            return HttpResponse("ログインIDまたはパスワードが間違っています")
+            context = {
+                    'etext':"ログインIDまたはパスワードが間違っています",
+                }
+            return render(request, 'myApp/e-text-login.html', context)
     #GET
     else:
         return render(request, 'myApp/login_user.html')
@@ -576,7 +589,11 @@ def MypageUpdate(request, id):
         }
         return render(request, 'myApp/mypage_update.html',context)
     else:
-        return HttpResponse("詳細ページが設定されていません")
+        context = {
+            'etext':"詳細ページが設定されていません",
+            'user':user,
+            }
+        return render(request, 'myApp/e-text.html', context)
 
 
 def updateMypage(request,id):
@@ -586,12 +603,22 @@ def updateMypage(request,id):
         user_detail_form = UserDetailForm(request.POST, request.FILES, instance=userinfoMypage)
         if user_detail_form.is_valid():
             user_detail_form.save()
+    
+    global user_pass
+    user_pass = request.session['userpass']
 
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
 
-    userinfo = get_object_or_404(login, pk=id)      
+    userinfo = get_object_or_404(login, pk=user.id-1)
+    
     context = {
         'userinfo':userinfo,
-        'userinfoMypage':userinfoMypage
+        'userinfoMypage':userinfoMypage,
+        'user':user,
     }
     
     return render(request, 'myApp/mypage.html', context)
@@ -777,16 +804,20 @@ def friend_req_list(request,id):
         for i in range(len(req_list)):
             req_friend.append(get_object_or_404(login, pk=req_list[i]))
         context = {
-        'req_friend':req_friend,
-        'req_list':req_list,
-        'userinfo':userinfo,
+            'req_friend':req_friend,
+            'req_list':req_list,
+            'userinfo':userinfo,
             'alluser':alluser,
             'user':user,
        
         }
         return render(request, 'myApp/friend_req_list.html',context)
     else:
-        return HttpResponse("友達申請はありません")
+        context = {
+            'etext':"友達申請はありません",
+            'user':user,
+            }
+        return render(request, 'myApp/e-text.html', context)
 
 def friend_allow(request,id,allow_id):
     userinfo = get_object_or_404(login, pk=id)#削除する側
@@ -835,6 +866,16 @@ def friend_allow(request,id,allow_id):
 
 def friends_list(request,id):
     userinfo = get_object_or_404(login, pk=id)
+    
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     if(Friend_list.objects.filter(user=userinfo).exists()):
         req = Friend_list.objects.filter(user=userinfo)
         req_list=req[0].friend_req.split(',')#フレンド申請一覧（配列型）
@@ -844,20 +885,35 @@ def friends_list(request,id):
         for i in range(len(req_list)):
             req_friend.append(get_object_or_404(login, pk=req_list[i]))
         context = {
-        'req_friend':req_friend,
-        'userinfo':userinfo,
-        'alluser':alluser
+            'req_friend':req_friend,
+            'userinfo':userinfo,
+            'alluser':alluser,
+            'user':user,
        
         }
         return render(request, 'myApp/friends_list.html',context)
     else:
-        return HttpResponse("友達はありません")
+        context = {
+            'etext':"友達はいません",
+            'user':user,
+            }
+        return render(request, 'myApp/e-text.html', context)
 
 def friend_delete(request,id,allow_id):
     userinfo = get_object_or_404(login, pk=id)#削除する側
     userinfo2 = get_object_or_404(login, pk=allow_id)#削除する側
     allow_id = allow_id
     req = Friend_request.objects.filter(user=userinfo)
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     if  len(req[0].friend_req) == 1:
         Friend_request.objects.filter(user=userinfo).delete()
         req_list=[]
@@ -870,7 +926,8 @@ def friend_delete(request,id,allow_id):
     context = {
         'userinfo':userinfo,
         'allow_id':allow_id,
-        'req_list':req_list
+        'req_list':req_list,
+         'user':user,
         }
 
     return render(request, 'myApp/friend_delete.html', context)
