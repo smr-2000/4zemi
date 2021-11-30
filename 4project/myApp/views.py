@@ -938,6 +938,16 @@ def message(request,id,user_id):
     allMessage = Post.objects.filter(Q(sender=str(id),receiver=str(user_id))|Q(sender=str(user_id),receiver=str(id))).order_by('created_date')
     post = Post.objects.all()
     form = MessageForm()
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
     if request.method == 'POST':
         mForm = MessageForm(request.POST)
         if mForm.is_valid():
@@ -952,7 +962,8 @@ def message(request,id,user_id):
         'post':post,
         'form':form,
         'userinfo':userinfo,
-        'userinfo2':userinfo2
+        'userinfo2':userinfo2,
+        'user':user,
        
         }
     
