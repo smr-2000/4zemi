@@ -1,6 +1,12 @@
-{% extends 'myApp/base_app.html' %}
+{% extends 'myApp/base_user.html' %}
 {% load static %} 
 {% block title %}申請許可{% endblock %}
 {% block content %}
-<p>申請を削除しました</p>
- {% endblock %}
+<div class="friend-top">
+  <p class="center">フレンド申請を削除しました</p>
+  <div class="center">
+    <a href="{% url 'topScreen' user.id|add:"-1" %}" class="btn">ホーム</a>
+    <a href="{% url 'friend_req_list' user.id|add:"-1" %}" class="btn" >友達申請一覧</a>
+  </div>
+</div>
+{% endblock %}

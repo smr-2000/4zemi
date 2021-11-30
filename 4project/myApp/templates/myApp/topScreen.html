@@ -30,14 +30,7 @@
 	    </div>
 
 	    <div class="My-box">
-	      <p id="hobby"></p>
-	      <script>
-		if({{ userinfo.school_grade }}==5) {
-		document.getElementById("hobby").innerHTML = "学年 : 大学院生";
-		} else {
-		document.getElementById("hobby").innerHTML = "学年 : {{ userinfo.school_grade }}年生";
-		}
-	      </script>      
+	      <p>学年 : {{ userinfo.get_school_grade_display }}</p>      
 	      <p>性別 : {{ userinfo.sexuality }}</p>
 	    </div>
 	    
@@ -61,14 +54,7 @@
 	      <p>{{ user.username }}</p>
 	    </div>
 	    <div class="My-box">
-	      <p id="personality"></p>
-	      <script>
-		if({{ userinfo.school_grade }}==5) {
-		document.getElementById("personality").innerHTML = "学年 : 大学院生";
-		} else {
-		document.getElementById("personality").innerHTML = "学年 : {{ userinfo.school_grade }}年生";
-		}
-	      </script>      
+	      <p>学年 : {{ userinfo.get_school_grade_display }}</p>     
 	      <p>性別 : {{ userinfo.sexuality }}</p>
 	    </div>
 	    <div class="My-box-btn">
@@ -89,14 +75,7 @@
 	      <p>{{ user.username }}</p>
 	    </div>
 	    <div class="My-box">
-	      <p id="schoolgrade"></p>
-	      <script>
-		if({{ userinfo.school_grade }}==5) {
-		document.getElementById("schoolgrade").innerHTML = "学年 : 大学院生";
-		} else {
-		document.getElementById("schoolgrade").innerHTML = "学年 : {{ userinfo.school_grade }}年生";
-		}
-	      </script>      
+	      <p>学年 : {{ userinfo.get_school_grade_display }}</p>      
 	      <p>性別 : {{ userinfo.sexuality }}</p>
 	    </div>
 	    <div class="My-box-btn">
@@ -113,14 +92,7 @@
 	    </div>
 
 	    <div class="My-box">
-	      <p id="{{ user.user.username }}school"></p>
-	      <script>
-		if({{ user.school_grade }}==5) {
-		document.getElementById("{{ user.user.username }}school").innerHTML = "学年 : 大学院生";
-		} else {
-		document.getElementById("{{ user.user.username }}school").innerHTML = "学年 : {{ user.school_grade }}年生";
-		}
-	      </script>      
+	      <p>学年 : {{ user.get_school_grade_display }}</p>
 	      <p>性別 : {{ user.sexuality }}</p>
 	    </div>
 	    <div class="My-box-btn">
@@ -141,14 +113,7 @@
 	      <p>{{ user.username }}</p>
 	    </div>
 	    <div class="My-box">
-	      <p id="major"></p>
-	      <script>
-		if({{ userinfo.school_grade }}==5) {
-		document.getElementById("major").innerHTML = "学年 : 大学院生";
-		} else {
-		document.getElementById("major").innerHTML = "学年 : {{ userinfo.school_grade }}年生";
-		}
-	      </script>      
+	      <p>学年 : {{ userinfo.get_school_grade_display }}</p>
 	      <p>性別 : {{ userinfo.sexuality }}</p>
 	    </div>
 	    <div class="My-box-btn">
@@ -167,14 +132,7 @@
 	    </div>
 
 	    <div class="My-box">
-	      <p id="{{ user.user.username }}major"></p>
-	      <script>
-		if({{ user.school_grade }}==5) {
-		document.getElementById("{{ user.user.username }}major").innerHTML = "学年 : 大学院生";
-		} else {
-		document.getElementById("{{ user.user.username }}major").innerHTML = "学年 : {{ user.school_grade }}年生";
-		}
-	      </script>      
+	      <p>学年 : {{ user.get_school_grade_display }}</p>     
 	      <p>性別 : {{ user.sexuality }}</p>
 	    </div>
 	    <div class="My-box-btn">
