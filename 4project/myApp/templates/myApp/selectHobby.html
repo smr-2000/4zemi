@@ -10,113 +10,37 @@
   
   {% csrf_token %}
   
-  <div class="create-frame-hobby">
-    <div class="create-box-hobby">
+  <div class="create-frame">
+    <div class="create-box">
       <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js?ver=1.11.3'></script>
 
-
-      <ul class="selection-group">
-	<li>
-	  <input id="a" type="checkbox" name="check" onclick="click_cb();" >
-	  <label for="a" class="checkbox">
-	    <img src="/media/selectHobby_photo/reading_book.jpeg" width="25%" height="25%" class="image-hobby">   
-	    <p>読書</p>
-	  </label>
-	</li>
+      <table>
+	<tr>
+	  <td>{{ favorite_hobby.hobby1.label }}</td>
+	  <td>{{ favorite_hobby.hobby1 }}</td>
+	  {{ favorite_hobby.hobby1.errors }}
+	</tr>
 	
-	<li>
-	  <input id="b" type="checkbox" name="check" onclick="click_cb();" >
-	  <label for="b" class="checkbox">
-	    <img src="/media/selectHobby_photo/sports.jpeg" width="25%" height="25%" class="image-hobby">
-	    <p>スポーツ</p>
-	  </label>
-	</li>
+	<tr>
+	  <td>{{ favorite_hobby.hobby2.label }}</td>
+	  <td>{{ favorite_hobby.hobby2 }}</td>
+	  {{ favorite_hobby.hobby2.errors }}
+	</tr>
 	
-	<li>
-	  <input id="c" type="checkbox" name="check" onclick="click_cb();" >
-	  <label for="c" class="checkbox">
-	    <img src="/media/selectHobby_photo/taking_photo.png" width="25%" height="25%" class="image-hobby">
-	    <p>カメラ</p>
-	  </label>
-	</li>
-	
-	<li>
-	  <input id="d" type="checkbox" name="check" onclick="click_cb();" >
-	  <label for="d" class="checkbox">
-	    <img src="/media/selectHobby_photo/travel.jpeg" width="25%" height="25%" class="image-hobby">
-	    <p>旅行</p>
-	  </label>
-	</li>
-	
-	<li>
-	  <input id="e" type="checkbox" name="check" onclick="click_cb();" >
-	  <label for="e" class="checkbox">
-	    <img src="/media/selectHobby_photo/idol_fan.jpeg" width="25%" height="25%" class="image-hobby">
-	    <p>アイドル</p>
-	  </label>
-	</li>
-	
-	<li>
-	  <input id="f" type="checkbox" name="check" onclick="click_cb();" >
-	  <label for="f" class="checkbox">
-	    <img src="/media/selectHobby_photo/comics.jpeg" width="25%" height="25%" class="image-hobby">
-	      <p>漫画</p>
-	  </label>
-	</li>
-	
-	<li>
-	  <input id="g" type="checkbox" name="check" onclick="click_cb();" >
-	  <label for="g" class="checkbox">
-	    <img src="/media/selectHobby_photo/cooking.jpeg" width="25%" height="25%" class="image-hobby">
-	    <p>料理</p>
-	  </label>
-	</li>
-	
-	<li>
-	  <input id="h" type="checkbox" name="check_h" onclick="click_cb();" >
-	  <label for="h" class="checkbox">
-	    <img src="/media/selectHobby_photo/watching_tv.jpeg" width="25%" height="25%" class="image-hobby">
-	    <p>ドラマ・映画鑑賞</p>
-	  </label>
-	</li>
-	
-	<li>
-	  <input id="i" type="checkbox" name="check" onclick="click_cb();" >
-	  <label for="i" class="checkbox">
-	    <img src="/media/selectHobby_photo/game.jpeg" width="25%" height="25%" class="image-hobby">
-	    <p>ゲーム</p>
-	  </label>
-	</li>
-	
-      </ul>
-      
+	<tr>
+	  <td>{{ favorite_hobby.hobby3.label }}</td>
+	  <td>{{ favorite_hobby.hobby3 }}</td>
+	  {{ favorite_hobby.hobby3.errors }}
+	</tr>
+      </table>
     </div>
   </div>
 
-   <table>
-    <tr>
-      <td>{{ favorite_hobby.hobby1.label }}</td>
-      <td>{{ favorite_hobby.hobby1 }}</td>
-      {{ favorite_hobby.hobby1.errors }}
-    </tr>
-    
-    <tr>
-      <td>{{ favorite_hobby.hobby2.label }}</td>
-      <td>{{ favorite_hobby.hobby2 }}</td>
-      {{ favorite_hobby.hobby2.errors }}
-    </tr>
-    
-    <tr>
-      <td>{{ favorite_hobby.hobby3.label }}</td>
-      <td>{{ favorite_hobby.hobby3 }}</td>
-      {{ favorite_hobby.hobby3.errors }}
-    </tr>
-  </table>
-
-  
   <div class="center">
+    <a href="javascript:history.back()" class="btn">戻る</a>
     <input class="btn" type="submit" value="登録">
   </div>
 </form>
 
 {% endblock %}
+
