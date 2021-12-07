@@ -413,7 +413,7 @@ def topScreen(request, id):
     #personaluser = personalityRank(request, id)
 
     #趣味表示
-    hobbyRankList = rankHobby(request)
+    hobbyRankList = rankHobby(request, id)
 
     userschool = user_exclude.filter(school_name=userinfo.school_name)
     userschool_random = userschool.order_by('?')[:10]
@@ -426,7 +426,7 @@ def topScreen(request, id):
         'user':user,
         'alluser':alluser,
         'hobbyRankList':hobbyRankList,
-        'personaluser':personaluser,
+        #'personaluser':personaluser,
         'userschool_random':userschool_random,
         'usermajor_random':usermajor_random,
     }
