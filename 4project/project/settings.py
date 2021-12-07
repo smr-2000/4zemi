@@ -126,4 +126,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = 'login_user'
 LOGIN_REDIRECT_URL = 'topScreen'
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
