@@ -406,7 +406,7 @@ def topScreen(request, id):
     user_exclude = login.objects.exclude(id=userinfo.id)
 
     #趣味表示
-    hobbyRankList = rankHobby(request, id)
+    #hobbyRankList = rankHobby(request, id)
 
     #性格表示
     #personalityRankUser = personalityRank(request, id)
@@ -421,7 +421,7 @@ def topScreen(request, id):
         'userinfo':userinfo,
         'user':user,
         'alluser':alluser,
-        'hobbyRankList':hobbyRankList,
+        #'hobbyRankList':hobbyRankList,
         'userschool_random':userschool_random,
         'usermajor_random':usermajor_random,
     }
@@ -913,9 +913,19 @@ def UserDelete(request, id):
 def showSelectHobby(request,id):
     userinfo = get_object_or_404(login, pk=id)
 
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
     context = {
         "userinfo":userinfo,
         "favorite_hobby":SelectHobby(),
+        'user':user,
     }
 
     userHobby = hobby.objects.filter(login_user=userinfo)    
@@ -927,6 +937,7 @@ def showSelectHobby(request,id):
         params = {
             'userinfo':userinfo,
             'favorite_hobby':favorite_hobby,
+            'user':user,
         }
         return render(request, 'myApp/selectHobby.html', context=params)
 
@@ -1075,6 +1086,14 @@ def friend_allow(request,id,allow_id):
     allow_id = allow_id
     req = Friend_request.objects.filter(user=userinfo)
     req_list=[]
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
     if  len(req[0].friend_req) == 1:
         Friend_request.objects.filter(user=userinfo).delete()
     else:
@@ -1110,6 +1129,7 @@ def friend_allow(request,id,allow_id):
         'userinfo':userinfo,
         'allow_id':allow_id,
         'req_list':req_list,
+        'user':user,
         }
 
     return render(request, 'myApp/friend_allow.html', context)
@@ -1221,3 +1241,19 @@ def message(request,id,user_id):
 
     
 
+def Settei(request, id):
+    userinfo = get_object_or_404(login, pk=id)
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
+    context = {
+        'userinfo':userinfo,
+        'user':user,
+    }
+    return render(request, 'myApp/Settei.html', context)

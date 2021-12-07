@@ -1,21 +1,22 @@
-{% extends 'myApp/base_app.html' %}
+{% extends 'myApp/base_user.html' %}
 {% load static %} 
 {% block title %}友達一覧{% endblock %}
 {% block content %}
 <h1>友達一覧</h1>
 
 {% for alluser in req_friend %}
-      <tr>
-	<td>
-	  <a href="{% url 'details_screen' alluser.id userinfo.id %}">{{ alluser }}</a>
-	
-	  <div class="detail-box">
-	    <img src="/media/{{ alluser.picture }}" width="25%" height="25%" class="image">
-	  </div>
-	  	
-	</td>
-	
-      </tr>
-      
-      {% endfor %}
-      {% endblock %}
+<div class="My-content">
+  <img src="/media/{{ alluser.picture }}" width="25%" height="25%" class="icon-image">
+  <div class="My-box">
+    <p>{{ alluser.user.username }}</p>
+  </div>
+  <div class="My-box">
+    <p>学年：{{ alluser.get_school_grade_display }}</p>     
+    <p>性別 : {{ alluser.sexuality }}</p>
+  </div>
+  <div class="My-box-btn">
+    <a href="{% url 'details_screen' alluser.id userinfo.id %}" class="btn-user">詳細</a>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
