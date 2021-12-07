@@ -353,13 +353,17 @@ def Login(request):
                 usermajor_random = usermajor.order_by('?')[:10]
 
                 #趣味表示
-                #hobbyRankList = rankHobby(request, userinfo.id)
+                hobbyRankList = rankHobby(request, userinfo.id)
+
+                #性格表示
+                #personaluser = personalityRank(request, id)
 
                 context = {
                     'userinfo':userinfo,
                     'user':user,
                     'alluser':alluser,
-                    #'hobbyRankList':hobbyRankList,
+                    'hobbyRankList':hobbyRankList,
+                    #'personaluser':personaluser,
                     'userschool_random':userschool_random,
                     'usermajor_random':usermajor_random,
                 }
@@ -405,12 +409,12 @@ def topScreen(request, id):
     alluser = login.objects.all()
     user_exclude = login.objects.exclude(id=userinfo.id)
 
-    #趣味表示
-    #hobbyRankList = rankHobby(request, id)
-
     #性格表示
-    #personalityRankUser = personalityRank(request, id)
-    
+    #personaluser = personalityRank(request, id)
+
+    #趣味表示
+    hobbyRankList = rankHobby(request)
+
     userschool = user_exclude.filter(school_name=userinfo.school_name)
     userschool_random = userschool.order_by('?')[:10]
     
@@ -421,14 +425,16 @@ def topScreen(request, id):
         'userinfo':userinfo,
         'user':user,
         'alluser':alluser,
-        #'hobbyRankList':hobbyRankList,
+        'hobbyRankList':hobbyRankList,
+        'personaluser':personaluser,
         'userschool_random':userschool_random,
         'usermajor_random':usermajor_random,
     }
     
     return render(request, "myApp/topScreen.html",  context)
 
-#ログイン後ホーム
+
+#趣味並び替え
 def rankHobby(request, id):
     userinfo = get_object_or_404(login, pk=id)
     
@@ -438,47 +444,55 @@ def rankHobby(request, id):
     alluser = login.objects.all()
     user_exclude = login.objects.exclude(id=userinfo.id)
 
+    hobbyRankList=[]
+
     #個人の趣味情報
     userinfoHobby1 = hobby.objects.filter(login_user=userinfo)
-    userinfoHobby1_list = userinfoHobby1[0].hobby1.split(',')
-    userinfoHobby2 = hobby.objects.filter(login_user=userinfo)
-    userinfoHobby2_list = userinfoHobby2[0].hobby2.split(',')
-    userinfoHobby3 = hobby.objects.filter(login_user=userinfo)
-    userinfoHobby3_list = userinfoHobby3[0].hobby3.split(',')
-    
-    hobbyRankList=[]
-    userinfo2 = user_exclude.order_by('?')[:1]
+    if not userinfoHobby1:
+        pass 
+    else:
+        userinfoHobby1 = hobby.objects.filter(login_user=userinfo)
+        userinfoHobby1_list = userinfoHobby1[0].hobby1.split(',')
+        userinfoHobby2 = hobby.objects.filter(login_user=userinfo)
+        userinfoHobby2_list = userinfoHobby2[0].hobby2.split(',')
+        userinfoHobby3 = hobby.objects.filter(login_user=userinfo)
+        userinfoHobby3_list = userinfoHobby3[0].hobby3.split(',')
+        
+        userinfo2 = user_exclude.order_by('?')[:1]
 
-    #趣味情報
-    for userinfo2 in user_exclude:
-        #比較相手の趣味情報
-        #新規ユーザーが登録していない場合、エラー出る
-        userHobby1 = hobby.objects.filter(login_user=userinfo2)
-        userHobby1_list = userHobby1[0].hobby1.split(',')
-        userHobby2 = hobby.objects.filter(login_user=userinfo2)
-        userHobby2_list = userHobby2[0].hobby2.split(',')
-        userHobby3 = hobby.objects.filter(login_user=userinfo2)
-        userHobby3_list = userHobby3[0].hobby3.split(',')
-                
-        #項目が完全一致
-        if ( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list == userHobby3_list ):
-            hobbyRankList.append(userinfo2)
-        elif( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list != userHobby3_list ):
-            hobbyRankList.append(userinfo2)
-        elif( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list != userHobby2_list and userinfoHobby3_list == userHobby3_list ):
-            hobbyRankList.append(userinfo2)
-        elif( userinfoHobby1_list != userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list == userHobby3_list ):
-            hobbyRankList.append(userinfo2)
-        #1つだけ一致
-        elif( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list != userHobby2_list and userinfoHobby3_list != userHobby3_list ):
-            hobbyRankList.append(userinfo2)
-        elif( userinfoHobby1_list != userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list != userHobby3_list ):
-            hobbyRankList.append(userinfo2)
-        elif ( userinfoHobby1_list != userHobby1_list and userinfoHobby2_list != userHobby2_list and userinfoHobby3_list == userHobby3_list ):
-            hobbyRankList.append(userinfo2)
-        else:
-            pass
-
+        #趣味情報
+        for userinfo2 in user_exclude:
+            #比較相手の趣味情報
+            userHobby1 = hobby.objects.filter(login_user=userinfo2)
+            #当てはまるクエリがない時
+            if not userHobby1:
+                pass
+            else:
+                userHobby1_list = userHobby1[0].hobby1.split(',')
+                userHobby2 = hobby.objects.filter(login_user=userinfo2)
+                userHobby2_list = userHobby2[0].hobby2.split(',')
+                userHobby3 = hobby.objects.filter(login_user=userinfo2)
+                userHobby3_list = userHobby3[0].hobby3.split(',')
+                        
+                #項目が完全一致
+                if ( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list == userHobby3_list ):
+                    hobbyRankList.append(userinfo2)
+                elif( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list != userHobby3_list ):
+                    hobbyRankList.append(userinfo2)
+                elif( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list != userHobby2_list and userinfoHobby3_list == userHobby3_list ):
+                    hobbyRankList.append(userinfo2)
+                elif( userinfoHobby1_list != userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list == userHobby3_list ):
+                    hobbyRankList.append(userinfo2)
+                #1つだけ一致
+                elif( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list != userHobby2_list and userinfoHobby3_list != userHobby3_list ):
+                    hobbyRankList.append(userinfo2)
+                elif( userinfoHobby1_list != userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list != userHobby3_list ):
+                    hobbyRankList.append(userinfo2)
+                elif ( userinfoHobby1_list != userHobby1_list and userinfoHobby2_list != userHobby2_list and userinfoHobby3_list == userHobby3_list ):
+                    hobbyRankList.append(userinfo2)
+                else:
+                    pass
+            
     hobbyRankListNum = len(hobbyRankList)
 
     #全く一致しない
@@ -486,9 +500,9 @@ def rankHobby(request, id):
         hobbyRankList = user_exclude.order_by('?')[:5]
 
     return hobbyRankList
-    
 
-#性格画面表示
+
+#性格並び替え
 def personalityRank(request,id):
     alluser = login.objects.all()
     userinfo = get_object_or_404(login, pk=id)
@@ -538,122 +552,122 @@ def personalityRank(request,id):
         lowScore = loginPerson.openness
         l = "o"
 
-        Allperson = personal.objects.all()
-        highPersonList = []
-        lowPersonList = []
+    Allperson = personal.objects.all()
+    highPersonList = []
+    lowPersonList = []
 
-        p1=""
-        p2=""
-        p3=""
-        p4=""
-        p5=""
+    p1=""
+    p2=""
+    p3=""
+    p4=""
+    p5=""
 
-        q1=""
-        q2=""
-        q3=""
-        q4=""
-        q5=""
+    q1=""
+    q2=""
+    q3=""
+    q4=""
+    q5=""
 
-        if h == 'd':
-            p1 = personal.objects.filter(openness__lte=4).all()
-            p2 = personal.objects.filter(cooperation__gte=3).all()
-            p3 = personal.objects.filter(nerve__gte=3).all()
+    if h == 'd':
+        p1 = personal.objects.filter(openness__lte=4).all()
+        p2 = personal.objects.filter(cooperation__gte=3).all()
+        p3 = personal.objects.filter(nerve__gte=3).all()
             
-        if h == 'c':
-            p1 = personal.objects.filter(dipromacy__gte=3).all()            
-            p2 = personal.objects.filter(openness__lte=4).all()
-            p3 = personal.objects.filter(honesty__gte=3).all()
-            p4 = personal.objects.filter(cooperation__gte=3).all()
-            p5 = personal.objects.filter(nerve__lte=4).all()
-        if h == 'h':
-            p1 = personal.objects.filter(openness__lte=4).all()
-            p2 = personal.objects.filter(honesty__gte=3).all()
-            p3 = personal.objects.filter(cooperation__gte=3).all()
-            p4 = personal.objects.filter(nerve__lte=4).all()
-        if h == 'n':
-            p1 = personal.objects.filter(honesty__lte=4).all()
-            p2 = personal.objects.filter(honesty__gte=3).all()
-            p3 = personal.objects.filter(cooperation__gte=3).all()
-            p4 = personal.objects.filter(nerve__gte=3).all()
-        if h == 'o':
-            p1 = personal.objects.filter(diplomacy__gte=1).all()
-            p2 = personal.objects.filter(openness__gte=3).all()
-            p3 = personal.objects.filter(cooperation__lte=4).all()
-            p4 = personal.objects.filter(nerve__lte=4).all()
-        if l == 'd':
-            q1 = personal.objects.filter(diplomacy__gte=3).all()
-            q2 = personal.objects.filter(cooperation__lte=4).all()
-            q3 = personal.objects.filter(cooperation__gte=3).all()
-        if l == 'c':
-            q1 = personal.objects.filter(openness__lte=4).all()
-            q2 = personal.objects.filter(honesty__gte=3).all()
-            q3 = personal.objects.filter(cooperation__gte=3).all()
-        if l == 'h':
-            q1 = personal.objects.filter(openness__gte=3).all()
-            q2 = personal.objects.filter(honesty__lte=4).all()
-            q3 = personal.objects.filter(cooperation__gte=3).all()
-        if l == 'n':
-            q1 = personal.objects.filter(diplomacy__lte=4).all()
-            q2 = personal.objects.filter(openness__gte=3).all()
-            q3 = personal.objects.filter(cooperation__lte=4).all()
-            q4 = personal.objects.filter(honesty__lte=4).all()
-        if l == 'o':
-            q1 = personal.objects.filter(openness__gte=3).all()
-            q2 = personal.objects.filter(honesty__gte=3).all()
-            q3 = personal.objects.filter(cooperation__lte=4).all()
-            q4 = personal.objects.filter(honesty__lte=4).all()
+    if h == 'c':
+        p1 = personal.objects.filter(diplomacy__gte=3).all()            
+        p2 = personal.objects.filter(openness__lte=4).all()
+        p3 = personal.objects.filter(honesty__gte=3).all()
+        p4 = personal.objects.filter(cooperation__gte=3).all()
+        p5 = personal.objects.filter(nerve__lte=4).all()
+    if h == 'h':
+        p1 = personal.objects.filter(openness__lte=4).all()
+        p2 = personal.objects.filter(honesty__gte=3).all()
+        p3 = personal.objects.filter(cooperation__gte=3).all()
+        p4 = personal.objects.filter(nerve__lte=4).all()
+    if h == 'n':
+        p1 = personal.objects.filter(honesty__lte=4).all()
+        p2 = personal.objects.filter(honesty__gte=3).all()
+        p3 = personal.objects.filter(cooperation__gte=3).all()
+        p4 = personal.objects.filter(nerve__gte=3).all()
+    if h == 'o':
+        p1 = personal.objects.filter(diplomacy__gte=1).all()
+        p2 = personal.objects.filter(openness__gte=3).all()
+        p3 = personal.objects.filter(cooperation__lte=4).all()
+        p4 = personal.objects.filter(nerve__lte=4).all()
+    if l == 'd':
+        q1 = personal.objects.filter(diplomacy__gte=3).all()
+        q2 = personal.objects.filter(cooperation__lte=4).all()
+        q3 = personal.objects.filter(cooperation__gte=3).all()
+    if l == 'c':
+        q1 = personal.objects.filter(openness__lte=4).all()
+        q2 = personal.objects.filter(honesty__gte=3).all()
+        q3 = personal.objects.filter(cooperation__gte=3).all()
+    if l == 'h':
+        q1 = personal.objects.filter(openness__gte=3).all()
+        q2 = personal.objects.filter(honesty__lte=4).all()
+        q3 = personal.objects.filter(cooperation__gte=3).all()
+    if l == 'n':
+        q1 = personal.objects.filter(diplomacy__lte=4).all()
+        q2 = personal.objects.filter(openness__gte=3).all()
+        q3 = personal.objects.filter(cooperation__lte=4).all()
+        q4 = personal.objects.filter(honesty__lte=4).all()
+    if l == 'o':
+        q1 = personal.objects.filter(openness__gte=3).all()
+        q2 = personal.objects.filter(honesty__gte=3).all()
+        q3 = personal.objects.filter(cooperation__lte=4).all()
+        q4 = personal.objects.filter(honesty__lte=4).all()
+    
+    PersonList=[]
             
-            PersonList=[]
-            
-            for i in p1:
-                PersonList.append(i)
-            for i in p2:
-                PersonList.append(i)
-            for i in p3:
-                PersonList.append(i)
-            for i in p4:
-                PersonList.append(i)
-            for i in p5:
-                PersonList.append(i)
-            for i in q1:
-                PersonList.append(i)
-            for i in q2:
-                PersonList.append(i)
-            for i in q3:
-                PersonList.append(i)
-            for i in q4:
-                PersonList.append(i)
-            for i in q5:
-                PersonList.append(i)
+    for i in p1:
+        PersonList.append(i)
+    for i in p2:
+        PersonList.append(i)
+    for i in p3:
+        PersonList.append(i)
+    for i in p4:
+        PersonList.append(i)
+    for i in p5:
+        PersonList.append(i)
+    for i in q1:
+        PersonList.append(i)
+    for i in q2:
+        PersonList.append(i)
+    for i in q3:
+        PersonList.append(i)
+    for i in q4:
+        PersonList.append(i)
+    for i in q5:
+        PersonList.append(i)
                 
-                n = 0
-                ScoreList = [[0 for i in range(2)] for j in PersonList]
+    n = 0
+    ScoreList = [[0 for i in range(2)] for j in PersonList]
                 
-                if h == 'd':
-                    for i in PersonList:
-                        ScoreList[n][0] = i.user 
-                        ScoreList[n][1] = i.cooperation - i.openness
-                        n = n + 1
-                if h == 'c':
-                    for i in PersonList:
-                        ScoreList[n][0] = i.user 
-                        ScoreList[n][1] = i.dipromacy - i.openness
-                        n = n + 1
-                if h == 'h':
-                    for i in PersonList:
-                        ScoreList[0][n] = i.user 
-                        ScoreList[1][n] = i.honesty - i.dipromacy
-                        n = n + 1
-                if h == 'n':
-                    for i in PersonList:
-                        ScoreList[0][n] = i.user 
-                        ScoreList[1][n] = i.nerve - i.openness
-                        n = n + 1
-                if h == 'o':
-                    for i in PersonList:
-                        ScoreList[n][0] = i.user 
-                        ScoreList[n][1] = i.honesty - i.nerve
-                        n = n + 1
+    if h == 'd':
+        for i in PersonList:
+            ScoreList[n][0] = i.user 
+            ScoreList[n][1] = i.cooperation - i.openness
+            n = n + 1
+    if h == 'c':
+        for i in PersonList:
+            ScoreList[n][0] = i.user
+            ScoreList[n][1] = i.diplomacy - i.openness
+            n = n + 1
+    if h == 'h':
+        for i in PersonList:
+            ScoreList[0][n] = i.user 
+            ScoreList[1][n] = i.honesty - i.dipromacy
+            n = n + 1
+    if h == 'n':
+        for i in PersonList:
+            ScoreList[0][n] = i.user 
+            ScoreList[1][n] = i.nerve - i.openness
+            n = n + 1
+    if h == 'o':
+        for i in PersonList:
+            ScoreList[n][0] = i.user 
+            ScoreList[n][1] = i.honesty - i.nerve
+            n = n + 1
 
     m = 0
                 
@@ -670,13 +684,7 @@ def personalityRank(request,id):
 
     personaluser = ShowList
                 
-    context = {
-        'userinfo':userinfo,
-        'user':user,
-        'alluser':alluser,
-    }
-                
-    return render(request, 'myApp/topScreen.html', context)
+    return personaluser
 
 
 def UserUpdate(request, id):
@@ -1000,11 +1008,14 @@ def addSelectHobby(request,id):
     usermajor = user_exclude.filter(school_major=userinfo.school_major)
     usermajor_random = usermajor.order_by('?')[:10]
 
+    #趣味表示
+    hobbyRankList = rankHobby(request ,id)
     
     text = {
         'userinfo':userinfo,
         'user':user,
         'alluser':alluser,
+        'hobbyRankList':hobbyRankList,
         'userschool_random':userschool_random,
         'usermajor_random':usermajor_random,
     }
