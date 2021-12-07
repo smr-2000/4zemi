@@ -11,7 +11,7 @@ a {
 }
 
 h1 {
-     text-align: center;
+    text-align: center;
 }
 .center {
      text-align: center;
@@ -521,4 +521,32 @@ input[name="tab_item"] {
 }
 .friend-top {
     padding-top: 80px;
+}
+
+/* 設定 */
+.s-frame{
+    text-align: center;
+}
+.s-box{
+    width:300px;
+    display: inline-block;
+    text-align: left;
+}
+.s-border {
+     border-bottom: solid 3px #cce4ff;
+     position: relative;
+     padding-left:10px;
+     font-size:15px;
+     margin-top: 30px;
+}
+.s-border:after {
+  position: absolute;
+  content: " ";
+  display: block;
+  border-bottom: solid 3px pink;
+  bottom: -3px;
+  width: 30%;
+}
+.s-info {
+    padding-left: 20px;
 }

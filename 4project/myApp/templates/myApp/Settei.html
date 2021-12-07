@@ -1,0 +1,14 @@
+{% extends 'myApp/base_user.html' %}
+{% load static %} 
+{% block title %}設定{% endblock %}
+{% block content %}
+<h1>設定</h1>
+<div class="s-frame">
+  <div class="s-box">
+    <p class="s-border"><a href="{% url 'showDetail' user.id|add:"-1" %}">会員情報</a></p>
+    <p class="s-info">会員情報の確認・編集</p>
+    <p class="s-border"><a href="{% url 'userCheckDelete' user.id|add:"-1" %}">退会</a></p>
+    <p class="s-info">一度退会すると元には戻せません</p>
+  </div>
+</div>
+{% endblock %}

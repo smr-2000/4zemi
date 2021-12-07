@@ -351,11 +351,15 @@ def Login(request):
 
                 usermajor = user_exclude.filter(school_major=userinfo.school_major)
                 usermajor_random = usermajor.order_by('?')[:10]
-       
+
+                #趣味表示
+                #hobbyRankList = rankHobby(request, userinfo.id)
+
                 context = {
                     'userinfo':userinfo,
                     'user':user,
                     'alluser':alluser,
+                    #'hobbyRankList':hobbyRankList,
                     'userschool_random':userschool_random,
                     'usermajor_random':usermajor_random,
                 }
@@ -388,8 +392,7 @@ def Logout(request):
 #ログイン後ホーム
 def topScreen(request, id):
     userinfo = get_object_or_404(login, pk=id)
-
-
+    
     global user_pass
     user_pass = request.session['userpass']
 
@@ -399,25 +402,282 @@ def topScreen(request, id):
     user = authenticate(username=user_username, password=user_pass)
     login(request, user)
     
-    
     alluser = login.objects.all()
     user_exclude = login.objects.exclude(id=userinfo.id)
+
+    #趣味表示
+    #hobbyRankList = rankHobby(request, id)
+
+    #性格表示
+    #personalityRankUser = personalityRank(request, id)
     
     userschool = user_exclude.filter(school_name=userinfo.school_name)
     userschool_random = userschool.order_by('?')[:10]
     
     usermajor = user_exclude.filter(school_major=userinfo.school_major)
     usermajor_random = usermajor.order_by('?')[:10]
-    
+
     context = {
         'userinfo':userinfo,
         'user':user,
         'alluser':alluser,
+        #'hobbyRankList':hobbyRankList,
         'userschool_random':userschool_random,
         'usermajor_random':usermajor_random,
     }
     
     return render(request, "myApp/topScreen.html",  context)
+
+#ログイン後ホーム
+def rankHobby(request, id):
+    userinfo = get_object_or_404(login, pk=id)
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+    
+    alluser = login.objects.all()
+    user_exclude = login.objects.exclude(id=userinfo.id)
+
+    #個人の趣味情報
+    userinfoHobby1 = hobby.objects.filter(login_user=userinfo)
+    userinfoHobby1_list = userinfoHobby1[0].hobby1.split(',')
+    userinfoHobby2 = hobby.objects.filter(login_user=userinfo)
+    userinfoHobby2_list = userinfoHobby2[0].hobby2.split(',')
+    userinfoHobby3 = hobby.objects.filter(login_user=userinfo)
+    userinfoHobby3_list = userinfoHobby3[0].hobby3.split(',')
+    
+    hobbyRankList=[]
+    userinfo2 = user_exclude.order_by('?')[:1]
+
+    #趣味情報
+    for userinfo2 in user_exclude:
+        #比較相手の趣味情報
+        #新規ユーザーが登録していない場合、エラー出る
+        userHobby1 = hobby.objects.filter(login_user=userinfo2)
+        userHobby1_list = userHobby1[0].hobby1.split(',')
+        userHobby2 = hobby.objects.filter(login_user=userinfo2)
+        userHobby2_list = userHobby2[0].hobby2.split(',')
+        userHobby3 = hobby.objects.filter(login_user=userinfo2)
+        userHobby3_list = userHobby3[0].hobby3.split(',')
+                
+        #項目が完全一致
+        if ( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list == userHobby3_list ):
+            hobbyRankList.append(userinfo2)
+        elif( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list != userHobby3_list ):
+            hobbyRankList.append(userinfo2)
+        elif( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list != userHobby2_list and userinfoHobby3_list == userHobby3_list ):
+            hobbyRankList.append(userinfo2)
+        elif( userinfoHobby1_list != userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list == userHobby3_list ):
+            hobbyRankList.append(userinfo2)
+        #1つだけ一致
+        elif( userinfoHobby1_list == userHobby1_list and userinfoHobby2_list != userHobby2_list and userinfoHobby3_list != userHobby3_list ):
+            hobbyRankList.append(userinfo2)
+        elif( userinfoHobby1_list != userHobby1_list and userinfoHobby2_list == userHobby2_list and userinfoHobby3_list != userHobby3_list ):
+            hobbyRankList.append(userinfo2)
+        elif ( userinfoHobby1_list != userHobby1_list and userinfoHobby2_list != userHobby2_list and userinfoHobby3_list == userHobby3_list ):
+            hobbyRankList.append(userinfo2)
+        else:
+            pass
+
+    hobbyRankListNum = len(hobbyRankList)
+
+    #全く一致しない
+    if( hobbyRankListNum<=5 ):
+        hobbyRankList = user_exclude.order_by('?')[:5]
+
+    return hobbyRankList
+    
+
+#性格画面表示
+def personalityRank(request,id):
+    alluser = login.objects.all()
+    userinfo = get_object_or_404(login, pk=id)
+    loginPerson = get_object_or_404(personal,id=userinfo.id)
+
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+
+    user = authenticate(username=user_username, password=user_pass)
+    
+    highScore = 0
+    lowScore = 7
+    h = "d"
+    l = "d"
+
+    if loginPerson.diplomacy > highScore:  # loginPersonの表現
+        highScore = loginPerson.diplomacy
+        h = "d"
+    if loginPerson.diplomacy < lowScore:
+        lowScore = loginPerson.diplomacy
+        l = "d"
+    if loginPerson.cooperation > highScore:
+        highScore = loginPerson.cooperation
+        h = "c"
+    if loginPerson.cooperation < lowScore:
+        lowScore = loginPerson.cooperation
+        l = "c"
+    if loginPerson.honesty > highScore:
+        highScore = loginPerson.honesty
+        h = "h"
+    if loginPerson.honesty < lowScore:
+        lowScore = loginPerson.honesty
+        l = "h"
+    if loginPerson.nerve > highScore:
+        highScore = loginPerson.nerve
+        h = "n"
+    if loginPerson.nerve < lowScore:
+        lowScore = loginPerson.nerve
+        l = "n"
+    if loginPerson.openness > highScore:
+        highScore = loginPerson.openness
+        h = "o"
+    if loginPerson.openness < lowScore:
+        lowScore = loginPerson.openness
+        l = "o"
+
+        Allperson = personal.objects.all()
+        highPersonList = []
+        lowPersonList = []
+
+        p1=""
+        p2=""
+        p3=""
+        p4=""
+        p5=""
+
+        q1=""
+        q2=""
+        q3=""
+        q4=""
+        q5=""
+
+        if h == 'd':
+            p1 = personal.objects.filter(openness__lte=4).all()
+            p2 = personal.objects.filter(cooperation__gte=3).all()
+            p3 = personal.objects.filter(nerve__gte=3).all()
+            
+        if h == 'c':
+            p1 = personal.objects.filter(dipromacy__gte=3).all()            
+            p2 = personal.objects.filter(openness__lte=4).all()
+            p3 = personal.objects.filter(honesty__gte=3).all()
+            p4 = personal.objects.filter(cooperation__gte=3).all()
+            p5 = personal.objects.filter(nerve__lte=4).all()
+        if h == 'h':
+            p1 = personal.objects.filter(openness__lte=4).all()
+            p2 = personal.objects.filter(honesty__gte=3).all()
+            p3 = personal.objects.filter(cooperation__gte=3).all()
+            p4 = personal.objects.filter(nerve__lte=4).all()
+        if h == 'n':
+            p1 = personal.objects.filter(honesty__lte=4).all()
+            p2 = personal.objects.filter(honesty__gte=3).all()
+            p3 = personal.objects.filter(cooperation__gte=3).all()
+            p4 = personal.objects.filter(nerve__gte=3).all()
+        if h == 'o':
+            p1 = personal.objects.filter(diplomacy__gte=1).all()
+            p2 = personal.objects.filter(openness__gte=3).all()
+            p3 = personal.objects.filter(cooperation__lte=4).all()
+            p4 = personal.objects.filter(nerve__lte=4).all()
+        if l == 'd':
+            q1 = personal.objects.filter(diplomacy__gte=3).all()
+            q2 = personal.objects.filter(cooperation__lte=4).all()
+            q3 = personal.objects.filter(cooperation__gte=3).all()
+        if l == 'c':
+            q1 = personal.objects.filter(openness__lte=4).all()
+            q2 = personal.objects.filter(honesty__gte=3).all()
+            q3 = personal.objects.filter(cooperation__gte=3).all()
+        if l == 'h':
+            q1 = personal.objects.filter(openness__gte=3).all()
+            q2 = personal.objects.filter(honesty__lte=4).all()
+            q3 = personal.objects.filter(cooperation__gte=3).all()
+        if l == 'n':
+            q1 = personal.objects.filter(diplomacy__lte=4).all()
+            q2 = personal.objects.filter(openness__gte=3).all()
+            q3 = personal.objects.filter(cooperation__lte=4).all()
+            q4 = personal.objects.filter(honesty__lte=4).all()
+        if l == 'o':
+            q1 = personal.objects.filter(openness__gte=3).all()
+            q2 = personal.objects.filter(honesty__gte=3).all()
+            q3 = personal.objects.filter(cooperation__lte=4).all()
+            q4 = personal.objects.filter(honesty__lte=4).all()
+            
+            PersonList=[]
+            
+            for i in p1:
+                PersonList.append(i)
+            for i in p2:
+                PersonList.append(i)
+            for i in p3:
+                PersonList.append(i)
+            for i in p4:
+                PersonList.append(i)
+            for i in p5:
+                PersonList.append(i)
+            for i in q1:
+                PersonList.append(i)
+            for i in q2:
+                PersonList.append(i)
+            for i in q3:
+                PersonList.append(i)
+            for i in q4:
+                PersonList.append(i)
+            for i in q5:
+                PersonList.append(i)
+                
+                n = 0
+                ScoreList = [[0 for i in range(2)] for j in PersonList]
+                
+                if h == 'd':
+                    for i in PersonList:
+                        ScoreList[n][0] = i.user 
+                        ScoreList[n][1] = i.cooperation - i.openness
+                        n = n + 1
+                if h == 'c':
+                    for i in PersonList:
+                        ScoreList[n][0] = i.user 
+                        ScoreList[n][1] = i.dipromacy - i.openness
+                        n = n + 1
+                if h == 'h':
+                    for i in PersonList:
+                        ScoreList[0][n] = i.user 
+                        ScoreList[1][n] = i.honesty - i.dipromacy
+                        n = n + 1
+                if h == 'n':
+                    for i in PersonList:
+                        ScoreList[0][n] = i.user 
+                        ScoreList[1][n] = i.nerve - i.openness
+                        n = n + 1
+                if h == 'o':
+                    for i in PersonList:
+                        ScoreList[n][0] = i.user 
+                        ScoreList[n][1] = i.honesty - i.nerve
+                        n = n + 1
+
+    m = 0
+                
+    ShowPersonList = sorted(ScoreList,reverse=True, key = lambda x:(x[1]) )                
+    ShowListAll = []
+    for i in ScoreList:
+        if loginPerson.user == i:
+            pass
+        else:
+            ShowListAll.append(ScoreList[m][0])
+            m = m + 1
+                        
+    ShowList = list(set(ShowListAll))
+
+    personaluser = ShowList
+                
+    context = {
+        'userinfo':userinfo,
+        'user':user,
+        'alluser':alluser,
+    }
+                
+    return render(request, 'myApp/topScreen.html', context)
+
 
 def UserUpdate(request, id):
     userinfo = get_object_or_404(login, pk=id)
@@ -749,8 +1009,7 @@ def addSelectHobby(request,id):
         'usermajor_random':usermajor_random,
     }
         
-    return render(request, 'myApp/topScreen.html', context=text)
-
+    return render(request, 'myApp/topScreen.html', context=text) 
 
 def friend_request(request,id,user_id):
     userinfo = get_object_or_404(login, pk=id)#申請される側
@@ -982,3 +1241,19 @@ def message(request,id,user_id):
 
     
 
+def Settei(request, id):
+    userinfo = get_object_or_404(login, pk=id)
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
+    context = {
+        'userinfo':userinfo,
+        'user':user,
+    }
+    return render(request, 'myApp/Settei.html', context)

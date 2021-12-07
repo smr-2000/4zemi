@@ -62,7 +62,8 @@ urlpatterns = [
     path('<int:id>/show_selectHobby', views.showSelectHobby, name='show_selectHobby'),
     #趣味選択
     path('<int:id>/add_selectHobby', views.addSelectHobby, name='add_selectHobby'),
-
+    #設定
+    path('<int:id>/Configuration', views.Settei, name='Settei'),
     #退会確認
     path('<int:id>/userCheckDelete', views.UserCheckDelete, name='userCheckDelete'),
     #退会

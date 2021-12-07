@@ -1,0 +1,7 @@
+{% extends 'myApp/base_user.html' %}
+{% load static %} 
+{% block title %}設定{% endblock %}
+{% block content %}
+<h1>設定</h1>
+
+{% endblock %}

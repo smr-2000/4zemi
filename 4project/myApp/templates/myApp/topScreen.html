@@ -1,6 +1,7 @@
 {% extends 'myApp/base_user.html' %}
 {% block title %}ホーム{% endblock %}
 {% block content %}
+{% csrf_token %}
 
 
 <div class="friend-content">
@@ -20,12 +21,10 @@
     <div class="tab_content" id="tab1_content">
       <div class="tab_content_description">
 	<p class="c-txtsp">
-	  趣味表示
-	  
 	  <div class="My-content">
-	    <img src="/media/{{ userinfo.picture }}" width="25%" height="25%" class="icon-image">
+		<img src="/media/{{ userinfo.picture }}" width="25%" height="25%" class="icon-image">
 
-	    <div class="My-box">
+		<div class="My-box">
 	      <p>{{ user.username }}</p>
 	    </div>
 
@@ -37,9 +36,25 @@
 	    <div class="My-box-btn">
 	      <a href="{% url 'Mypage' user.id|add:"-1" %}" class="btn-user">マイページ</a>
 	    </div>
-	    
 	  </div>
 	  <hr>
+	  {% for user in hobbyRankList %}
+	  <div class="My-content">
+	    <img src="/media/{{ user.picture }}" width="25%" height="25%" class="icon-image">
+
+	    <div class="My-box">
+	      <p>{{ user.user.username }}</p>
+	    </div>
+
+	    <div class="My-box">
+	      <p>学年 : {{ user.get_school_grade_display }}</p>
+	      <p>性別 : {{ user.sexuality }}</p>
+	    </div>
+	    <div class="My-box-btn">
+	      <a href="{% url 'details_screen' user.id userinfo.id %}" class="btn-user">詳細</a>
+	    </div>
+	  </div>
+	  {% endfor %}
 	</p>
       </div>
     </div>
@@ -47,7 +62,6 @@
     <div class="tab_content" id="tab2_content">
       <div class="tab_content_description">
 	<p class="c-txtsp">
-	  性格表示
 	  <div class="My-content">
 	    <img src="/media/{{ userinfo.picture }}" width="25%" height="25%" class="icon-image">
 	    <div class="My-box">

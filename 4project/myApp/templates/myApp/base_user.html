@@ -21,9 +21,6 @@
 	    <li>
               <a href="{% url 'Mypage' user.id|add:"-1" %}">マイページ</a>
             </li>
-            <li>
-              <a href="{% url 'showDetail' user.id|add:"-1" %}">設定</a>
-            </li>
 	    <li>
 	      <a href="{% url 'Heart_list' user.id|add:"-1" %}">いいね一覧</a>
 	    </li>
@@ -39,10 +36,9 @@
 	    <li>
 	      <a href="{% url 'personal' user.id|add:"-1" %}">性格診断</a>
 	    </li>
-	    <li>
-	      <a href="{% url 'userCheckDelete' user.id|add:"-1" %}">退会</a>
+	     <li>
+	      <a href="{% url 'Settei' user.id|add:"-1" %}">設定</a>
 	    </li>
-	    
           </ul>
         </div>
       </div>
