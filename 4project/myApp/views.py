@@ -653,12 +653,35 @@ def UserDelete(request, id):
 def showSelectHobby(request,id):
     userinfo = get_object_or_404(login, pk=id)
 
-    params = {
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
+
+    context = {
         "userinfo":userinfo,
         "favorite_hobby":SelectHobby(),
+        'user':user,
     }
-    params["favorite_hobby"] = SelectHobby()
-    return render(request, 'myApp/selectHobby.html', context=params)
+
+    userHobby = hobby.objects.filter(login_user=userinfo)    
+    
+    if userHobby.exists():
+        userinfoHobby = userHobby[0]
+        favorite_hobby = SelectHobby(instance=userinfoHobby)
+    
+        params = {
+            'userinfo':userinfo,
+            'favorite_hobby':favorite_hobby,
+            'user':user,
+        }
+        return render(request, 'myApp/selectHobby.html', context=params)
+
+    return render(request, 'myApp/selectHobby.html', context)
 
 def addSelectHobby(request,id):
     userinfo = get_object_or_404(login, pk=id)
@@ -666,57 +689,38 @@ def addSelectHobby(request,id):
         "userinfo":userinfo,
         "favorite_hobby":SelectHobby(),
     }
-    if request.method == "POST":
-        selectHobbyForm = SelectHobby(request.POST, request.FILES)      
-        if selectHobbyForm.is_valid():
-            selectHobbyPost = selectHobbyForm.save(commit=False)
-            selectHobbyPost.login_user = userinfo
-            selectHobbyPost.save()
+
+    userHobby = hobby.objects.filter(login_user=userinfo)
+
+    if request.method == 'POST':
+        if userHobby.exists():
+            userselectHobby = userHobby[0]
+            favorite_hobby = SelectHobby(request.POST, request.FILES, instance=userselectHobby)
             
-        else:
-            print(params["favorite_hobby"].errors)
-            return render(request, 'myApp/selectHobby.html', context=params)
-
-    userhobby = hobby.objects.filter(login_user=userinfo)
-    userselectHobby = userhobby[0]
-
-    mypagetext = {
-        'userinfo':userinfo,
-        'userselectHobby':userselectHobby,
-    }
-        
-    return render(request, 'myApp/select.html', context=mypagetext)
-
-
-def showUpdateSelectHobby(request,id):
-    userinfoHobby = get_object_or_404(hobby, pk=id)
-    favorite_hobby = SelectHobby(instance=userinfoHobby)
-  
-    context = {
-        'userinfoHobby':userinfoHobby,
-        'favorite_hobby':favorite_hobby,
-    }
-    return render(request, 'myApp/update_selectHobby.html', context)
-   
-
-def updateSelectHobby(request, id):
+            context = {
+                'userinfo':userinfo,
+                'favorite_hobby':userselectHobby,
+            }
+            
+            if favorite_hobby.is_valid():
+                favorite_hobby.save()
+                
+            else:
+                print(favorite_hobby.errors)
+                return(request, 'myApp/selectHobby.html', context)
     
-    if request.method == "POST":
-        userinfo = get_object_or_404(login, pk=id)
-        userinfoHobby = get_object_or_404(hobby, pk=id)
-        favorite_hobby = SelectHobby(request.POST, request.FILES, instance=userinfoHobby)
-
-        context = {
-            'userinfoHobby':userinfoHobby,
-            'favorite_hobby':favorite_hobby,
-        }
-        
-        if favorite_hobby.is_valid():
-            favorite_hobby.save()
-
         else:
-            print(favorite_hobby.errors)
-            return(request, 'myApp/update_selectHobby.html', context)
+            params["favorite_hobby"] = SelectHobby(request.POST, request.FILES)
+            
+            if params["favorite_hobby"].is_valid():
+                selectHobbyPost = params["favorite_hobby"].save(commit=False)
+                selectHobbyPost.login_user = userinfo
+                selectHobbyPost.save()
+            
+            else:
+                print(params["favorite_hobby"].errors)
+                return render(request, 'myApp/selectHobby.html', context=params)
+            
 
     global user_pass
     user_pass = request.session['userpass']
@@ -727,8 +731,6 @@ def updateSelectHobby(request, id):
     user = authenticate(username=user_username, password=user_pass)
     login(request, user)
 
-    userselecthobby = login
-
     alluser = login.objects.all()
     user_exclude = login.objects.exclude(id=userinfo.id)
     
@@ -738,17 +740,17 @@ def updateSelectHobby(request, id):
     usermajor = user_exclude.filter(school_major=userinfo.school_major)
     usermajor_random = usermajor.order_by('?')[:10]
 
-    userinfoHobby = get_object_or_404(hobby, pk=id)
     
-    params = {
+    text = {
         'userinfo':userinfo,
         'user':user,
         'alluser':alluser,
         'userschool_random':userschool_random,
         'usermajor_random':usermajor_random,
     }
-    
-    return render(request, 'myApp/topScreen.html', context=params)
+        
+    return render(request, 'myApp/topScreen.html', context=text)
+
 
 def friend_request(request,id,user_id):
     userinfo = get_object_or_404(login, pk=id)#申請される側
@@ -825,6 +827,14 @@ def friend_allow(request,id,allow_id):
     allow_id = allow_id
     req = Friend_request.objects.filter(user=userinfo)
     req_list=[]
+    global user_pass
+    user_pass = request.session['userpass']
+
+    global user_username
+    user_username = request.session['user_user_name']
+    
+    user = authenticate(username=user_username, password=user_pass)
+    login(request, user)
     if  len(req[0].friend_req) == 1:
         Friend_request.objects.filter(user=userinfo).delete()
     else:
@@ -860,6 +870,7 @@ def friend_allow(request,id,allow_id):
         'userinfo':userinfo,
         'allow_id':allow_id,
         'req_list':req_list,
+        'user':user,
         }
 
     return render(request, 'myApp/friend_allow.html', context)
