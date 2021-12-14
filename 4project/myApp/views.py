@@ -215,7 +215,6 @@ def personal_view(request,id):
     
     user = authenticate(username=user_username, password=user_pass)
     login(request, user)
-
     
     if request.method == 'POST':
         pForm = personalForm(request.POST)
@@ -226,15 +225,16 @@ def personal_view(request,id):
             personalPost.user = userinfo
             personalPost.publish()
 
-    q = question.objects.filter(user=userinfo)
-    d = 4 - q[0].q6 + q[0].q1
-    c = 4 - q[0].q7 + q[0].q2
-    h = 4 - q[0].q8 + q[0].q3
-    n = 4 - q[0].q9 + q[0].q4
-    o = 4 - q[0].q10 + q[0].q5
-    if(personal.objects.filter(user=userinfo).exists()):
-        personal.objects.filter(user=userinfo).delete()
-    per = personal.objects.create(user=userinfo,diplomacy=d,cooperation=c,honesty=h,nerve=n,openness=o)
+    if(question.objects.filter(user=userinfo).exists()):
+        q = question.objects.filter(user=userinfo)
+        d = 4 - q[0].q6 + q[0].q1
+        c = 4 - q[0].q7 + q[0].q2
+        h = 4 - q[0].q8 + q[0].q3
+        n = 4 - q[0].q9 + q[0].q4
+        o = 4 - q[0].q10 + q[0].q5
+        if(personal.objects.filter(user=userinfo).exists()):
+            personal.objects.filter(user=userinfo).delete()
+            per = personal.objects.create(user=userinfo,diplomacy=d,cooperation=c,honesty=h,nerve=n,openness=o)
     params = {
         'title': '性格診断',
         'form':personalForm(),
