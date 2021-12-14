@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
-from django.conf.urls import url
+#from django.conf.urls import url
 
 urlpatterns = [
     path('', views.new_register, name='new_register'),
