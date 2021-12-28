@@ -76,6 +76,24 @@
 	    </div>
 	  </div>
 	  <hr>
+	  
+	  {% for user in alluser %}
+	  <div class="My-content">
+	    <img src="/media/{{ user.picture }}" width="25%" height="25%" class="icon-image">
+
+	    <div class="My-box">
+	      <p>{{ user.user.username }}</p>
+	    </div>
+
+	    <div class="My-box">
+	      <p>学年 : {{ user.get_school_grade_display }}</p>
+	      <p>性別 : {{ user.sexuality }}</p>
+	    </div>
+	    <div class="My-box-btn">
+	      <a href="{% url 'details_screen' user.id userinfo.id %}" class="btn-user">詳細</a>
+	    </div>
+	  </div>
+	  {% endfor %}
 	</p>
       </div>
     </div>

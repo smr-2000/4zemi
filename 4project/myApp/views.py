@@ -234,7 +234,7 @@ def personal_view(request,id):
         o = 4 - q[0].q10 + q[0].q5
         if(personal.objects.filter(user=userinfo).exists()):
             personal.objects.filter(user=userinfo).delete()
-            per = personal.objects.create(user=userinfo,diplomacy=d,cooperation=c,honesty=h,nerve=n,openness=o)
+        per = personal.objects.create(user=userinfo,diplomacy=d,cooperation=c,honesty=h,nerve=n,openness=o)
     params = {
         'title': '性格診断',
         'form':personalForm(),
